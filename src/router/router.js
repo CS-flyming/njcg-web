@@ -96,6 +96,30 @@ export const otherRouter = {
       component: () => import("@/views/sys/depart/edit.vue")
     },
     {
+      path: "base/base_unit/add",
+      title: "新增部门",
+      name: "base-unit-add",
+      component: () => import("@/views/sys/unit/add.vue")
+    },
+    {
+      path: "base/base_unit/:id/edit",
+      title: "编辑部门",
+      name: "base-unit-edit",
+      component: () => import("@/views/sys/unit/edit.vue")
+    },
+    {
+      path: "base/base_role/add",
+      title: "新增角色",
+      name: "base-role-add",
+      component: () => import("@/views/sys/role/add.vue")
+    },
+    {
+      path: "base/base_role/:id/edit",
+      title: "编辑角色",
+      name: "base-role-edit",
+      component: () => import("@/views/sys/role/edit.vue")
+    },
+    {
       path: "assets/add",
       title: "新增资产",
       name: "assets-add",
@@ -173,6 +197,18 @@ export const appRouter = [
         title: "部门管理",
         name: "base_dep",
         component: () => import("@/views/sys/depart/index.vue")
+      },
+      {
+        path: "base_unit",
+        title: "单位管理",
+        name: "base_unit",
+        component: () => import("@/views/sys/unit/index.vue")
+      },
+      {
+        path: "base_role",
+        title: "角色管理",
+        name: "base_role",
+        component: () => import("@/views/sys/role/index.vue")
       }
     ]
   },

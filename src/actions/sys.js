@@ -161,7 +161,7 @@ export function deleteMenuById(menuId) {
  * 获取系统角色列表
  */
 export function getSysRoleList(params) {
-    return $axios.post("/sys/role/list", params);
+    return $axios.post("/root/role/list", params);
 }
 
 /**
@@ -169,13 +169,7 @@ export function getSysRoleList(params) {
  * @param {*} params
  */
 export function addOrUpdateRole(params) {
-    let url = "";
-    if (params.id) {
-        url = "/sys/role/update";
-    } else {
-        url = "/sys/role/add";
-    }
-    return $axios.post(url, params);
+    return $axios.post("/root/role/add", params);
 }
 
 /**
@@ -192,4 +186,12 @@ export function getRoleDetail(id) {
  */
 export function deleteRoleById(roleId) {
     return $axios.post(`/sys/role/delete/${roleId}`);
+}
+
+/**
+ * 获取菜单
+ * @param {*} params 
+ */
+export function getSysMenus(params){
+    return $axios.post(`/select/menu`,params);
 }
