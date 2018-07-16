@@ -8,7 +8,7 @@ import $axios from "../constants/constant";
  * @param {*} params
  */
 export function login(params) {
-    return $axios.post("/root/login", params);
+  return $axios.post("/root/login", params);
 }
 
 /**
@@ -37,7 +37,7 @@ export function login(params) {
  * @param {*} managerId
  */
 export function resetManagerPwdById(managerId) {
-    return $axios.post(`/sys/manager/password/reset/${managerId}`);
+  return $axios.post(`/sys/manager/password/reset/${managerId}`);
 }
 
 /**
@@ -45,13 +45,13 @@ export function resetManagerPwdById(managerId) {
  * @param {*} managerId
  */
 export function deleteManagerById(managerId) {
-    return $axios.post(`/root/user/delete/${managerId}`);
+  return $axios.post(`/root/user/delete/${managerId}`);
 }
 /**
  * 获取登录角色菜单
  */
 export function getMenus() {
-    return $axios.post("/root/menu");
+  return $axios.post("/root/menu");
 }
 
 /**
@@ -59,7 +59,7 @@ export function getMenus() {
  * @param {*} params
  */
 export function getManagers(params) {
-    return $axios.post("/root/user/list", params);
+  return $axios.post("/root/user/list", params);
 }
 
 /**
@@ -67,13 +67,13 @@ export function getManagers(params) {
  * @param {*} params
  */
 export function addOrUpdateManager(params) {
-    let url = "";
-    // if (params.id) {
-    //     url = "/sys/manager/update";
-    // } else {
-    url = "/root/user/add";
-    // }
-    return $axios.post(url, params);
+  let url = "";
+  // if (params.id) {
+  //     url = "/sys/manager/update";
+  // } else {
+  url = "/root/user/add";
+  // }
+  return $axios.post(url, params);
 }
 
 /**
@@ -81,7 +81,7 @@ export function addOrUpdateManager(params) {
  * @param {*} id
  */
 export function getManagerDetail(id) {
-    return $axios.post(`/sys/manager/detail/${id}`);
+  return $axios.post(`/sys/manager/detail/${id}`);
 }
 
 /**
@@ -109,31 +109,31 @@ export function getManagerDetail(id) {
  * 获取系统菜单列表
  */
 export function getSysMenuList(params) {
-    return $axios.post("/sys/menu/list", params);
+  return $axios.post("/sys/menu/list", params);
 }
 
 /**
  * 添加或编辑系统菜单
  */
 export function addOrUpdateMenu(params) {
-    let url = "";
-    if (params.id) {
-        url = "/sys/menu/update";
-    } else {
-        url = "/sys/menu/add";
-    }
-    return $axios.post(url, params);
+  let url = "";
+  if (params.id) {
+    url = "/sys/menu/update";
+  } else {
+    url = "/sys/menu/add";
+  }
+  return $axios.post(url, params);
 }
 /**
  * 获取菜单信息
  * @param {*} id
  */
 export function getMenuDetail(id) {
-    return $axios.post(`/sys/menu/detail/${id}`);
+  return $axios.post(`/sys/menu/detail/${id}`);
 }
 
 export function deleteMenuById(menuId) {
-    return $axios.post(`/sys/menu/delete/${menuId}`);
+  return $axios.post(`/sys/menu/delete/${menuId}`);
 }
 
 /**
@@ -161,7 +161,7 @@ export function deleteMenuById(menuId) {
  * 获取系统角色列表
  */
 export function getSysRoleList(params) {
-    return $axios.post("/root/role/list", params);
+  return $axios.post("/root/role/list", params);
 }
 
 /**
@@ -169,7 +169,7 @@ export function getSysRoleList(params) {
  * @param {*} params
  */
 export function addOrUpdateRole(params) {
-    return $axios.post("/root/role/add", params);
+  return $axios.post("/root/role/add", params);
 }
 
 /**
@@ -177,7 +177,7 @@ export function addOrUpdateRole(params) {
  * @param {*} id
  */
 export function getRoleDetail(id) {
-    return $axios.post(`/sys/role/detail/${id}`);
+  return $axios.post(`/sys/role/detail/${id}`);
 }
 
 /**
@@ -185,13 +185,21 @@ export function getRoleDetail(id) {
  * @param {*} roleId
  */
 export function deleteRoleById(roleId) {
-    return $axios.post(`/sys/role/delete/${roleId}`);
+  return $axios.post(`/sys/role/delete/${roleId}`);
 }
 
 /**
  * 获取菜单
- * @param {*} params 
+ * @param {*} params
  */
-export function getSysMenus(params){
-    return $axios.post(`/select/menu`,params);
+export function getSysMenus(params) {
+  return $axios.post(`/select/menu`, params);
+}
+
+/**
+ * 获取单位列表
+ * @param {*} params
+ */
+export function getUnitSelect(params) {
+  return $axios.post(`/select/unit`, params);
 }

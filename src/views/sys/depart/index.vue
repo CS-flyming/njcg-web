@@ -39,6 +39,22 @@ export default {
           title: "部门编号"
         },
         {
+          key: "phone",
+          title: "联系方式"
+        },
+        {
+          key: "leader",
+          title: "部门主管"
+        },
+        {
+          key: "unitDesc",
+          title: "所属单位"
+        },
+        {
+          key: "info",
+          title: "备注"
+        },
+        {
           type: "action",
           title: "操作",
           width: 150,
@@ -48,7 +64,7 @@ export default {
                 "Button",
                 {
                   props: {
-                    type: "primary",
+                    type: "primary"
                   },
                   on: {
                     click: () => {

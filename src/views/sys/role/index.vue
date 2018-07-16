@@ -25,7 +25,7 @@
 import pagination from "components/pagination";
 import { getSysRoleList } from "@/actions/sys";
 export default {
-  name: "base_unit",
+  name: "base_role",
   data() {
     return {
       loading: false,
@@ -44,7 +44,7 @@ export default {
                 "Button",
                 {
                   props: {
-                    type: "primary",
+                    type: "primary"
                   },
                   on: {
                     click: () => {

@@ -17,7 +17,7 @@
                 <Input v-model="form.name" placeholder="角色名称"  />
             </FormItem>
             <FormItem label="角色菜单" prop="menuIds" >
-                <menuTreeSelector/>
+                <menuTreeSelector v-model="form.menuIds"/>
             </FormItem>
            
             <FormItem>
@@ -33,14 +33,15 @@ import { addOrUpdateRole } from "@/actions/sys";
 import menuTreeSelector from "components/menu-tree-selector";
 export default {
   name: "base-role-add",
-  components:{
-    menuTreeSelector,
+  components: {
+    menuTreeSelector
   },
   data() {
     return {
       loading: false,
       form: {
         name: "",
+        menuIds: []
       },
       rules: {
         name: [
@@ -50,6 +51,14 @@ export default {
             trigger: "blur"
           }
         ],
+        menuIds: [
+          {
+            required: true,
+            type: "array",
+            message: "请选择角色菜单",
+            trigger: "change"
+          }
+        ]
       }
     };
   },

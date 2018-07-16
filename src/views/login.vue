@@ -5,7 +5,7 @@
 <template>
     <div class="login" @keydown.enter="handleSubmit">
         <div class="login-title">
-            <h1>营房维修管理系统</h1>
+            <!-- <h1>采购系统</h1> -->
         </div>
         <div class="login-con">
             <Card :bordered="false">

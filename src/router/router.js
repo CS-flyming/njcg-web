@@ -97,13 +97,13 @@ export const otherRouter = {
     },
     {
       path: "base/base_unit/add",
-      title: "新增部门",
+      title: "新增单位",
       name: "base-unit-add",
       component: () => import("@/views/sys/unit/add.vue")
     },
     {
       path: "base/base_unit/:id/edit",
-      title: "编辑部门",
+      title: "编辑单位",
       name: "base-unit-edit",
       component: () => import("@/views/sys/unit/edit.vue")
     },
@@ -173,7 +173,6 @@ export const otherRouter = {
       name: "check-detail",
       component: () => import("@/views/sys/keep/check_detail.vue")
     }
-    
   ]
 };
 
@@ -245,8 +244,7 @@ export const appRouter = [
         title: "已驳回",
         name: "keep_apply_refuse",
         component: () => import("@/views/sys/keep/keep_apply_refuse.vue")
-      },
-
+      }
     ]
   },
   {
@@ -268,7 +266,6 @@ export const appRouter = [
         name: "keep_refuse",
         component: () => import("@/views/sys/keep/keep_refuse.vue")
       }
-
     ]
   },
   {
