@@ -12,7 +12,7 @@
                 :open-names="openedSubmenuArr"
                 :menu-list="menuList">
                 <div slot="top" class="logo-con">
-                    <div class="logo-title" >营房维修管理系统</div>
+                    <div class="logo-title" >采购管理系统</div>
                     <div class="login-info">
                         <img src="../images/userinfo.png" class="avtor">
                         <div class="login-name">{{userName.userName}}</div>
@@ -54,7 +54,7 @@
         </div>
         <div class="single-page-con" :style="{left: shrink?'60px':'200px'}">
             <div class="single-page">
-                <keep-alive :include="cachePage">
+                <keep-alive :include="cachePage">   
                     <router-view></router-view>
                 </keep-alive>
             </div>

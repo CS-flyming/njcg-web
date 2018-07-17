@@ -120,22 +120,22 @@ export const otherRouter = {
       component: () => import("@/views/sys/role/edit.vue")
     },
     {
-      path: "assets/add",
-      title: "新增资产",
-      name: "assets-add",
-      component: () => import("@/views/sys/assets/add.vue")
+      path: "product/add/add",
+      title: "新增商品",
+      name: "product-add-add",
+      component: () => import("@/views/product/add.vue")
     },
     {
-      path: "assets/:id/edit",
-      title: "编辑资产",
-      name: "assets-edit",
-      component: () => import("@/views/sys/assets/edit.vue")
+      path: "product/add/:id/edit",
+      title: "编辑商品",
+      name: "product-add-edit",
+      component: () => import("@/views/product/edit.vue")
     },
     {
-      path: "keep_apply/add",
-      title: "维修单申请",
-      name: "keep-apply-add",
-      component: () => import("@/views/sys/keep/add.vue")
+      path: "product/type/add",
+      title: "新增分类",
+      name: "product-type-add",
+      component: () => import("@/views/product/types/add.vue")
     },
     {
       path: "keep_apply/:id/edit",
@@ -212,101 +212,22 @@ export const appRouter = [
     ]
   },
   {
-    path: "/assets",
-    icon: "ios-gear",
-    name: "assets",
-    title: "资产管理",
+    path: "/product",
+    name: "product",
+    title: "商品录入",
     component: Main,
     children: [
       {
-        path: "list",
-        title: "资产管理",
-        name: "assets_list",
-        component: () => import("@/views/sys/assets/index.vue")
-      }
-    ]
-  },
-  {
-    path: "/keep_apply",
-    icon: "ios-gear",
-    name: "keep_apply",
-    title: "维修申请",
-    component: Main,
-    children: [
-      {
-        path: "verify",
-        title: "待审核",
-        name: "keep_apply_verify",
-        component: () => import("@/views/sys/keep/verify.vue")
+        path: "add",
+        title: "新增商品",
+        name: "product_add",
+        component: () => import("@/views/product/index.vue")
       },
       {
-        path: "refuse",
-        title: "已驳回",
-        name: "keep_apply_refuse",
-        component: () => import("@/views/sys/keep/keep_apply_refuse.vue")
-      }
-    ]
-  },
-  {
-    path: "/keep",
-    icon: "ios-gear",
-    name: "keep",
-    title: "维修审核",
-    component: Main,
-    children: [
-      {
-        path: "verify",
-        title: "待审核",
-        name: "keep_verify",
-        component: () => import("@/views/sys/keep/keep_verify.vue")
-      },
-      {
-        path: "refuse",
-        title: "已驳回",
-        name: "keep_refuse",
-        component: () => import("@/views/sys/keep/keep_refuse.vue")
-      }
-    ]
-  },
-  {
-    path: "/keep_speed",
-    icon: "ios-gear",
-    name: "keep_speed",
-    title: "维修审核",
-    component: Main,
-    children: [
-      {
-        path: "keep_speed_wait",
-        title: "待维修",
-        name: "keep_speed_wait",
-        component: () => import("@/views/sys/keep/keep_speed_wait.vue")
-      },
-      {
-        path: "keep_speed_finishi",
-        title: "已完成",
-        name: "keep_speed_finishi",
-        component: () => import("@/views/sys/keep/keep_speed_finishi.vue")
-      }
-    ]
-  },
-  {
-    path: "/check",
-    icon: "ios-gear",
-    name: "check",
-    title: "巡检管理",
-    component: Main,
-    children: [
-      {
-        path: "check_apply",
-        title: "自主巡检",
-        name: "check_apply",
-        component: () => import("@/views/sys/keep/check_apply.vue")
-      },
-      {
-        path: "check_data",
-        title: "定期巡检",
-        name: "check_data",
-        component: () => import("@/views/sys/keep/check_data.vue")
+        path: "types",
+        title: "分类建立",
+        name: "product_type",
+        component: () => import("@/views/product/types/index.vue")
       }
     ]
   }

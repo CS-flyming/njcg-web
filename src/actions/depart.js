@@ -7,8 +7,8 @@ import $axios from "../constants/constant";
  * 获取部门列表
  * @param {*} params
  */
-export function getDepartSelect(params) {
-  return $axios.post("/depart/select", params);
+export function getDepartSelect(unitId) {
+  return $axios.post(`/select/depart/${unitId}`);
 }
 
 /**

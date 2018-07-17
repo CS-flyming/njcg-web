@@ -33,7 +33,7 @@
 import { closeCurrentErrPage } from "@/constants/constant";
 import { addOrUpdateUnit } from "@/actions/unit";
 export default {
-  name: "sys-unit-add",
+  name: "base-unit-add",
   data() {
     return {
       loading: false,

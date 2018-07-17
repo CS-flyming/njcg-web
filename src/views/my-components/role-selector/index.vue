@@ -1,24 +1,20 @@
 <template>
-    <RadioGroup v-model="currentValue" @on-change="handleChange">
-        <Radio  :label="item.id" v-for="item in data" :key="item.id">{{ item.name }}</Radio>
-    </RadioGroup>
+    <Select v-bind="$attrs" v-model="currentValue" @on-change="handleChange">
+        <Option value="">请选择</Option>
+        <Option :value="item.id" v-for="item in data" :key="item.id">{{ item.name }}</Option>
+    </Select>
 </template>
 
 <script>
 import { getRoleSelect } from "@/actions/sys";
 export default {
-  name: "manager-role-selector",
+  name: "role-selector",
   props: {
     value: {
-      type: String
-    },
-    name: "",
-    disabled: {
-      type: Boolean,
-      default: false
+      type: [String, Number],
+      default: ""
     }
   },
-  inheritAttrs: false,
   data() {
     return {
       currentValue: this.value,
@@ -45,3 +41,4 @@ export default {
   }
 };
 </script>
+

@@ -81,7 +81,7 @@ export function addOrUpdateManager(params) {
  * @param {*} id
  */
 export function getManagerDetail(id) {
-  return $axios.post(`/sys/manager/detail/${id}`);
+  return $axios.post(`/root/user/find/${id}`);
 }
 
 /**
@@ -203,3 +203,22 @@ export function getSysMenus(params) {
 export function getUnitSelect(params) {
   return $axios.post(`/select/unit`, params);
 }
+
+/**
+ * 获取角色列表
+ * @param {*} params
+ */
+export function getRoleSelect(params) {
+  return $axios.post(`/select/role`, params);
+}
+
+/**
+ * 获取角色列表
+ * @param {*} params
+ */
+export function getProductTypesSelect(params) {
+  return $axios.post(`/select/product`, params);
+}
+
+
+

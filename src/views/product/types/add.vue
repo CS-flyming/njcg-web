@@ -2,7 +2,7 @@
 <template>
     <Card>
         <p slot="title">
-            编辑单位
+            新增分类
         </p>
         <Form 
             style="max-width: 800px;" 
@@ -13,14 +13,11 @@
             :label-width="120" 
             label-position="right"
             :rules="rules">
-            <FormItem label="部门名称" prop="name" >
-                <Input v-model="form.name" placeholder="部门名称"  />
+            <FormItem label="分类名称" prop="name" >
+                <Input v-model="form.name" placeholder="分类名称"  />
             </FormItem>
-            <FormItem label="部门编号" prop="code" >
-                <Input v-model="form.code" placeholder="部门编号"/>
-            </FormItem>
-            <FormItem label="备注" >
-                <Input v-model="form.info" placeholder="备注"  />
+            <FormItem label="分类编号" prop="code" >
+                <Input v-model="form.code" placeholder="分类编号"  />
             </FormItem>
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
@@ -31,29 +28,28 @@
 
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
-import { addOrUpdateUnit } from "@/actions/unit";
+import { addOrUpdateTypes } from "@/actions/product";
 export default {
-  name: "base-unit-edit",
+  name: "product-type-add",
   data() {
     return {
       loading: false,
       form: {
         name: "",
-        code: "",
-        info: ""
+        code: ""
       },
       rules: {
         name: [
           {
             required: true,
-            message: "请输入部门名称",
+            message: "请输入分类名称",
             trigger: "blur"
           }
         ],
         code: [
           {
             required: true,
-            message: "请输入部门编号",
+            message: "请输入分类编号",
             trigger: "blur"
           }
         ]
@@ -61,20 +57,16 @@ export default {
     };
   },
   methods: {
-    getDepartDetail() {
-      let { item } = this.$route.query;
-      this.form = JSON.parse(item);
-    },
     submit(e) {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;
           let formData = this.form;
-          addOrUpdateUnit(formData).then(
+          addOrUpdateTypes(formData).then(
             res => {
               this.loading = false;
               this.$lf.message("保存成功", "success");
-              closeCurrentErrPage(this, "base_unit");
+              closeCurrentErrPage(this, "product_type");
             },
             () => {
               this.loading = false;
@@ -83,9 +75,6 @@ export default {
         }
       });
     }
-  },
-  activated() {
-    this.getDepartDetail();
   }
 };
 </script>

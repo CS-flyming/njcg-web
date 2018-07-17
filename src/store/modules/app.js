@@ -105,21 +105,21 @@ const app = {
       let accessMenu = [];
       let accessRouter = [];
       const menuIcon = {
-        base: "gear-b",
-        assets: "social-yen",
-        keep: "wrench",
-        keep_apply: "wrench",
-        keep_apply_refuse: "wrench",
-        keep_speed: "wrench",
-        check: "arrow-swap",
-        stock: "social-buffer"
+        // base: "gear-b",
+        // assets: "social-yen",
+        // keep: "wrench",
+        // keep_apply: "wrench",
+        // keep_apply_refuse: "wrench",
+        // keep_speed: "wrench",
+        // check: "arrow-swap",
+        // stock: "social-buffer"
       };
       if (token) {
         let accessMenuDefer = await getMenus();
         if (accessMenuDefer.data.length > 0) {
           accessMenuDefer.data.forEach((item, index) => {
             // accessMenu.push({ item });
-            console.log(item.code);
+            // console.log(item.code);
             accessAppRouter[index] = {
               path: "/" + item.code,
               name: item.code,

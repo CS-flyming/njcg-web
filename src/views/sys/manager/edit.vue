@@ -1,8 +1,9 @@
 
 <template>
     <Card>
+        <Spin size="large" fix v-if="spining"></Spin>
         <p slot="title">
-            新增用户
+            编辑用户
         </p>
         <Form 
             style="max-width: 800px;" 
@@ -22,8 +23,8 @@
             <FormItem label="确认密码" prop="_rePassword">
                 <Input type="password" v-model="form._rePassword" placeholder="请再次输入密码" ></Input>
             </FormItem> -->
-            <FormItem label="姓名" prop="realName" >
-                <Input v-model="form.realName" placeholder="员工姓名"/>
+            <FormItem label="真实姓名" prop="realName" >
+                <Input v-model="form.realName" placeholder="真实姓名"/>
             </FormItem>
             <FormItem label="手机号码" prop="phone" >
                 <Input v-model="form.phone" placeholder="手机号码"/>
@@ -31,17 +32,20 @@
             <!-- <FormItem label="身份证号" prop="certificateNo" >
                 <Input v-model="form.certificateNo" placeholder="身份证号"></Input>
             </FormItem> -->
-            <FormItem label="所属部门" >
-                <departSelector v-model="form.depatmentId"></departSelector>
+            <FormItem label="所属单位">
+                <unitSelector v-model="form.unitId"></unitSelector>
             </FormItem>
-            <FormItem label="所属角色">
+            <FormItem label="所属部门" >
+                <departSelector v-model="form.depatmentId" :unitId="form.unitId"></departSelector>
+            </FormItem>
+            <FormItem label="所属角色" prop="types">
                 <manager-role-selector v-model="form.types"></manager-role-selector>
             </FormItem>
-            <FormItem label="详细信息">
+            <FormItem label="备注">
                 <Input type="textarea" v-model="form.info"/>
             </FormItem>
-            <FormItem label="状态" prop="state" >
-                <RadioGroup v-model="form.state">
+            <FormItem label="状态" prop="status" >
+                <RadioGroup v-model="form.status">
                     <Radio label="2">冻结</Radio>
                     <Radio label="1">正常</Radio>
                 </RadioGroup>
@@ -56,6 +60,7 @@
 <script>
 import managerRoleSelector from "components/manager-role-selector";
 import departSelector from "components/depart-selector";
+import unitSelector from "components/unit-selector";
 import { addOrUpdateManager, getManagerDetail } from "@/actions/sys";
 import { closeCurrentErrPage } from "@/constants/constant";
 import { validateData } from "./validate";
@@ -66,7 +71,9 @@ let defaultForm = {
   _rePassword: "",
   name: "",
   certificateNo: "",
-  state: 1,
+  unitId:"",
+  departId: "",
+  status: 1,
   types: ""
 };
 export default {
@@ -81,6 +88,7 @@ export default {
     };
     return {
       loading: false,
+      spining: false,
       form: {
         userName: "",
         phone: "",
@@ -88,8 +96,9 @@ export default {
         _rePassword: "",
         name: "",
         certificateNo: "",
-        state: 1,
+        status: 1,
         types: "",
+        unitId:"",
         departId: "",
         info: ""
       },
@@ -115,9 +124,12 @@ export default {
   },
   methods: {
     getManagerDetail() {
-      let { item } = this.$route.query;
-      this.form = JSON.parse(item);
-      this.form.state = this.form.status;
+      let { id } = this.$route.params;
+      this.spining=true;
+      getManagerDetail(id).then(res=>{
+        this.spining=false
+        this.form=res.data
+      })
     },
     submit(e) {
       this.$refs.form.validate(valid => {
@@ -144,7 +156,8 @@ export default {
   },
   components: {
     managerRoleSelector,
-    departSelector
+    departSelector,
+    unitSelector
   }
 };
 </script>
