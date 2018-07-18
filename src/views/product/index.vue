@@ -22,6 +22,15 @@
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
+        <Modal
+            v-model="showParamsModal"
+            title="参数列表"
+           >
+            <Table :columns="paramscolumns" :data="selectParamsArr" border></Table>
+            <div slot="footer">
+               
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -34,6 +43,17 @@ export default {
   data() {
     return {
       loading: false,
+      showParamsModal: false,
+      paramscolumns: [
+        {
+          key: "key",
+          title: "参数名称"
+        },
+        {
+          key: "value",
+          title: "参数数值"
+        }
+      ],
       columns: [
         {
           key: "name",
@@ -56,75 +76,113 @@ export default {
           title: "价格"
         },
         {
-          type: "action",
-          title: "操作",
-          width: 200,
+          key: "createTime",
+          title: "添加时间"
+        },
+        {
+          title: "参数列表",
           render: (h, params) => {
-            return h("div", [
-              h(
-                "Poptip",
+            if (params.row.json) {
+              return h(
+                "div",
                 {
-                  props: {
-                    confirm: true,
-                    title: "您确定要删除?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      deleteManagerById(params.row.id).then(
-                        res => {
-                          this.loading = false;
-                          this.$lf.message("删除成功", "success");
-                          this.loadData();
-                        },
-                        () => {
-                          this.loading = false;
-                        }
-                      );
-                    }
-                  }
-                },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "删除"
-                  )
-                ]
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary"
+                  style: {
+                    color: "#2d8cf0"
                   },
                   on: {
                     click: () => {
-                      this.$router.push({
-                        name: "sys-manager-edit",
-                        params: {
-                          id: params.row.id
-                        },
-                        query: {
-                          item: JSON.stringify(params.row)
+                      let jsonObj = JSON.parse(params.row.json);
+                      let selectParamsArr = [];
+                      for (const key in jsonObj) {
+                        if (jsonObj.hasOwnProperty(key)) {
+                          let obj = { key: "", value: "" };
+                          obj.key = key;
+                          obj.value = jsonObj[key];
+                          selectParamsArr.push(obj);
                         }
-                      });
+                      }
+                      this.selectParamsArr = selectParamsArr;
+                      this.showParamsModal = true;
                     }
                   }
                 },
-                "编辑"
-              )
-            ]);
+                "点击查看"
+              );
+            } else {
+              return h("div", "无");
+            }
           }
         }
+        // {
+        //   type: "action",
+        //   title: "操作",
+        //   width: 200,
+        //   render: (h, params) => {
+        //     return h("div", [
+        //       h(
+        //         "Poptip",
+        //         {
+        //           props: {
+        //             confirm: true,
+        //             title: "您确定要删除?",
+        //             transfer: true
+        //           },
+        //           on: {
+        //             "on-ok": () => {
+        //               deleteManagerById(params.row.id).then(
+        //                 res => {
+        //                   this.loading = false;
+        //                   this.$lf.message("删除成功", "success");
+        //                   this.loadData();
+        //                 },
+        //                 () => {
+        //                   this.loading = false;
+        //                 }
+        //               );
+        //             }
+        //           }
+        //         },
+        //         [
+        //           h(
+        //             "Button",
+        //             {
+        //               style: {
+        //                 margin: "0 5px"
+        //               },
+        //               props: {
+        //                 type: "error",
+        //                 placement: "top"
+        //               }
+        //             },
+        //             "删除"
+        //           )
+        //         ]
+        //       ),
+        //       h(
+        //         "Button",
+        //         {
+        //           props: {
+        //             type: "primary"
+        //           },
+        //           on: {
+        //             click: () => {
+        //               this.$router.push({
+        //                 name: "sys-manager-edit",
+        //                 params: {
+        //                   id: params.row.id
+        //                 },
+        //                 query: {
+        //                   item: JSON.stringify(params.row)
+        //                 }
+        //               });
+        //             }
+        //           }
+        //         },
+        //         "编辑"
+        //       )
+        //     ]);
+        //   }
+        // }
       ],
       filter: {
         limit: 10,
@@ -133,13 +191,16 @@ export default {
         type: []
       },
       data: [],
-      total: 0
+      total: 0,
+      selectParamsArr: []
     };
   },
   methods: {
     loadData() {
       this.loading = true;
-      getProductList(this.filter).then(res => {
+      let filterCopy = Object.assign({}, this.filter);
+      filterCopy.type = filterCopy.type[filterCopy.type.length - 1];
+      getProductList(filterCopy).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;

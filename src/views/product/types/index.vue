@@ -47,78 +47,78 @@ export default {
         },
         {
           key: "deep",
-          title: "分级"
-        },
-        {
-          type: "action",
-          title: "操作",
-          width: 200,
-          render: (h, params) => {
-            return h("div", [
-              h(
-                "Poptip",
-                {
-                  props: {
-                    confirm: true,
-                    title: "您确定要删除?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      deleteManagerById(params.row.id).then(
-                        res => {
-                          this.loading = false;
-                          this.$lf.message("删除成功", "success");
-                          this.loadData();
-                        },
-                        () => {
-                          this.loading = false;
-                        }
-                      );
-                    }
-                  }
-                },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "删除"
-                  )
-                ]
-              ),
-              h(
-                "Button",
-                {
-                  props: {
-                    type: "primary"
-                  },
-                  on: {
-                    click: () => {
-                      this.$router.push({
-                        name: "sys-manager-edit",
-                        params: {
-                          id: params.row.id
-                        },
-                        query: {
-                          item: JSON.stringify(params.row)
-                        }
-                      });
-                    }
-                  }
-                },
-                "编辑"
-              )
-            ]);
-          }
+          title: "层级"
         }
+        // {
+        //   type: "action",
+        //   title: "操作",
+        //   width: 200,
+        //   render: (h, params) => {
+        //     return h("div", [
+        //       h(
+        //         "Poptip",
+        //         {
+        //           props: {
+        //             confirm: true,
+        //             title: "您确定要删除?",
+        //             transfer: true
+        //           },
+        //           on: {
+        //             "on-ok": () => {
+        //               deleteManagerById(params.row.id).then(
+        //                 res => {
+        //                   this.loading = false;
+        //                   this.$lf.message("删除成功", "success");
+        //                   this.loadData();
+        //                 },
+        //                 () => {
+        //                   this.loading = false;
+        //                 }
+        //               );
+        //             }
+        //           }
+        //         },
+        //         [
+        //           h(
+        //             "Button",
+        //             {
+        //               style: {
+        //                 margin: "0 5px"
+        //               },
+        //               props: {
+        //                 type: "error",
+        //                 placement: "top"
+        //               }
+        //             },
+        //             "删除"
+        //           )
+        //         ]
+        //       ),
+        //       h(
+        //         "Button",
+        //         {
+        //           props: {
+        //             type: "primary"
+        //           },
+        //           on: {
+        //             click: () => {
+        //               this.$router.push({
+        //                 name: "sys-manager-edit",
+        //                 params: {
+        //                   id: params.row.id
+        //                 },
+        //                 query: {
+        //                   item: JSON.stringify(params.row)
+        //                 }
+        //               });
+        //             }
+        //           }
+        //         },
+        //         "编辑"
+        //       )
+        //     ]);
+        //   }
+        // }
       ],
       filter: {
         limit: 10,

@@ -26,3 +26,11 @@ export function getProductTypesList(params) {
 export function addOrUpdateTypes(params) {
   return $axios.post("/product/type/add", params)
 }
+
+/**
+ * 新增商品
+ * @param {*} params 
+ */
+export function addOrUpdateProduct(params) {
+  return $axios.post("/product/add", params)
+}

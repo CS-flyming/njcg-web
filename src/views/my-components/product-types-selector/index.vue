@@ -1,5 +1,5 @@
 <template>
-    <Cascader  v-bind="$attrs" :data="data" v-model="currentValue" :load-data="loadData"></Cascader>
+    <Cascader  v-bind="$attrs" :data="data" v-model="currentValue" :load-data="loadData" @on-change="handleChange"></Cascader>
 </template>
 
 <script>
@@ -9,7 +9,9 @@ export default {
   props: {
     value: {
       type: Array,
-      default: []
+      default: function() {
+        return [];
+      }
     }
   },
   data() {
@@ -27,7 +29,7 @@ export default {
         this.data = res.data.map(v => {
           v.value = v.id;
           v.label = v.name;
-          if (v.nodes) {
+          if (v.nodes && v.nodes.length) {
             v.children = [];
             v.loading = false;
           }
@@ -37,11 +39,13 @@ export default {
     },
     loadData(item, callback) {
       item.loading = true;
-      getProductTypesSelect(item.id).then(res => {
+      getProductTypesSelect({
+        id: item.id
+      }).then(res => {
         let child = res.data.map(v => {
           v.value = v.id;
           v.label = v.name;
-          if (v.nodes) {
+          if (v.nodes && v.nodes.length) {
             v.children = [];
             v.loading = false;
           }
@@ -52,7 +56,7 @@ export default {
         callback();
       });
     },
-    handleChange(val) {
+    handleChange(val, arr) {
       this.$emit("input", val);
     }
   },

@@ -19,6 +19,9 @@
             <FormItem label="分类编号" prop="code" >
                 <Input v-model="form.code" placeholder="分类编号"  />
             </FormItem>
+            <FormItem label="所属分类">
+                <productTypesSelector v-model="form.parentId" placeholder="所属分类"  change-on-select/>
+            </FormItem>
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
             </FormItem>
@@ -29,14 +32,19 @@
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
 import { addOrUpdateTypes } from "@/actions/product";
+import productTypesSelector from "components/product-types-selector";
 export default {
   name: "product-type-add",
+  components: {
+    productTypesSelector
+  },
   data() {
     return {
       loading: false,
       form: {
         name: "",
-        code: ""
+        code: "",
+        parentId: []
       },
       rules: {
         name: [
@@ -61,7 +69,8 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;
-          let formData = this.form;
+          let formData = Object.assign({}, this.form);
+          formData.parentId = formData.parentId[formData.parentId.length - 1];
           addOrUpdateTypes(formData).then(
             res => {
               this.loading = false;
