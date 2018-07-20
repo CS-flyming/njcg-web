@@ -9,7 +9,7 @@
                     <Input v-model="filter.name" clearable/>
                 </FormItem>
                 <FormItem label="商品分类">
-                    <productTypesSelector v-model="filter.type" clearable/>
+                    <productTypesSelector v-model="filter.type" change-on-select clearable/>
                 </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
