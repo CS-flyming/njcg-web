@@ -29,9 +29,9 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
-                    <Button type="primary"  size="large" style="right: 120px;display: inline-block;margin-left: -40px;" @click="goWeixiu">我要报修</Button>
+                    <!-- <Button type="primary"  size="large" style="right: 120px;display: inline-block;margin-left: -40px;" @click="goWeixiu">我要报修</Button> -->
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
-                    <lock-screen></lock-screen>
+                    <!-- <lock-screen></lock-screen> -->
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
                             <Dropdown transfer trigger="click" @on-click="handleClickUserDropdown">

@@ -42,6 +42,12 @@
                   </Col>
                 </Row> 
             </FormItem>
+            <FormItem label="商品说明图片">
+                <imageUpload v-model="form.wjIds" ref="imgupload1"/>
+            </FormItem>
+            <FormItem label="商品详情图片">
+                <imageUpload v-model="form.wjId" limit="1" ref="imgupload2"/>
+            </FormItem>
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
             </FormItem>
@@ -53,10 +59,12 @@
 import { closeCurrentErrPage } from "@/constants/constant";
 import { addOrUpdateProduct } from "@/actions/product";
 import productTypesSelector from "components/product-types-selector";
+import imageUpload from "components/image-upload";
 export default {
   name: "product-add-add",
   components: {
-    productTypesSelector
+    productTypesSelector,
+    imageUpload
   },
   data() {
     return {
@@ -109,7 +117,9 @@ export default {
         value: 0,
         type: [],
         standard: "",
-        model: ""
+        model: "",
+        wjId: [],
+        wjIds: []
       },
       rules: {
         name: [
@@ -186,6 +196,7 @@ export default {
             res => {
               this.loading = false;
               this.$lf.message("保存成功", "success");
+              this.resetForm();
               closeCurrentErrPage(this, "product_add");
             },
             () => {
@@ -194,6 +205,12 @@ export default {
           );
         }
       });
+    },
+    resetForm() {
+      this.$refs.form.resetFields();
+      this.paramsArr = [];
+      this.$refs.imgupload1.clearFileList();
+      this.$refs.imgupload2.clearFileList();
     },
     arr2Json(arr = []) {
       let jsonObj = {};

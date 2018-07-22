@@ -220,5 +220,14 @@ export function getProductTypesSelect(params) {
   return $axios.post(`/select/product`, params);
 }
 
+/**
+ * 获取用户列表
+ * @param {*} params
+ */
+export function getUserSelect(params) {
+  return $axios.post(`/select/user`, params);
+}
+
+
 
 

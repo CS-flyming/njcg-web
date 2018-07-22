@@ -132,6 +132,12 @@ export const otherRouter = {
       component: () => import("@/views/product/edit.vue")
     },
     {
+      path: "product/add/:id/detail",
+      title: "商品详情",
+      name: "product-add-detail",
+      component: () => import("@/views/product/detail.vue")
+    },
+    {
       path: "product/type/add",
       title: "新增分类",
       name: "product-type-add",
@@ -209,6 +215,190 @@ export const appRouter = [
         name: "base_role",
         component: () => import("@/views/sys/role/index.vue")
       }
+    ]
+  },
+  {
+    path: "/verify",
+    name: "verify",
+    title: "审核管理",
+    component: Main,
+    children: [
+      {
+        path: "first",
+        title: "初审",
+        name: "verify_first",
+        component: () => import("@/views/verify/index.vue")
+      },
+      {
+        path: "second",
+        title: "复审",
+        name: "verify_second",
+        component: () => import("@/views/verify/second.vue")
+      },
+      {
+        path: "finish",
+        title: "已完成",
+        name: "verify_finish",
+        component: () => import("@/views/verify/finish.vue")
+      },
+      {
+        path: "refuse",
+        title: "驳回",
+        name: "verify_refuse",
+        component: () => import("@/views/verify/refuse.vue")
+      },
+      {
+        path: "stock_return",
+        title: "退货审核",
+        name: "stock_return",
+        component: () => import("@/views/verify/stock_return.vue")
+      },
+    ]
+  },
+  {
+    path: "/stock",
+    name: "stock",
+    title: "库存管理",
+    component: Main,
+    children: [
+      {
+        path: "info",
+        title: "库存信息",
+        name: "stock_info",
+        component: () => import("@/views/stock/info.vue")
+      },
+      {
+        path: "in",
+        title: "入库信息",
+        name: "stock_in",
+        component: () => import("@/views/stock/in.vue")
+      },
+      {
+        path: "out",
+        title: "出库信息",
+        name: "stock_out",
+        component: () => import("@/views/stock/out.vue")
+      },
+      {
+        path: "return",
+        title: "退货信息",
+        name: "stock_refund",
+        component: () => import("@/views/stock/return.vue")
+      },
+      {
+        path: "waste",
+        title: "报废信息",
+        name: "stock_waste",
+        component: () => import("@/views/stock/lose.vue")
+      },
+      {
+        path: "verify",
+        title: "出库审核",
+        name: "stock_verify",
+        component: () => import("@/views/stock/verify.vue")
+      },
+      // {
+      //   path: "refuse",
+      //   title: "驳回",
+      //   name: "verify_refuse",
+      //   component: () => import("@/views/verify/refuse.vue")
+      // },
+      // {
+      //   path: "stock_return",
+      //   title: "退货审核",
+      //   name: "stock_return",
+      //   component: () => import("@/views/verify/stock_return.vue")
+      // },
+    ]
+  },
+  {
+    path: "/lend",
+    name: "lend",
+    title: "划拨管理",
+    component: Main,
+    children: [
+      {
+        path: "his",
+        title: "已划拨",
+        name: "lend_his",
+        component: () => import("@/views/lend/his.vue")
+      },
+      {
+        path: "my",
+        title: "接受划拨",
+        name: "lend_my",
+        component: () => import("@/views/lend/my.vue")
+      },
+      {
+        path: "verify",
+        title: "待审核",
+        name: "lend_verify",
+        component: () => import("@/views/lend/verify.vue")
+      },
+    ]
+  },
+  {
+    path: "/order",
+    name: "order",
+    title: "订单管理",
+    component: Main,
+    children: [
+      {
+        path: "my",
+        title: "我的订单",
+        name: "order_my",
+        component: () => import("@/views/order/my.vue")
+      },
+      {
+        path: "in",
+        title: "已入库",
+        name: "order_finish",
+        component: () => import("@/views/order/in.vue")
+      },
+      {
+        path: "take",
+        title: "待收货",
+        name: "order_take",
+        component: () => import("@/views/order/take.vue")
+      },
+      {
+        path: "refuse",
+        title: "驳回",
+        name: "order_refuse",
+        component: () => import("@/views/order/refuse.vue")
+      },
+    ]
+  },
+  {
+    path: "/issue",
+    name: "issue",
+    title: "上级配发",
+    component: Main,
+    children: [
+      {
+        path: "apply",
+        title: "物品上报",
+        name: "issue_apply",
+        component: () => import("@/views/issue/apply.vue")
+      },
+      {
+        path: "finish",
+        title: "已完成",
+        name: "issue_finish",
+        component: () => import("@/views/issue/finish.vue")
+      },
+      {
+        path: "refuse",
+        title: "驳回",
+        name: "issue_refuse",
+        component: () => import("@/views/issue/refuse.vue")
+      },
+      {
+        path: "verify",
+        title: "配发审核",
+        name: "issue_verify",
+        component: () => import("@/views/issue/verify.vue")
+      },
     ]
   },
   {

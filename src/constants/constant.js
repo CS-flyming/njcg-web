@@ -12,13 +12,13 @@ export const ApiUrl =
       ? ""
       : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952"; // "http://172.16.7.119:8080/zjhb"
 
-const uploadMaxSize = 1024;
+const uploadMaxSize = 2048;
 export const uploadConfig = {
   accept: "",
   headers: { "X-USERTOKEN": Cookies.get("token") },
   name: "file",
   maxSize: uploadMaxSize,
-  serviceUrl: `${ApiUrl}/upload`
+  serviceUrl: `${ApiUrl}/file/upload`
 };
 axios.defaults.baseURL = ApiUrl;
 // axios.defaults.withCredentials = true;

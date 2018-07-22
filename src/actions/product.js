@@ -34,3 +34,12 @@ export function addOrUpdateTypes(params) {
 export function addOrUpdateProduct(params) {
   return $axios.post("/product/add", params)
 }
+
+
+/**
+ * 商品详情
+ * @param {*} params 
+ */
+export function getProductDetail(id) {
+  return $axios.post(`/product/find/${id}`)
+}
