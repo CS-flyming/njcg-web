@@ -5,7 +5,7 @@
     <div>
         <Card class="filter-wrap">
             <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="120" >
-                <FormItem label="商品名称">
+                <FormItem label="名称">
                    <Input v-model="filter.name" clearable/>
                 </FormItem>
                 <FormItem class="submit">
@@ -14,29 +14,38 @@
             </Form>
         </Card>
         <div class="data-control">
-            <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
+            <Button type="primary" @click="showAddModal">申请配发</Button>
             <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
-        <!-- <Modal
+        <Modal
             v-model="showVerifyModal"
-            title="出库"
+            title="申请配发"
             @on-cancel="handleCacelModal"
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
-                <FormItem label="出库数量" prop="count">
-                     <InputNumber :max="verifyForm.limit" :min="1" v-model="verifyForm.count" style="width:100%;"/>
+                <FormItem label="名称" prop="name">
+                    <Input v-model="verifyForm.name" placeholder="名称"  />
                 </FormItem>
-                <FormItem label="出库用户" prop="userId">
-                    <userSelector v-model="verifyForm.userId"/>    
+                <FormItem label="价格" prop="value">
+                    <InputNumber  :min="1" v-model="verifyForm.value" style="width:100%;"/>
+                </FormItem>
+                 <FormItem label="规格" prop="standard">
+                    <Input v-model="verifyForm.standard" placeholder="规格"  />
+                </FormItem>
+                 <FormItem label="型号" prop="model">
+                    <Input v-model="verifyForm.model" placeholder="型号"  />
+                </FormItem>
+                <FormItem label="数量" prop="issueCount">
+                    <InputNumber  :min="1" v-model="verifyForm.issueCount" style="width:100%;"/>
                 </FormItem>
             </Form>
             <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">出库</Button>
+                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">提交</Button>
             </div>
         </Modal>
-        <Modal
+        <!-- <Modal
             v-model="showVerifyModal2"
             title="报废物品"
             @on-cancel="handleCacelModal2"
@@ -56,7 +65,7 @@
 <script>
 import pagination from "components/pagination";
 // import userSelector from "components/user-selector";
-import { getIssueApplyList } from "@/actions/issue";
+import { getIssueApplyList, addIssueItem } from "@/actions/issue";
 export default {
   name: "issue_apply",
   data() {
@@ -67,18 +76,40 @@ export default {
       showVerifyModal2: false,
       modalLoading2: false,
       rules: {
-        userId: [
+        name: [
           {
             required: true,
-            message: "请选择出库用户",
-            trigger: "change"
+            message: "请输入名称",
+            trigger: "blur"
           }
         ],
-        count: [
+        standard: [
+          {
+            required: true,
+            message: "请输入规格",
+            trigger: "blur"
+          }
+        ],
+        model: [
+          {
+            required: true,
+            message: "请输入型号",
+            trigger: "blur"
+          }
+        ],
+        value: [
           {
             required: true,
             type: "number",
-            message: "请输入出库数量",
+            message: "请输入价格",
+            trigger: "blur"
+          }
+        ],
+        issueCount: [
+          {
+            required: true,
+            type: "number",
+            message: "请输入数量",
             trigger: "blur"
           }
         ]
@@ -93,10 +124,11 @@ export default {
         ]
       },
       verifyForm: {
-        id: "",
-        count: 1,
-        userId: "",
-        limit: 0
+        name: "",
+        value: 0,
+        standard: "",
+        model: "",
+        issueCount: 1
       },
       verifyForm2: {
         id: "",
@@ -108,6 +140,11 @@ export default {
           title: "名称"
         },
         {
+          key: "value",
+          title: "价格"
+        },
+
+        {
           key: "standard",
           title: "规格"
         },
@@ -116,8 +153,8 @@ export default {
           title: "型号"
         },
         {
-          key: "lendCount",
-          title: "划拨数量"
+          key: "issueCount",
+          title: "申请数量"
         },
         {
           key: "reason",
@@ -127,12 +164,12 @@ export default {
           key: "statusDesc",
           title: "状态"
         },
+        // {
+        //   key: "lendUserName",
+        //   title: "接收人"
+        // },
         {
-          key: "lendUserName",
-          title: "接收人"
-        },
-        {
-          key: "createUserName",
+          key: "createName",
           title: "创建人"
         },
         {
@@ -227,6 +264,9 @@ export default {
     };
   },
   methods: {
+    showAddModal() {
+      this.showVerifyModal = true;
+    },
     loadData() {
       this.loading = true;
       getIssueApplyList(this.filter).then(res => {
@@ -241,10 +281,11 @@ export default {
     },
     resetVerifyForm() {
       this.verifyForm = {
-        id: "",
-        count: 1,
-        userId: "",
-        limit: 0
+        name: "",
+        value: 0,
+        standard: "",
+        model: "",
+        issueCount: 1
       };
     },
     resetVerifyForm2() {
@@ -265,9 +306,9 @@ export default {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          stockOutAction(this.verifyForm).then(
+          addIssueItem(this.verifyForm).then(
             res => {
-              this.$lf.message("出库成功", "success");
+              this.$lf.message("申请成功", "success");
               this.modalLoading = false;
               this.handleCacelModal();
               this.loadData();

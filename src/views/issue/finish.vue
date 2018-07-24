@@ -50,24 +50,45 @@ export default {
       loading: false,
       columns: [
         {
-          key: "orderNo",
-          title: "订单号"
+          key: "name",
+          title: "名称"
         },
         {
-          key: "levelDesc",
-          title: "紧急程度"
+          key: "value",
+          title: "价格"
+        },
+
+        {
+          key: "standard",
+          title: "规格"
         },
         {
-          key: "typeDesc",
-          title: "采购类型"
+          key: "model",
+          title: "型号"
         },
         {
-          key: "normalDesc",
-          title: "采购方式"
+          key: "issueCount",
+          title: "申请数量"
+        },
+        // {
+        //   key: "reason",
+        //   title: "拒绝理由"
+        // },
+        // {
+        //   key: "statusDesc",
+        //   title: "状态"
+        // },
+        // {
+        //   key: "lendUserName",
+        //   title: "接收人"
+        // },
+        {
+          key: "createName",
+          title: "创建人"
         },
         {
           key: "createTime",
-          title: "提交时间"
+          title: "创建时间"
         }
         // {
         //   key: "statusDesc",

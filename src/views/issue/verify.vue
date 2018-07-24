@@ -5,17 +5,8 @@
     <div>
         <Card class="filter-wrap">
             <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="120" >
-                <FormItem label="采购类型">
-                    <Select v-model="filter.type" clearable>
-                        <Option value="1">集中采购</Option>
-                        <Option value="2">自行采购</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="紧急程度">
-                    <Select v-model="filter.level" clearable>
-                        <Option value="1">月度上报</Option>
-                        <Option value="2">紧急购买</Option>
-                    </Select>
+                <FormItem label="名称">
+                   <Input v-model="filter.name" clearable/>
                 </FormItem>
                  <!-- <FormItem label="订单状态">
                     <Select v-model="filter.sttaus" clearable>
@@ -37,95 +28,122 @@
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
+         <Modal
+            v-model="showVerifyModal"
+            title="复审"
+            @on-cancel="handleCacelModal"
+           >
+           <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
+                <FormItem label="审核状态" prop="status">
+                   <RadioGroup v-model="verifyForm.status">
+                      <Radio label="2">通过</Radio>
+                      <Radio label="3">拒绝</Radio>
+                  </RadioGroup>
+                </FormItem>
+                <FormItem label="拒绝原因" v-if="verifyForm.status=='3'" prop="reason">
+                    <Input v-model="verifyForm.reason" placeholder="拒绝原因"  />
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">复审</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
 <script>
 import pagination from "components/pagination";
-import { getIssueVerifyList } from "@/actions/issue";
+import { getIssueVerifyList, verifyIssueItem } from "@/actions/issue";
 export default {
   name: "issue_verify",
   data() {
     return {
       loading: false,
+      showVerifyModal: false,
+      modalLoading: false,
+      rules: {
+        reason: [
+          {
+            required: true,
+            message: "请输入拒绝原因",
+            trigger: "blur"
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: "请选择审核状态",
+            trigger: "change"
+          }
+        ]
+      },
+      verifyForm: {
+        id: "",
+        status: "2",
+        reason: ""
+      },
       columns: [
         {
-          key: "orderNo",
-          title: "订单号"
+          key: "name",
+          title: "名称"
         },
         {
-          key: "levelDesc",
-          title: "紧急程度"
+          key: "value",
+          title: "价格"
+        },
+
+        {
+          key: "standard",
+          title: "规格"
         },
         {
-          key: "typeDesc",
-          title: "采购类型"
+          key: "model",
+          title: "型号"
         },
         {
-          key: "normalDesc",
-          title: "采购方式"
+          key: "issueCount",
+          title: "申请数量"
+        },
+        // {
+        //   key: "reason",
+        //   title: "拒绝理由"
+        // },
+        {
+          key: "statusDesc",
+          title: "状态"
+        },
+        // {
+        //   key: "lendUserName",
+        //   title: "接收人"
+        // },
+        {
+          key: "createName",
+          title: "创建人"
         },
         {
           key: "createTime",
-          title: "提交时间"
-        },
-        {
-          key: "statusDesc",
-          title: "订单状态"
+          title: "创建时间"
         },
         {
           type: "action",
           title: "操作",
           width: 200,
           render: (h, params) => {
-            // return h(
-            //   "Button",
-            //   {
-            //     on: {
-            //       click: () => {
-            //         this.verifyForm.id = params.row.id;
-            //         this.showVerifyModal = true;
-            //       }
-            //     },
-            //     props: {
-            //       type: "primary"
-            //     }
-            //   },
-            //   "初审"
-            // );
-            return h("div", [
-              h(
-                "Poptip",
-                {
-                  props: {
-                    confirm: true,
-                    title: "您确定要收货?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      this.verifyForm.id = params.row.id;
-                      this.showVerifyModal = true;
-                    }
+            return h(
+              "Button",
+              {
+                on: {
+                  click: () => {
+                    this.verifyForm.id = params.row.id;
+                    this.showVerifyModal = true;
                   }
                 },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "收货"
-                  )
-                ]
-              )
-            ]);
+                props: {
+                  type: "primary"
+                }
+              },
+              "审核"
+            );
           }
         }
       ],
@@ -133,8 +151,7 @@ export default {
         limit: 10,
         offset: 0,
         // status: "",
-        level: "",
-        type: ""
+        name: ""
       },
       data: [],
       total: 0
@@ -152,6 +169,34 @@ export default {
     handleFilter() {
       this.filter.offset = 0;
       this.loadData();
+    },
+    resetVerifyForm() {
+      this.verifyForm = {
+        id: "",
+        status: "2",
+        reason: ""
+      };
+    },
+    handleCacelModal() {
+      this.showVerifyModal = false;
+      this.resetVerifyForm();
+    },
+    handleVerifyFirst() {
+      this.$refs["verifyForm"].validate(valid => {
+        if (valid) {
+          this.modalLoading = true;
+          verifyIssueItem(this.verifyForm).then(
+            res => {
+              this.modalLoading = false;
+              this.handleCacelModal();
+              this.loadData();
+            },
+            () => {
+              this.modalLoading = false;
+            }
+          );
+        }
+      });
     }
   },
   components: {

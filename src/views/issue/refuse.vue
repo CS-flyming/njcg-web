@@ -50,83 +50,45 @@ export default {
       loading: false,
       columns: [
         {
-          key: "orderNo",
-          title: "订单号"
+          key: "name",
+          title: "名称"
         },
         {
-          key: "levelDesc",
-          title: "紧急程度"
+          key: "value",
+          title: "价格"
+        },
+
+        {
+          key: "standard",
+          title: "规格"
         },
         {
-          key: "typeDesc",
-          title: "采购类型"
+          key: "model",
+          title: "型号"
         },
         {
-          key: "normalDesc",
-          title: "采购方式"
+          key: "issueCount",
+          title: "申请数量"
+        },
+        // {
+        //   key: "reason",
+        //   title: "拒绝理由"
+        // },
+        // {
+        //   key: "statusDesc",
+        //   title: "状态"
+        // },
+        // {
+        //   key: "lendUserName",
+        //   title: "接收人"
+        // },
+        {
+          key: "createName",
+          title: "创建人"
         },
         {
           key: "createTime",
-          title: "提交时间"
-        },
-        {
-          key: "statusDesc",
-          title: "订单状态"
-        },
-        {
-          type: "action",
-          title: "操作",
-          width: 200,
-          render: (h, params) => {
-            // return h(
-            //   "Button",
-            //   {
-            //     on: {
-            //       click: () => {
-            //         this.verifyForm.id = params.row.id;
-            //         this.showVerifyModal = true;
-            //       }
-            //     },
-            //     props: {
-            //       type: "primary"
-            //     }
-            //   },
-            //   "初审"
-            // );
-            return h("div", [
-              h(
-                "Poptip",
-                {
-                  props: {
-                    confirm: true,
-                    title: "您确定要收货?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      this.verifyForm.id = params.row.id;
-                      this.showVerifyModal = true;
-                    }
-                  }
-                },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "收货"
-                  )
-                ]
-              )
-            ]);
-          }
+          title: "创建时间"
         }
       ],
       filter: {

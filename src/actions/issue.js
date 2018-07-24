@@ -33,3 +33,20 @@ export function getIssueVerifyList(params) {
 }
 
 
+/**
+ * 配发审核
+ * @param {*} params
+ */
+export function addIssueItem(params) {
+    return $axios.post("/issue/add", params);
+}
+
+/**
+ * 配发审核
+ * @param {*} params
+ */
+export function verifyIssueItem(params) {
+    return $axios.post("/issue/verify", params);
+}
+
+
