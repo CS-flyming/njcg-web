@@ -2,7 +2,7 @@
 <template>
     <Card>
         <p slot="title">
-            新增角色
+            编辑角色
         </p>
         <Form 
             style="max-width: 800px;" 
@@ -16,8 +16,8 @@
             <FormItem label="角色名称" prop="name" >
                 <Input v-model="form.name" placeholder="角色名称"  />
             </FormItem>
-            <FormItem label="角色菜单" prop="menuIds" >
-                <menuTreeSelector v-model="form.menuIds"/>
+            <FormItem label="角色菜单" prop="menuIds">
+                <menuTreeSelector v-model="form.menuIds" :menuIds="form.menuIds"/>
             </FormItem>
            
             <FormItem>
@@ -29,7 +29,7 @@
 
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
-import { addOrUpdateRole } from "@/actions/sys";
+import { addOrUpdateRole, getRoleDetailById } from "@/actions/sys";
 import menuTreeSelector from "components/menu-tree-selector";
 export default {
   name: "base-role-edit",
@@ -40,6 +40,7 @@ export default {
     return {
       loading: false,
       form: {
+        id: "",
         name: "",
         menuIds: []
       },
@@ -62,7 +63,19 @@ export default {
       }
     };
   },
+  activated() {
+    this.getRoleDetail();
+  },
   methods: {
+    getRoleDetail() {
+      let { id } = this.$route.params;
+      getRoleDetailById(id).then(res => {
+        this.form.id = res.data.id;
+        this.form.menuIds = res.data.menuIds;
+        this.form.name = res.data.name;
+        console.log(this.form);
+      });
+    },
     submit(e) {
       this.$refs.form.validate(valid => {
         if (valid) {

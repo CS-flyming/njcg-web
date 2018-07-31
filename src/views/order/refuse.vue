@@ -76,7 +76,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 120,
           render: (h, params) => {
             // return h(
             //   "Button",
@@ -94,36 +94,59 @@ export default {
             //   "初审"
             // );
             return h("div", [
+              // h(
+              //   "Poptip",
+              //   {
+              //     props: {
+              //       confirm: true,
+              //       title: "您确定要收货?",
+              //       transfer: true
+              //     },
+              //     on: {
+              //       "on-ok": () => {
+              //         this.verifyForm.id = params.row.id;
+              //         this.showVerifyModal = true;
+              //       }
+              //     }
+              //   },
+              //   [
+              //     h(
+              //       "Button",
+              //       {
+              //         style: {
+              //           margin: "0 5px"
+              //         },
+              //         props: {
+              //           type: "error",
+              //           placement: "top"
+              //         }
+              //       },
+              //       "收货"
+              //     )
+              //   ]
+              // ),
               h(
-                "Poptip",
+                "Button",
                 {
                   props: {
-                    confirm: true,
-                    title: "您确定要收货?",
-                    transfer: true
+                    type: "info"
+                  },
+                  style: {
+                    marginRight: "8px"
                   },
                   on: {
-                    "on-ok": () => {
-                      this.verifyForm.id = params.row.id;
-                      this.showVerifyModal = true;
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-order-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
                     }
                   }
                 },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "收货"
-                  )
-                ]
+                "订单详情"
               )
             ]);
           }

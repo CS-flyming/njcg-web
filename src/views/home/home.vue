@@ -4,8 +4,9 @@
 </style>
 <template>
     <div class="home-main">
+        <!-- <h1>采购系统</h1> -->
         <!-- 账户信息 -->
-         <Row :gutter="10">
+         <!-- <Row :gutter="10">
             <Col span="24">
                 <Row class-name="home-page-row1" :gutter="10">
                     <Col span="12" :style="{marginBottom: '10px'}">
@@ -112,7 +113,7 @@
                     
                 </div>
             </Card>
-        </Row>
+        </Row> -->
     </div>
 </template>
 
@@ -195,8 +196,8 @@ export default {
   created() {
     let name = this.$store.state.user.userInfo;
     this.userName = name;
-    this.check();
-    this.getIndexData();
+    // this.check();
+    // this.getIndexData();
   },
   components: {
     serviceRequests,

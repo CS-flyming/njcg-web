@@ -228,6 +228,9 @@ export function getUserSelect(params) {
   return $axios.post(`/select/user`, params);
 }
 
-
-
-
+export function getRoleDetailById(id) {
+  return $axios.post(`/root/role/find/${id}`);
+}
+export function changePwd(params) {
+  return $axios.post("/root/user/edit/pwd", params);
+}

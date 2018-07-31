@@ -83,15 +83,16 @@ axios.interceptors.response.use(
     if (response.data.code == "1000") {
       return response.data;
     } else if (response.data.code == "1001") {
-      iView.Modal.error({
-        title: "警告",
-        content: "登录超时",
-        onOk() {
-          store.commit("logout", this);
-          store.commit("clearOpenedSubmenu");
-          location.href = "#/login";
-        }
-      });
+      // iView.Modal.error({
+      //   title: "警告",
+      //   content: "登录超时",
+      //   onOk() {
+      //     store.commit("logout", this);
+      //     store.commit("clearOpenedSubmenu");
+      //     location.href = "#/login";
+      //   }
+      // });
+      location.href = "#/login";
       return;
     } else {
       iView.Message.error(response.data.msg);

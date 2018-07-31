@@ -52,9 +52,6 @@ export default {
                         name: "base-role-edit",
                         params: {
                           id: params.row.id
-                        },
-                        query: {
-                          item: JSON.stringify(params.row)
                         }
                       });
                     }

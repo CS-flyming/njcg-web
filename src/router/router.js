@@ -178,6 +178,12 @@ export const otherRouter = {
       title: "巡检详情",
       name: "check-detail",
       component: () => import("@/views/sys/keep/check_detail.vue")
+    },
+    {
+      path: "order/:id/detail",
+      title: "订单详情",
+      name: "base-order-detail",
+      component: () => import("@/views/order/detail.vue")
     }
   ]
 };
@@ -252,7 +258,7 @@ export const appRouter = [
         title: "退货审核",
         name: "stock_return",
         component: () => import("@/views/verify/stock_return.vue")
-      },
+      }
     ]
   },
   {
@@ -296,7 +302,7 @@ export const appRouter = [
         title: "出库审核",
         name: "stock_verify",
         component: () => import("@/views/stock/verify.vue")
-      },
+      }
       // {
       //   path: "refuse",
       //   title: "驳回",
@@ -334,7 +340,7 @@ export const appRouter = [
         title: "待审核",
         name: "lend_verify",
         component: () => import("@/views/lend/verify.vue")
-      },
+      }
     ]
   },
   {
@@ -366,7 +372,7 @@ export const appRouter = [
         title: "驳回",
         name: "order_refuse",
         component: () => import("@/views/order/refuse.vue")
-      },
+      }
     ]
   },
   {
@@ -398,7 +404,7 @@ export const appRouter = [
         title: "配发审核",
         name: "issue_verify",
         component: () => import("@/views/issue/verify.vue")
-      },
+      }
     ]
   },
   {

@@ -209,3 +209,7 @@ export function getKeepDetail(id) {
 export function subKeepRemark(params) {
   return $axios.post("/keep/remark", params);
 }
+
+export function getDepartDetail(id) {
+  return $axios.post("/depart/find/" + id);
+}

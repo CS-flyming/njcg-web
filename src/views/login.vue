@@ -14,6 +14,8 @@
                     欢迎登录
                 </p>
                 <div class="form-con">
+                    <!-- <input style="display:none" type="text" name="fakeusernameremembered"/>
+                    <input style="display:none" type="password" name="fakepasswordremembered"/> -->
                     <Form ref="loginForm" :model="form" :rules="rules">
                         <FormItem prop="userName">
                             <Input v-model="form.userName" placeholder="请输入用户名">

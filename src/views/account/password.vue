@@ -1,5 +1,4 @@
 <style lang="less">
-
 </style>
 
 <template>
@@ -35,79 +34,72 @@
 </template>
 
 <script>
+import { changePwd } from "@/actions/sys";
 export default {
-    name: "account-password",
-    data() {
-        const valideRePassword = (rule, value, callback) => {
-            if (value !== this.editPasswordForm.newPassword) {
-                callback(new Error("两次输入密码不一致"));
-            } else {
-                callback();
-            }
-        };
-        return {
-            loading: false,
-            oldPasswordError: "",
-            editPasswordForm: {
-                oldPassword: "",
-                newPassword: "",
-                reNewPassword: ""
+  name: "account-password",
+  data() {
+    const valideRePassword = (rule, value, callback) => {
+      if (value !== this.editPasswordForm.newPassword) {
+        callback(new Error("两次输入密码不一致"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      loading: false,
+      oldPasswordError: "",
+      editPasswordForm: {
+        oldPassword: "",
+        newPassword: "",
+        reNewPassword: ""
+      },
+      passwordValidate: {
+        oldPassword: [
+          { required: true, message: "请输入原密码", trigger: "blur" }
+        ],
+        newPassword: [
+          { required: true, message: "请输入新密码", trigger: "blur" }
+        ],
+        reNewPassword: [
+          {
+            required: true,
+            message: "请再次输入新密码",
+            trigger: "blur"
+          },
+          { validator: valideRePassword, trigger: "blur" }
+        ]
+      }
+    };
+  },
+  methods: {
+    submit(e) {
+      this.$refs.editPasswordForm.validate(valid => {
+        if (valid) {
+          this.loading = true;
+          changePwd({
+            oldPwd: this.editPasswordForm.oldPassword,
+            newPwd: this.editPasswordForm.newPassword
+          }).then(
+            res => {
+              this.loading = false;
+              this.$lf.alert.success("保存成功，请重新登录", null, () => {
+                this.$store.commit("logout", this);
+                this.$store.commit("clearOpenedSubmenu");
+                this.$router.push({
+                  name: "login"
+                });
+              });
             },
-            passwordValidate: {
-                oldPassword: [
-                    { required: true, message: "请输入原密码", trigger: "blur" }
-                ],
-                newPassword: [
-                    { required: true, message: "请输入新密码", trigger: "blur" }
-                ],
-                reNewPassword: [
-                    {
-                        required: true,
-                        message: "请再次输入新密码",
-                        trigger: "blur"
-                    },
-                    { validator: valideRePassword, trigger: "blur" }
-                ]
+            () => {
+              this.loading = false;
             }
-        };
-    },
-    methods: {
-        submit(e) {
-            this.$refs.editPasswordForm.validate(valid => {
-                if (valid) {
-                    this.loading = true;
-                    let formData = this.serialize(e.target);
-                    this.$http.post(`/sys/password/update`, formData).then(
-                        res => {
-                            this.loading = false;
-                            if (res.data.result) {
-                                this.$lf.alert.success(
-                                    "保存成功，请重新登录",
-                                    null,
-                                    () => {
-                                        this.$store.commit("logout", this);
-                                        this.$store.commit(
-                                            "clearOpenedSubmenu"
-                                        );
-                                        this.$router.push({
-                                            name: "login"
-                                        });
-                                    }
-                                );
-                            } else {
-                                this.$lf.alert.error(res.data.message);
-                            }
-                        },
-                        () => {
-                            this.loading = false;
-                        }
-                    );
-                }
-            });
-        },
-        reset() {
-            this.$refs.editPasswordForm.resetFields();
+          );
         }
+      });
+    },
+    reset() {
+      this.$refs.editPasswordForm.resetFields();
     }
+  }
 };
 </script>

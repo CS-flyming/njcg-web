@@ -124,6 +124,29 @@ export default {
                     "收货"
                   )
                 ]
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-order-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
+                  }
+                },
+                "订单详情"
               )
             ]);
           }

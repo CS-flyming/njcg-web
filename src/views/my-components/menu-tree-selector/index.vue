@@ -24,11 +24,15 @@ export default {
   },
   methods: {
     init() {
+      let { menuIds } = this;
       getSysMenus().then(({ data }) => {
         this.data = data.map(v => {
           v.title = v.name;
           v.expand = true;
           v.nodes.map(v2 => {
+            if (menuIds.includes(v2.id)) {
+              v2.checked = true;
+            }
             v2.title = v2.name;
           });
           v.children = v.nodes;
@@ -43,6 +47,11 @@ export default {
         }
       });
       this.$emit("input", menuIds);
+    }
+  },
+  watch: {
+    menuIds(val) {
+      this.init();
     }
   }
 };

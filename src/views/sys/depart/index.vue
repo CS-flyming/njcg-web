@@ -72,10 +72,10 @@ export default {
                         name: "base-dep-edit",
                         params: {
                           id: params.row.id
-                        },
-                        query: {
-                          item: JSON.stringify(params.row)
                         }
+                        // query: {
+                        //   item: JSON.stringify(params.row)
+                        // }
                       });
                     }
                   }

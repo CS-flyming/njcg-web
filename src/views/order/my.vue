@@ -72,6 +72,36 @@ export default {
         {
           key: "statusDesc",
           title: "订单状态"
+        },
+        {
+          type: "action",
+          title: "操作",
+          width: 120,
+          render: (h, params) => {
+            return h(
+              "Button",
+              {
+                props: {
+                  type: "info"
+                },
+                style: {
+                  marginRight: "8px"
+                },
+                on: {
+                  click: () => {
+                    // this.showDetailModal(params.row.id);
+                    this.$router.push({
+                      name: "base-order-detail",
+                      params: {
+                        id: params.row.id
+                      }
+                    });
+                  }
+                }
+              },
+              "订单详情"
+            );
+          }
         }
         // {
         //   type: "action",

@@ -19,6 +19,18 @@
             <FormItem label="部门编号" prop="code" >
                 <Input v-model="form.code" placeholder="部门编号"/>
             </FormItem>
+            <FormItem label="联系电话" prop="phone" >
+                <Input v-model="form.phone" placeholder="联系电话"/>
+            </FormItem>
+            <FormItem label="部门主管" prop="leader" >
+                <Input v-model="form.leader" placeholder="部门主管"/>
+            </FormItem>
+            <FormItem label="所属单位" prop="unitId" >
+                <unit-selector v-model="form.unitId"/>
+            </FormItem>
+            <FormItem label="备注" >
+                <Input v-model="form.info" placeholder="备注"/>
+            </FormItem>
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
             </FormItem>
@@ -27,10 +39,14 @@
 </template>
 
 <script>
+import unitSelector from "components/unit-selector";
 import { closeCurrentErrPage } from "@/constants/constant";
-import { addOrUpdateDepart } from "@/actions/depart";
+import { addOrUpdateDepart, getDepartDetail } from "@/actions/depart";
 export default {
   name: "base-dep-edit",
+  components: {
+    unitSelector
+  },
   data() {
     return {
       loading: false,
@@ -52,14 +68,38 @@ export default {
             message: "请输入部门编号",
             trigger: "blur"
           }
+        ],
+        phone: [
+          {
+            required: true,
+            message: "请输入联系电话",
+            trigger: "blur"
+          }
+        ],
+        leader: [
+          {
+            required: true,
+            message: "请输入部门主管",
+            trigger: "blur"
+          }
+        ],
+        unitId: [
+          {
+            required: true,
+            message: "请选择所属单位",
+            trigger: "change"
+          }
         ]
       }
     };
   },
   methods: {
     getDepartDetail() {
-      let { item } = this.$route.query;
-      this.form = JSON.parse(item);
+      let { id } = this.$route.params;
+      getDepartDetail(id).then(res => {
+        this.form = res.data;
+      });
+      // this.form = JSON.parse(item);
     },
     submit(e) {
       this.$refs.form.validate(valid => {

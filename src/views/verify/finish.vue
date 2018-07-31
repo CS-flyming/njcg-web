@@ -55,7 +55,7 @@
 import pagination from "components/pagination";
 import { getVerifyFinishList, verifyFirstItem } from "@/actions/verify";
 export default {
-  name: "verify_second",
+  name: "verify_finish",
   data() {
     return {
       loading: false,
@@ -106,6 +106,36 @@ export default {
         {
           key: "createTime",
           title: "添加时间"
+        },
+        {
+          type: "action",
+          title: "操作",
+          width: 120,
+          render: (h, params) => {
+            return h(
+              "Button",
+              {
+                props: {
+                  type: "info"
+                },
+                style: {
+                  marginRight: "8px"
+                },
+                on: {
+                  click: () => {
+                    // this.showDetailModal(params.row.id);
+                    this.$router.push({
+                      name: "base-order-detail",
+                      params: {
+                        id: params.row.id
+                      }
+                    });
+                  }
+                }
+              },
+              "订单详情"
+            );
+          }
         }
         // {
         //   type: "action",

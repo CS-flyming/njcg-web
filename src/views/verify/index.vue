@@ -48,12 +48,26 @@
                   <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">初审</Button>
             </div>
         </Modal>
+        <Spin size="large" fix v-if="spinShow"></Spin>
+        <Modal
+              v-model="showDetailModalFlag"
+              width="800"
+              title="订单详情">
+              <Table border ref="selection" :columns="columns2" :data="selectOrder" size="large" ></Table>
+              <div slot="footer">
+                  
+              </div>
+        </Modal>
     </div>
 </template>
 
 <script>
 import pagination from "components/pagination";
-import { getVerifyFirstList, verifyFirstItem } from "@/actions/verify";
+import {
+  getVerifyFirstList,
+  verifyFirstItem,
+  getOrderDetail
+} from "@/actions/verify";
 export default {
   name: "verify_first",
   data() {
@@ -61,6 +75,45 @@ export default {
       loading: false,
       showVerifyModal: false,
       modalLoading: false,
+      spinShow: false,
+      columns2: [
+        {
+          title: "商品名称",
+          render: (h, params) => {
+            return h("div", params.row.product.name || "--");
+          }
+        },
+        {
+          title: "规格",
+          render: (h, params) => {
+            return h("div", params.row.product.standard || "--");
+          }
+        },
+        {
+          title: "型号",
+          render: (h, params) => {
+            return h("div", params.row.product.model || "--");
+          }
+        },
+        {
+          title: "价格",
+          render: (h, params) => {
+            return h("div", params.row.product.value || "--");
+          }
+        },
+        {
+          title: "采购数量",
+          key: "num",
+          align: "center"
+        },
+        {
+          title: "经费类型",
+          key: "typeDesc",
+          align: "center"
+        }
+      ],
+      selectOrder: [],
+      showDetailModalFlag: false,
       rules: {
         reason: [
           {
@@ -112,55 +165,80 @@ export default {
           title: "操作",
           width: 200,
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                on: {
-                  click: () => {
-                    this.verifyForm.id = params.row.id;
-                    this.showVerifyModal = true;
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-order-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
                   }
                 },
-                props: {
-                  type: "primary"
-                }
-              },
-              "初审"
-            );
-            // return h("div", [
-            //   h(
-            //     "Poptip",
-            //     {
-            //       props: {
-            //         confirm: true,
-            //         title: "您确定要删除?",
-            //         transfer: true
-            //       },
-            //       on: {
-            //         "on-ok": () => {
-            //           this.verifyForm.id = params.row.id;
-            //           this.showVerifyModal = true;
-            //         }
-            //       }
-            //     },
-            //     [
-            //       h(
-            //         "Button",
-            //         {
-            //           style: {
-            //             margin: "0 5px"
-            //           },
-            //           props: {
-            //             type: "error",
-            //             placement: "top"
-            //           }
-            //         },
-            //         "删除"
-            //       )
-            //     ]
-            //   )
-            // ]);
+                "订单详情"
+              ),
+              h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
+                      this.verifyForm.id = params.row.id;
+                      this.showVerifyModal = true;
+                    }
+                  },
+                  props: {
+                    type: "primary"
+                  }
+                },
+                "初审"
+              )
+            ]);
           }
+          // return h("div", [
+          //   h(
+          //     "Poptip",
+          //     {
+          //       props: {
+          //         confirm: true,
+          //         title: "您确定要删除?",
+          //         transfer: true
+          //       },
+          //       on: {
+          //         "on-ok": () => {
+          //           this.verifyForm.id = params.row.id;
+          //           this.showVerifyModal = true;
+          //         }
+          //       }
+          //     },
+          //     [
+          //       h(
+          //         "Button",
+          //         {
+          //           style: {
+          //             margin: "0 5px"
+          //           },
+          //           props: {
+          //             type: "error",
+          //             placement: "top"
+          //           }
+          //         },
+          //         "删除"
+          //       )
+          //     ]
+          //   )
+          // ]);
         }
       ],
       filter: {
@@ -174,6 +252,19 @@ export default {
     };
   },
   methods: {
+    showDetailModal(id) {
+      this.spinShow = true;
+      getOrderDetail(id).then(
+        res => {
+          this.spinShow = false;
+          this.selectOrder = res.data;
+          this.showDetailModalFlag = true;
+        },
+        () => {
+          this.spinShow = false;
+        }
+      );
+    },
     loadData() {
       this.loading = true;
       getVerifyFirstList(this.filter).then(res => {

@@ -127,23 +127,25 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 100,
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                on: {
-                  click: () => {
-                    this.verifyForm.id = params.row.id;
-                    this.showVerifyModal = true;
+            if (params.row.status == "1") {
+              return h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
+                      this.verifyForm.id = params.row.id;
+                      this.showVerifyModal = true;
+                    }
+                  },
+                  props: {
+                    type: "primary"
                   }
                 },
-                props: {
-                  type: "primary"
-                }
-              },
-              "审核"
-            );
+                "审核"
+              );
+            }
           }
         }
       ],
