@@ -47,7 +47,7 @@
                     </RadioGroup>
                 </FormItem>
                 <FormItem label="过期时间" prop="endTime"  v-if="verifyForm.type=='2'">
-                    <DatePicker type="date" v-model="verifyForm.endTime" :options="options" placeholder="选择过期时间" style="width: 200px"></DatePicker>
+                    <DatePicker style="width:100%;" type="date" v-model="verifyForm.endTime" :options="options" placeholder="选择过期时间"></DatePicker>
                 </FormItem>
             </Form>
             <div slot="footer">
