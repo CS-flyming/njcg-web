@@ -15,7 +15,7 @@
         </Card>
         <div class="data-control">
             <Button type="primary" @click="showAddModal">申请配发</Button>
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/issue/apply',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -39,6 +39,15 @@
                 </FormItem>
                 <FormItem label="数量" prop="issueCount">
                     <InputNumber  :min="1" v-model="verifyForm.issueCount" style="width:100%;"/>
+                </FormItem>
+                <FormItem label="类型" prop="type">
+                   <RadioGroup v-model="verifyForm.type">
+                      <Radio label="1">普通</Radio>
+                      <Radio label="2">医药用品</Radio>
+                    </RadioGroup>
+                </FormItem>
+                <FormItem label="过期时间" prop="endTime"  v-if="verifyForm.type=='2'">
+                    <DatePicker type="date" v-model="verifyForm.endTime" :options="options" placeholder="选择过期时间" style="width: 200px"></DatePicker>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -66,6 +75,8 @@
 import pagination from "components/pagination";
 // import userSelector from "components/user-selector";
 import { getIssueApplyList, addIssueItem } from "@/actions/issue";
+const moment = require("moment");
+
 export default {
   name: "issue_apply",
   data() {
@@ -75,6 +86,11 @@ export default {
       modalLoading: false,
       showVerifyModal2: false,
       modalLoading2: false,
+      options: {
+        disabledDate(date) {
+          return date && date.valueOf() < Date.now() - 86400000;
+        }
+      },
       rules: {
         name: [
           {
@@ -112,6 +128,21 @@ export default {
             message: "请输入数量",
             trigger: "blur"
           }
+        ],
+        type: [
+          {
+            required: true,
+            message: "请选择类型",
+            trigger: "change"
+          }
+        ],
+        endTime: [
+          {
+            required: true,
+            type: "date",
+            message: "请选择过期时间",
+            trigger: "change"
+          }
         ]
       },
       rules2: {
@@ -128,7 +159,9 @@ export default {
         value: 0,
         standard: "",
         model: "",
-        issueCount: 1
+        issueCount: 1,
+        type: "1",
+        endTime: ""
       },
       verifyForm2: {
         id: "",
@@ -164,10 +197,14 @@ export default {
           key: "statusDesc",
           title: "状态"
         },
-        // {
-        //   key: "lendUserName",
-        //   title: "接收人"
-        // },
+        {
+          key: "typeDesc",
+          title: "类型"
+        },
+        {
+          key: "endTime",
+          title: "过期时间"
+        },
         {
           key: "createName",
           title: "创建人"
@@ -306,7 +343,11 @@ export default {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          addIssueItem(this.verifyForm).then(
+          let copyForm = Object.assign({}, this.verifyForm);
+          copyForm.endTime = moment(this.verifyForm.endTime).format(
+            "YYYY-MM-DD"
+          );
+          addIssueItem(copyForm).then(
             res => {
               this.$lf.message("申请成功", "success");
               this.modalLoading = false;

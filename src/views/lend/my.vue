@@ -15,7 +15,7 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/lend/my',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>

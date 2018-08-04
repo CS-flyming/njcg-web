@@ -15,39 +15,28 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/stock/out/verify',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <Modal
             v-model="showVerifyModal"
-            title="出库"
+            title="审核"
             @on-cancel="handleCacelModal"
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
-                <FormItem label="出库数量" prop="count">
-                     <InputNumber :max="verifyForm.limit" :min="1" v-model="verifyForm.count" style="width:100%;"/>
+                <FormItem label="审核状态" prop="status">
+                   <RadioGroup v-model="verifyForm.status">
+                      <Radio label="2">通过</Radio>
+                      <Radio label="3">拒绝</Radio>
+                  </RadioGroup>
                 </FormItem>
-                <FormItem label="出库用户" prop="userId">
-                    <userSelector v-model="verifyForm.userId"/>    
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">出库</Button>
-            </div>
-        </Modal>
-        <Modal
-            v-model="showVerifyModal2"
-            title="报废物品"
-            @on-cancel="handleCacelModal2"
-           >
-           <Form :model="verifyForm2" ref="verifyForm2" label-position="right" :label-width="120" :rules="rules2">
-                <FormItem label="报废原因" prop="reason">
-                    <Input v-model="verifyForm2.reason" placeholder="报废原因"  />
+                <FormItem label="拒绝原因" v-if="verifyForm.status=='3'" prop="reason">
+                    <Input v-model="verifyForm.reason" placeholder="拒绝原因"  />
                 </FormItem>
             </Form>
             <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst2" :loading="modalLoading2">报废</Button>
+                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">审核</Button>
             </div>
         </Modal>
     </div>
@@ -59,7 +48,8 @@ import userSelector from "components/user-selector";
 import {
   getStockOutVerifyList,
   stockOutAction,
-  stockWasteAction
+  stockWasteAction,
+  stockVerifyAction
 } from "@/actions/stock";
 export default {
   name: "stock_verify",
@@ -68,42 +58,25 @@ export default {
       loading: false,
       showVerifyModal: false,
       modalLoading: false,
-      showVerifyModal2: false,
-      modalLoading2: false,
       rules: {
-        userId: [
-          {
-            required: true,
-            message: "请选择出库用户",
-            trigger: "change"
-          }
-        ],
-        count: [
-          {
-            required: true,
-            type: "number",
-            message: "请输入出库数量",
-            trigger: "blur"
-          }
-        ]
-      },
-      rules2: {
         reason: [
           {
             required: true,
-            message: "请输入报废原因",
+            message: "请输入拒绝原因",
             trigger: "blur"
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: "请选择审核状态",
+            trigger: "change"
           }
         ]
       },
       verifyForm: {
         id: "",
-        count: 1,
-        userId: "",
-        limit: 0
-      },
-      verifyForm2: {
-        id: "",
+        status: "2",
         reason: ""
       },
       columns: [
@@ -154,7 +127,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 100,
           render: (h, params) => {
             return h("div", [
               h(
@@ -163,8 +136,6 @@ export default {
                   on: {
                     click: () => {
                       this.verifyForm.id = params.row.id;
-                      this.verifyForm.limit =
-                        params.row.useCount - params.row.lendCount;
                       this.showVerifyModal = true;
                     }
                   },
@@ -172,25 +143,7 @@ export default {
                     type: "primary"
                   }
                 },
-                "出库"
-              ),
-              h(
-                "Button",
-                {
-                  on: {
-                    click: () => {
-                      this.verifyForm2.id = params.row.id;
-                      this.showVerifyModal2 = true;
-                    }
-                  },
-                  style: {
-                    marginLeft: "8px"
-                  },
-                  props: {
-                    type: "error"
-                  }
-                },
-                "报废"
+                "审核"
               )
             ]);
             // return h("div", [
@@ -254,14 +207,7 @@ export default {
     resetVerifyForm() {
       this.verifyForm = {
         id: "",
-        count: 1,
-        userId: "",
-        limit: 0
-      };
-    },
-    resetVerifyForm2() {
-      this.verifyForm2 = {
-        id: "",
+        status: "2",
         reason: ""
       };
     },
@@ -269,41 +215,19 @@ export default {
       this.showVerifyModal = false;
       this.resetVerifyForm();
     },
-    handleCacelModal2() {
-      this.showVerifyModal2 = false;
-      this.resetVerifyForm();
-    },
     handleVerifyFirst() {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          stockOutAction(this.verifyForm).then(
+          stockVerifyAction(this.verifyForm).then(
             res => {
-              this.$lf.message("出库成功", "success");
+              this.$lf.message("审核成功", "success");
               this.modalLoading = false;
               this.handleCacelModal();
               this.loadData();
             },
             () => {
               this.modalLoading = false;
-            }
-          );
-        }
-      });
-    },
-    handleVerifyFirst2() {
-      this.$refs["verifyForm2"].validate(valid => {
-        if (valid) {
-          this.modalLoading = true;
-          stockWasteAction(this.verifyForm2).then(
-            res => {
-              this.$lf.message("报废成功", "success");
-              this.modalLoading2 = false;
-              this.handleCacelModal2();
-              this.loadData();
-            },
-            () => {
-              this.modalLoading2 = false;
             }
           );
         }

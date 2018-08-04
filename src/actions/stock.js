@@ -65,5 +65,12 @@ export function getStockOutVerifyList(params) {
     return $axios.post("/stock/list/out/verify", params);
 }
 
+export function stockReturnAction(id) {
+    return $axios.post(`/stock/return/${id}`)
+}
+
+export function stockVerifyAction(params) {
+    return $axios.post('/stock/verify', params)
+}
 
 

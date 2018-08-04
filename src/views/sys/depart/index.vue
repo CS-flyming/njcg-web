@@ -15,6 +15,7 @@
         </Card>
         <div class="data-control">
             <Button type="primary" @click="$router.push({ name: 'base-dep-add' })">新增部门</Button>
+            <Button type="primary" @click="$downloadByForm('/export/depart',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>

@@ -234,3 +234,15 @@ export function getRoleDetailById(id) {
 export function changePwd(params) {
   return $axios.post("/root/user/edit/pwd", params);
 }
+
+export function getNewsList(params) {
+  return $axios.post("/msg/list", params)
+}
+
+export function getMsgMy(params) {
+  return $axios.post("/msg/my", params)
+}
+
+export function readMsg(id) {
+  return $axios.post(`/msg/read/${id}`)
+}

@@ -15,6 +15,7 @@
         </Card>
         <div class="data-control">
             <Button type="primary" @click="$router.push({ name: 'base-unit-add' })">新增单位</Button>
+             <Button type="primary" @click="$downloadByForm('/export/unit',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -41,9 +42,9 @@ export default {
         {
           key: "info",
           title: "备注",
-           render: (h, params) => {
-             return h('span',params.row.info||'--')
-           }
+          render: (h, params) => {
+            return h("span", params.row.info || "--");
+          }
         },
         {
           type: "action",
@@ -55,7 +56,7 @@ export default {
                 "Button",
                 {
                   props: {
-                    type: "primary",
+                    type: "primary"
                   },
                   on: {
                     click: () => {

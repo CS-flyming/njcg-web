@@ -33,7 +33,7 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/order',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -42,7 +42,7 @@
 
 <script>
 import pagination from "components/pagination";
-import { getOrderMyList } from "@/actions/order";
+import { getOrderMyList, confirmOrder } from "@/actions/order";
 export default {
   name: "order_my",
   data() {
@@ -76,31 +76,70 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 120,
+          width: 200,
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                props: {
-                  type: "info"
-                },
-                style: {
-                  marginRight: "8px"
-                },
-                on: {
-                  click: () => {
-                    // this.showDetailModal(params.row.id);
-                    this.$router.push({
-                      name: "base-order-detail",
-                      params: {
-                        id: params.row.id
-                      }
-                    });
+            // const sh =
+            //   params.row.status == 5
+            //     ? h(
+            //         "Poptip",
+            //         {
+            //           props: {
+            //             confirm: true,
+            //             title: "您确定要收货?",
+            //             transfer: true
+            //           },
+            //           on: {
+            //             "on-ok": () => {
+            //               confirmOrder(params.row.id).then(res => {
+            //                 this.$Message.success("收货成功");
+            //                 this.loadData();
+            //               });
+            //             }
+            //           }
+            //         },
+            //         [
+            //           h(
+            //             "Button",
+            //             {
+            //               style: {
+            //                 margin: "0 5px"
+            //               },
+            //               props: {
+            //                 type: "primary",
+            //                 placement: "top"
+            //               }
+            //             },
+            //             "收货"
+            //           )
+            //         ]
+            //       )
+            //     : "";
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-order-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
                   }
-                }
-              },
-              "订单详情"
-            );
+                },
+                "订单详情"
+              )
+              // sh
+            ]);
           }
         }
         // {

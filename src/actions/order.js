@@ -33,4 +33,8 @@ export function getOrderRefuseList(params) {
     return $axios.post("/order/list/refuse", params);
 }
 
+export function confirmOrder(id) {
+    return $axios.post(`/product/take/${id}`)
+}
+
 

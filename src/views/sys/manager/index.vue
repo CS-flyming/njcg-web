@@ -27,7 +27,7 @@
         </Card>
         <div class="data-control">
             <Button type="primary" @click="$router.push({ name: 'sys-manager-add' })">新建用户</Button>
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/user',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -60,13 +60,13 @@ export default {
         },
         {
           render: (h, params) => {
-            return h("span",params.row.unitName||'--');
+            return h("span", params.row.unitName || "--");
           },
           title: "所属单位"
         },
         {
           render: (h, params) => {
-            return h("span",params.row.depatmentDesc||'--');
+            return h("span", params.row.depatmentDesc || "--");
           },
           title: "所属部门"
         },
@@ -77,7 +77,10 @@ export default {
         {
           title: "用户信息",
           render: (h, params) => {
-            return h("span", params.row.realName + "/" +( params.row.phone||'--'));
+            return h(
+              "span",
+              params.row.realName + "/" + (params.row.phone || "--")
+            );
           }
         },
         {
@@ -157,10 +160,10 @@ export default {
         limit: 10,
         offset: 0,
         name: "",
-        realName:"",
-        depatmentId:"",
-        types:"",
-        unitId:""
+        realName: "",
+        depatmentId: "",
+        types: "",
+        unitId: ""
       },
       data: [],
       total: 0

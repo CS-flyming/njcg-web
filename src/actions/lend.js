@@ -23,3 +23,11 @@ export function getLendMyList(params) {
 export function getLendVerifyList(params) {
     return $axios.post("/lend/list/verify", params);
 }
+
+/**
+ * 已划拨
+ * @param {*} params
+ */
+export function lendHisAction(params) {
+    return $axios.post("/lend/his", params);
+}

@@ -27,10 +27,12 @@ Vue.use(Spin);
 // Vue.use(iviewArea);
 Vue.use(QueryFilter);
 Vue.use(CheckPermission);
-
+let bus = new Vue()
+Vue.prototype.bus = bus;
 Vue.prototype.$util = Util;
 Vue.prototype.$ApiUrl = ApiUrl;
 Vue.prototype.$downloadByForm = downloadByForm;
+
 new Vue({
   el: "#app",
   router: router,

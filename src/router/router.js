@@ -65,6 +65,12 @@ export const otherRouter = {
       component: () => import("@/views/home/home.vue")
     },
     {
+      path: "message",
+      title: "消息",
+      name: "message",
+      component: () => import("@/views/sys/message/index.vue")
+    },
+    {
       path: "account/password",
       title: "修改密码",
       name: "account-password",

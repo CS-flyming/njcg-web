@@ -15,7 +15,7 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/stock',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -50,6 +50,23 @@
                   <Button type="primary" @click="handleVerifyFirst2" :loading="modalLoading2">报废</Button>
             </div>
         </Modal>
+        <Modal
+            v-model="showVerifyModal3"
+            title="划拨"
+            @on-cancel="handleCacelModal3"
+           >
+           <Form :model="verifyForm3" ref="verifyForm3" label-position="right" :label-width="120" :rules="rules3">
+                <FormItem label="划拨数量" prop="count">
+                     <InputNumber :max="verifyForm3.limit" :min="1" v-model="verifyForm3.count" style="width:100%;"/>
+                </FormItem>
+                <FormItem label="划拨用户" prop="userId">
+                    <userSelector v-model="verifyForm3.userId"/>    
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                  <Button type="primary" @click="handleVerifyFirst3" :loading="modalLoading3">划拨</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -59,8 +76,10 @@ import userSelector from "components/user-selector";
 import {
   getStockInfoList,
   stockOutAction,
-  stockWasteAction
+  stockWasteAction,
+  stockReturnAction
 } from "@/actions/stock";
+import { lendHisAction } from "@/actions/lend";
 export default {
   name: "stock_info",
   data() {
@@ -70,6 +89,8 @@ export default {
       modalLoading: false,
       showVerifyModal2: false,
       modalLoading2: false,
+      showVerifyModal3: false,
+      modalLoading3: false,
       rules: {
         userId: [
           {
@@ -96,6 +117,23 @@ export default {
           }
         ]
       },
+      rules3: {
+        userId: [
+          {
+            required: true,
+            message: "请选择划拨用户",
+            trigger: "change"
+          }
+        ],
+        count: [
+          {
+            required: true,
+            type: "number",
+            message: "请输入划拨数量",
+            trigger: "blur"
+          }
+        ]
+      },
       verifyForm: {
         id: "",
         count: 1,
@@ -105,6 +143,12 @@ export default {
       verifyForm2: {
         id: "",
         reason: ""
+      },
+      verifyForm3: {
+        id: "",
+        count: 1,
+        userId: "",
+        limit: 0
       },
       columns: [
         {
@@ -154,7 +198,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 300,
           render: (h, params) => {
             return h("div", [
               h(
@@ -179,6 +223,26 @@ export default {
                 {
                   on: {
                     click: () => {
+                      this.verifyForm3.id = params.row.id;
+                      this.verifyForm3.limit =
+                        params.row.useCount - params.row.lendCount;
+                      this.showVerifyModal3 = true;
+                    }
+                  },
+                  style: {
+                    marginLeft: "8px"
+                  },
+                  props: {
+                    type: "primary"
+                  }
+                },
+                "划拨"
+              ),
+              h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
                       this.verifyForm2.id = params.row.id;
                       this.showVerifyModal2 = true;
                     }
@@ -191,6 +255,39 @@ export default {
                   }
                 },
                 "报废"
+              ),
+              h(
+                "Poptip",
+                {
+                  props: {
+                    confirm: true,
+                    title: "您确定要退货?",
+                    transfer: true
+                  },
+                  on: {
+                    "on-ok": () => {
+                      stockReturnAction(params.row.id).then(res => {
+                        this.$lf.message("退货成功", "success");
+                        this.loadData();
+                      });
+                    }
+                  }
+                },
+                [
+                  h(
+                    "Button",
+                    {
+                      style: {
+                        margin: "0 5px"
+                      },
+                      props: {
+                        type: "error",
+                        placement: "top"
+                      }
+                    },
+                    "退货"
+                  )
+                ]
               )
             ]);
             // return h("div", [
@@ -265,13 +362,25 @@ export default {
         reason: ""
       };
     },
+    resetVerifyForm3() {
+      this.verifyForm3 = {
+        id: "",
+        count: 1,
+        userId: "",
+        limit: 0
+      };
+    },
     handleCacelModal() {
       this.showVerifyModal = false;
       this.resetVerifyForm();
     },
     handleCacelModal2() {
       this.showVerifyModal2 = false;
-      this.resetVerifyForm();
+      this.resetVerifyForm2();
+    },
+    handleCacelModal3() {
+      this.showVerifyModal3 = false;
+      this.resetVerifyForm3();
     },
     handleVerifyFirst() {
       this.$refs["verifyForm"].validate(valid => {
@@ -304,6 +413,24 @@ export default {
             },
             () => {
               this.modalLoading2 = false;
+            }
+          );
+        }
+      });
+    },
+    handleVerifyFirst3() {
+      this.$refs["verifyForm3"].validate(valid => {
+        if (valid) {
+          this.modalLoading = true;
+          lendHisAction(this.verifyForm3).then(
+            res => {
+              this.$lf.message("划拨成功", "success");
+              this.modalLoading3 = false;
+              this.handleCacelModal3();
+              this.loadData();
+            },
+            () => {
+              this.modalLoading3 = false;
             }
           );
         }

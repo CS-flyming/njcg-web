@@ -33,7 +33,7 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/order/finish',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -42,7 +42,7 @@
 
 <script>
 import pagination from "components/pagination";
-import { getOrderTakeList } from "@/actions/order";
+import { getOrderTakeList, confirmOrder } from "@/actions/order";
 export default {
   name: "order_take",
   data() {
@@ -93,38 +93,43 @@ export default {
             //   },
             //   "初审"
             // );
-            return h("div", [
-              h(
-                "Poptip",
-                {
-                  props: {
-                    confirm: true,
-                    title: "您确定要收货?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      this.verifyForm.id = params.row.id;
-                      this.showVerifyModal = true;
-                    }
-                  }
-                },
-                [
-                  h(
-                    "Button",
+            const sh =
+              params.row.status == 5
+                ? h(
+                    "Poptip",
                     {
-                      style: {
-                        margin: "0 5px"
-                      },
                       props: {
-                        type: "error",
-                        placement: "top"
+                        confirm: true,
+                        title: "您确定要收货?",
+                        transfer: true
+                      },
+                      on: {
+                        "on-ok": () => {
+                          confirmOrder(params.row.id).then(res => {
+                            this.$Message.success("收货成功");
+                            this.loadData();
+                          });
+                        }
                       }
                     },
-                    "收货"
+                    [
+                      h(
+                        "Button",
+                        {
+                          style: {
+                            margin: "0 5px"
+                          },
+                          props: {
+                            type: "primary",
+                            placement: "top"
+                          }
+                        },
+                        "收货"
+                      )
+                    ]
                   )
-                ]
-              ),
+                : "";
+            return h("div", [
               h(
                 "Button",
                 {
@@ -147,7 +152,8 @@ export default {
                   }
                 },
                 "订单详情"
-              )
+              ),
+              sh
             ]);
           }
         }

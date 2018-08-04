@@ -31,6 +31,17 @@
                 <div class="header-avator-con">
                     <!-- <Button type="primary"  size="large" style="right: 120px;display: inline-block;margin-left: -40px;" @click="goWeixiu">我要报修</Button> -->
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
+                   
+                    <router-link :to="{name:'message'}" style="right: -40px;
+                        cursor: pointer;
+                        display: inline-block;
+                        margin-left: 40px;
+                        width: 32px;
+                        height: 32px;">
+                        <Badge :count="messageNum" type="error" >
+                        <Icon size="24" type="android-notifications-none"/>
+                      </Badge>
+                    </router-link>
                     <!-- <lock-screen></lock-screen> -->
                     <div class="user-dropdown-menu-con">
                         <Row type="flex" justify="end" align="middle" class="user-dropdown-innercon">
@@ -70,7 +81,7 @@ import lockScreen from "./main-components/lockscreen/lockscreen.vue";
 import messageTip from "./main-components/message-tip.vue";
 import themeSwitch from "./main-components/theme-switch/theme-switch.vue";
 import util from "@/libs/util.js";
-
+import { getMsgMy } from "@/actions/sys";
 export default {
   components: {
     shrinkableMenu,
@@ -85,7 +96,9 @@ export default {
     return {
       shrink: false,
       isFullScreen: false,
-      openedSubmenuArr: this.$store.state.app.openedSubmenuArr
+      openedSubmenuArr: this.$store.state.app.openedSubmenuArr,
+      messageNum: 0,
+      timer: null
     };
   },
   computed: {
@@ -178,6 +191,48 @@ export default {
           name: this.$route.name
         }
       });
+    },
+    getMsgMy() {
+      getMsgMy().then(({ data }) => {
+        if (data.status) {
+          this.messageNum = data.num;
+          this.$Notice.config({
+            top: 130,
+            duration: 5
+          });
+          this.$Notice.open({
+            title: "消息提醒",
+            name: "my-message",
+            desc: data.msg,
+            render: h => {
+              return h(
+                "div",
+                {
+                  style: {
+                    cursor: "pointer",
+                    minHeight: "32px",
+                    lineHeight: "32px"
+                  },
+                  on: {
+                    click: () => {
+                      this.$Notice.close("my-message");
+                      this.$router.push({
+                        name: "message"
+                      });
+                    }
+                  }
+                },
+                data.msg
+              );
+            }
+          });
+        }
+      });
+    },
+    setTimer() {
+      this.timer = setInterval(() => {
+        this.getMsgMy();
+      }, 60000);
     }
   },
   watch: {
@@ -194,14 +249,23 @@ export default {
       util.setCurrentPath(this, this.$route.name); // 在切换语言时用于刷新面包屑
     }
   },
+
   mounted() {
     this.init();
+  },
+  distroyed() {
+    clearInterval(this.timer);
   },
   created() {
     // 显示打开的页面的列表
     let name = this.$store.state.user.userInfo;
     this.userName = name;
     this.$store.commit("setOpenedList");
+    this.getMsgMy();
+    this.setTimer();
+    this.bus.$on("toGetMsg", () => {
+      this.getMsgMy();
+    });
   }
 };
 </script>

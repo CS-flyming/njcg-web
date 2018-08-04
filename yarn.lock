@@ -4168,6 +4168,10 @@ moment-mini@^2.19.4:
   version "2.19.4"
   resolved "http://registry.npm.taobao.org/moment-mini/download/moment-mini-2.19.4.tgz#1af472aebf97f7d219280b4d02dfc3b34359e45d"
 
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "http://registry.npm.taobao.org/moment/download/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/move-concurrently/download/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
