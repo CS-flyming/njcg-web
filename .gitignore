@@ -13,3 +13,5 @@ node_modules
 \.settings/
 
 dist/
+
+build/env.js
