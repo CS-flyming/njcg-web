@@ -46,6 +46,10 @@ export default {
           align: "center"
         },
         {
+          title: "总价",
+          key: "zj"
+        },
+        {
           title: "经费类型",
           key: "typeDesc",
           align: "center"

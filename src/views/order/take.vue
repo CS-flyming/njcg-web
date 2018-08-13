@@ -54,6 +54,12 @@ export default {
           title: "订单号"
         },
         {
+          title: "总价",
+          render: (h, params) => {
+            return h("div", params.row.zj ? params.row.zj + "元" : "--");
+          }
+        },
+        {
           key: "levelDesc",
           title: "紧急程度"
         },

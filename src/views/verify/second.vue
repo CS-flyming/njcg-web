@@ -24,9 +24,9 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="mutiVerify">多项复审</Button>
         </div>
-        <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
+        <Table :loading="loading" border stripe :columns="columns" :data="data" @on-selection-change="handleMutiSelect"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <Modal
             v-model="showVerifyModal"
@@ -103,6 +103,12 @@ export default {
           }
         },
         {
+          title: "总价",
+          render: (h, params) => {
+            return h("div", params.row.product.zj || "--");
+          }
+        },
+        {
           title: "采购数量",
           key: "num",
           align: "center"
@@ -138,8 +144,19 @@ export default {
       },
       columns: [
         {
+          type: "selection",
+          width: 60,
+          align: "center"
+        },
+        {
           key: "orderNo",
           title: "订单号"
+        },
+        {
+          title: "总价",
+          render: (h, params) => {
+            return h("div", params.row.zj ? params.row.zj + "元" : "--");
+          }
         },
         {
           key: "levelDesc",
@@ -264,10 +281,26 @@ export default {
         type: ""
       },
       data: [],
-      total: 0
+      total: 0,
+      selection: []
     };
   },
   methods: {
+    mutiVerify() {
+      if (!this.selection.length) {
+        this.$Message.error("请选择审核项");
+        return;
+      }
+      let ids = this.selection.map(v => {
+        return v.id;
+      });
+      this.verifyForm.id = ids.join(",");
+      this.showVerifyModal = true;
+      this.filter.offset = 0;
+    },
+    handleMutiSelect(selection) {
+      this.selection = selection;
+    },
     showDetailModal(id) {
       this.spinShow = true;
       getOrderDetail(id).then(

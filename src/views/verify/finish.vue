@@ -17,6 +17,16 @@
                         <Option value="2">紧急购买</Option>
                     </Select>
                 </FormItem>
+                <FormItem label="需求计划">
+                    <DatePicker v-model="filter.name" type="month" format="yyyy-MM" placeholder="选择年月" style="width:100%;"></DatePicker>
+                </FormItem>
+                <FormItem label="状态">
+                    <Select v-model="filter.status" clearable>
+                        <Option value="3">拒绝</Option>
+                        <Option value="5">审核通过</Option>
+                        <Option value="6">已入库</Option>
+                    </Select>
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -24,7 +34,7 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
+            <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">导出</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -88,6 +98,12 @@ export default {
           title: "订单号"
         },
         {
+          title: "总价",
+          render: (h, params) => {
+            return h("div", params.row.zj ? params.row.zj + "元" : "--");
+          }
+        },
+        {
           key: "levelDesc",
           title: "紧急程度"
         },
@@ -106,6 +122,18 @@ export default {
         {
           key: "createTime",
           title: "添加时间"
+        },
+        {
+          key: "monthName",
+          title: "需求计划"
+        },
+        {
+          key: "reason",
+          title: "驳回原因"
+        },
+        {
+          key: "statusDesc",
+          title: "状态"
         },
         {
           type: "action",
@@ -197,7 +225,9 @@ export default {
         limit: 10,
         offset: 0,
         level: "",
-        type: ""
+        type: "",
+        name: "",
+        status: ""
       },
       data: [],
       total: 0

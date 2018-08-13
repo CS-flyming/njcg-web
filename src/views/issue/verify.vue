@@ -17,6 +17,12 @@
                         <Option value="6">入库</Option>
                     </Select>
                 </FormItem> -->
+                <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
+                </FormItem>
+                 <FormItem label="申请部门">
+                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -30,7 +36,7 @@
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
          <Modal
             v-model="showVerifyModal"
-            title="复审"
+            title="审核"
             @on-cancel="handleCacelModal"
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
@@ -45,7 +51,7 @@
                 </FormItem>
             </Form>
             <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">复审</Button>
+                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">审核</Button>
             </div>
         </Modal>
     </div>
@@ -53,6 +59,8 @@
 
 <script>
 import pagination from "components/pagination";
+import dateRgSelector from "components/date-rg-selector";
+import departCalSelector from "components/depart-cal-selector";
 import { getIssueVerifyList, verifyIssueItem } from "@/actions/issue";
 export default {
   name: "issue_verify",
@@ -104,10 +112,18 @@ export default {
           key: "issueCount",
           title: "申请数量"
         },
-        // {
-        //   key: "reason",
-        //   title: "拒绝理由"
-        // },
+        {
+          key: "reason",
+          title: "驳回原因"
+        },
+        {
+          key: "typeDesc",
+          title: "商品类型"
+        },
+        {
+          key: "departName",
+          title: "申请部门"
+        },
         {
           key: "statusDesc",
           title: "状态"
@@ -153,7 +169,12 @@ export default {
         limit: 10,
         offset: 0,
         // status: "",
-        name: ""
+        name: "",
+        _dateRange: ["", ""],
+        startTime: "",
+        endTime: "",
+        _departId: [],
+        departId: ""
       },
       data: [],
       total: 0
@@ -202,7 +223,9 @@ export default {
     }
   },
   components: {
-    pagination
+    pagination,
+    dateRgSelector,
+    departCalSelector
   }
 };
 </script>

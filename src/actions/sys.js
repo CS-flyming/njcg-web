@@ -225,7 +225,11 @@ export function getProductTypesSelect(params) {
  * @param {*} params
  */
 export function getUserSelect(params) {
-  return $axios.post(`/select/user`, params);
+  let url = '/select/user'
+  // if (id) {
+  //   url = `/select/user/${id}`
+  // }
+  return $axios.post(url, params);
 }
 
 export function getRoleDetailById(id) {

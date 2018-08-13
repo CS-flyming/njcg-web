@@ -8,6 +8,9 @@
                 <FormItem label="商品名称">
                    <Input v-model="filter.name" clearable/>
                 </FormItem>
+                <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -55,6 +58,7 @@
 
 <script>
 import pagination from "components/pagination";
+import dateRgSelector from "components/date-rg-selector";
 // import userSelector from "components/user-selector";
 import { getStockLoseList } from "@/actions/stock";
 export default {
@@ -228,7 +232,10 @@ export default {
       filter: {
         limit: 10,
         offset: 0,
-        name: ""
+        name: "",
+        _dateRange: ["", ""],
+        startTime: "",
+        endTime: ""
       },
       data: [],
       total: 0
@@ -307,7 +314,8 @@ export default {
     }
   },
   components: {
-    pagination
+    pagination,
+    dateRgSelector
     // userSelector
   }
 };

@@ -1,4 +1,7 @@
 <style lang="less">
+.data-control-ts {
+  display: flex;
+}
 </style>
 
 <template>
@@ -16,8 +19,26 @@
                 </FormItem>
             </Form>
         </Card>
-        <div class="data-control">
+        <div class="data-control data-control-ts">
             <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button>
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              multiple
+              :action="uploadConfig.serviceUrl"
+              style="display: inline-block;margin-left:10px;">
+               <Button icon="ios-cloud-upload-outline" type="primary">导入图片</Button>
+            </Upload>
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              multiple
+              :action="uploadConfig2.serviceUrl"
+              style="display: inline-block;margin-left:10px;">
+               <Button icon="ios-cloud-upload-outline" type="primary">导入excel</Button>
+            </Upload>
             <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
@@ -38,10 +59,23 @@
 import pagination from "components/pagination";
 import productTypesSelector from "components/product-types-selector";
 import { getProductList } from "@/actions/product";
+import { uploadConfig, ApiUrl } from "@/constants/constant";
 export default {
   name: "product_add",
   data() {
     return {
+      uploadConfig: {
+        accept: "",
+        headers: uploadConfig.headers,
+        name: "file",
+        serviceUrl: `${ApiUrl}/file/upload/zip`
+      },
+      uploadConfig2: {
+        accept: "",
+        headers: uploadConfig.headers,
+        name: "file",
+        serviceUrl: `${ApiUrl}/product/export`
+      },
       loading: false,
       showParamsModal: false,
       paramscolumns: [
@@ -60,7 +94,7 @@ export default {
           title: "商品名称"
         },
         {
-          key: "type",
+          key: "typeDesc",
           title: "分类"
         },
         {
@@ -228,6 +262,14 @@ export default {
     handleFilter() {
       this.filter.offset = 0;
       this.loadData();
+    },
+    handleSuccess(res, file) {
+      if (res.code == "1000") {
+        this.$Message.success("上传成功");
+        this.loadData();
+      } else {
+        this.$Message.error(res.msg);
+      }
     }
   },
   components: {

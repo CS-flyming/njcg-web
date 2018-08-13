@@ -53,7 +53,7 @@
 
 <script>
 import pagination from "components/pagination";
-import { getStockReturnList, verifyFirstItem } from "@/actions/verify";
+import { getVerifyReturnList, verifyFirstItem } from "@/actions/verify";
 export default {
   name: "stock_return",
   data() {
@@ -84,49 +84,53 @@ export default {
       },
       columns: [
         {
-          key: "orderNo",
+          key: "oderNo",
           title: "订单号"
         },
         {
-          key: "levelDesc",
-          title: "紧急程度"
+          title: "名称",
+          key: "name"
         },
         {
-          key: "typeDesc",
-          title: "采购类型"
-        },
-        {
-          key: "createName",
+          key: "userName",
           title: "申请人"
         },
         {
-          key: "applyDepartName",
+          key: "departName",
           title: "申请部门"
         },
         {
-          key: "createTime",
-          title: "添加时间"
+          key: "returnTime",
+          title: "申请时间"
+        },
+        {
+          key: "returnDesc",
+          title: "退货审核"
         },
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 100,
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                on: {
-                  click: () => {
-                    this.verifyForm.id = params.row.id;
-                    this.showVerifyModal = true;
-                  }
-                },
-                props: {
-                  type: "primary"
-                }
-              },
-              "初审"
-            );
+            let btn =
+              params.row.returnStatus == 1
+                ? h(
+                    "Button",
+                    {
+                      on: {
+                        click: () => {
+                          this.verifyForm.id = params.row.id;
+                          this.showVerifyModal = true;
+                        }
+                      },
+                      props: {
+                        type: "primary"
+                      }
+                    },
+                    "审核"
+                  )
+                : h();
+            return btn;
             // return h("div", [
             //   h(
             //     "Poptip",
@@ -176,7 +180,7 @@ export default {
   methods: {
     loadData() {
       this.loading = true;
-      getStockReturnList(this.filter).then(res => {
+      getVerifyReturnList(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;

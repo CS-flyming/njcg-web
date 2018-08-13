@@ -70,10 +70,10 @@ export default {
           key: "issueCount",
           title: "申请数量"
         },
-        // {
-        //   key: "reason",
-        //   title: "拒绝理由"
-        // },
+        {
+          key: "reason",
+          title: "驳回原因"
+        },
         // {
         //   key: "statusDesc",
         //   title: "状态"

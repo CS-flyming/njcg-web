@@ -190,6 +190,18 @@ export const otherRouter = {
       title: "订单详情",
       name: "base-order-detail",
       component: () => import("@/views/order/detail.vue")
+    },
+    // {
+    //   path: "plan/:id/detail",
+    //   title: "计划详情",
+    //   name: "plan-detail",
+    //   component: () => import("@/views/plan/detail.vue")
+    // },
+    {
+      path: "plan/add",
+      title: "新增计划",
+      name: "plan-add",
+      component: () => import("@/views/plan/add.vue")
     }
   ]
 };
@@ -264,6 +276,12 @@ export const appRouter = [
         title: "退货审核",
         name: "stock_return",
         component: () => import("@/views/verify/stock_return.vue")
+      },
+      {
+        path: "verify",
+        title: "配发审核",
+        name: "issue_verify",
+        component: () => import("@/views/issue/verify.vue")
       }
     ]
   },
@@ -405,12 +423,6 @@ export const appRouter = [
         name: "issue_refuse",
         component: () => import("@/views/issue/refuse.vue")
       },
-      {
-        path: "verify",
-        title: "配发审核",
-        name: "issue_verify",
-        component: () => import("@/views/issue/verify.vue")
-      }
     ]
   },
   {
@@ -430,6 +442,20 @@ export const appRouter = [
         title: "分类建立",
         name: "product_type",
         component: () => import("@/views/product/types/index.vue")
+      }
+    ]
+  },
+  {
+    path: "/plan",
+    name: "plan",
+    title: "需求计划 ",
+    component: Main,
+    children: [
+      {
+        path: "list",
+        title: "需求计划",
+        name: "plan_list",
+        component: () => import("@/views/plan/list.vue")
       }
     ]
   }

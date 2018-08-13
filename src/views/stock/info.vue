@@ -8,6 +8,17 @@
                 <FormItem label="商品名称">
                    <Input v-model="filter.name" clearable/>
                 </FormItem>
+                <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
+                </FormItem>
+                 <FormItem label="入库类型">
+                    <Select v-model="filter.type" clearable>
+                        <Option value="1">上级配发</Option>
+                        <Option value="2">标准采购</Option>
+                        <Option value="3">出库</Option>
+                        <Option value="4">非标准采购</Option>
+                    </Select>
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -29,7 +40,7 @@
                      <InputNumber :max="verifyForm.limit" :min="1" v-model="verifyForm.count" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="出库用户" prop="userId">
-                    <userSelector v-model="verifyForm.userId"/>    
+                    <userLendSelector v-model="verifyForm.userId"/>    
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -60,7 +71,7 @@
                      <InputNumber :max="verifyForm3.limit" :min="1" v-model="verifyForm3.count" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="划拨用户" prop="userId">
-                    <userSelector v-model="verifyForm3.userId"/>    
+                    <userLendSelector v-model="verifyForm3.userId"/>    
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -73,6 +84,8 @@
 <script>
 import pagination from "components/pagination";
 import userSelector from "components/user-selector";
+import dateRgSelector from "components/date-rg-selector";
+import userLendSelector from "components/user-lend-selector";
 import {
   getStockInfoList,
   stockOutAction,
@@ -329,7 +342,11 @@ export default {
       filter: {
         limit: 10,
         offset: 0,
-        name: ""
+        name: "",
+        _dateRange: ["", ""],
+        startTime: "",
+        endTime: "",
+        type: ""
       },
       data: [],
       total: 0
@@ -439,7 +456,9 @@ export default {
   },
   components: {
     pagination,
-    userSelector
+    userSelector,
+    userLendSelector,
+    dateRgSelector
   }
 };
 </script>

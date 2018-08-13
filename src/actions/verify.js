@@ -51,3 +51,7 @@ export function getStockReturnList(params) {
 export function getOrderDetail(id) {
   return $axios.post(`/order/find/${id}`);
 }
+
+export function getVerifyReturnList(params) {
+  return $axios.post('verify/list/return', params)
+}

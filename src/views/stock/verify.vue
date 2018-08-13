@@ -8,6 +8,16 @@
                 <FormItem label="商品名称">
                    <Input v-model="filter.name" clearable/>
                 </FormItem>
+                <FormItem label="状态">
+                    <Select v-model="filter.status" clearable>
+                        <Option value="1">待审核</Option>
+                        <Option value="2">通过</Option>
+                        <Option value="3">拒绝</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -45,6 +55,7 @@
 <script>
 import pagination from "components/pagination";
 import userSelector from "components/user-selector";
+import dateRgSelector from "components/date-rg-selector";
 import {
   getStockOutVerifyList,
   stockOutAction,
@@ -185,7 +196,11 @@ export default {
       filter: {
         limit: 10,
         offset: 0,
-        name: ""
+        name: "",
+        _dateRange: ["", ""],
+        startTime: "",
+        endTime: "",
+        status: ""
       },
       data: [],
       total: 0
@@ -236,7 +251,8 @@ export default {
   },
   components: {
     pagination,
-    userSelector
+    userSelector,
+    dateRgSelector
   }
 };
 </script>

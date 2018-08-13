@@ -192,40 +192,46 @@ export default {
         }
       });
     },
-    getMsgMy() {
+    getMsgMy(flag) {
       getMsgMy().then(({ data }) => {
-        if (data.status) {
-          this.messageNum = data.num;
-          this.$Notice.config({
-            top: 130,
-            duration: 5
-          });
-          this.$Notice.open({
-            title: "消息提醒",
-            name: "my-message",
-            desc: data.msg,
-            render: h => {
-              return h(
-                "div",
-                {
-                  style: {
-                    cursor: "pointer",
-                    minHeight: "32px",
-                    lineHeight: "32px"
-                  },
-                  on: {
-                    click: () => {
-                      this.$Notice.close("my-message");
-                      this.$router.push({
-                        name: "message"
-                      });
+        if (!flag) {
+          if (data.status) {
+            this.messageNum = data.num;
+            this.$Notice.config({
+              top: 130,
+              duration: 5
+            });
+            this.$Notice.open({
+              title: "消息提醒",
+              name: "my-message",
+              desc: data.msg,
+              render: h => {
+                return h(
+                  "div",
+                  {
+                    style: {
+                      cursor: "pointer",
+                      minHeight: "32px",
+                      lineHeight: "32px"
+                    },
+                    on: {
+                      click: () => {
+                        this.$Notice.close("my-message");
+                        this.$router.push({
+                          name: "message"
+                        });
+                      }
                     }
-                  }
-                },
-                data.msg
-              );
-            }
-          });
+                  },
+                  data.msg
+                );
+              }
+            });
+          } else {
+            this.messageNum = data.num || 0;
+          }
+        } else {
+          this.messageNum = data.num || 0;
         }
       });
     },
@@ -264,7 +270,7 @@ export default {
     this.getMsgMy();
     this.setTimer();
     this.bus.$on("toGetMsg", () => {
-      this.getMsgMy();
+      this.getMsgMy("fromnews");
     });
   }
 };
