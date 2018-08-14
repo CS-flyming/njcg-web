@@ -53,5 +53,9 @@ export function getOrderDetail(id) {
 }
 
 export function getVerifyReturnList(params) {
-  return $axios.post('verify/list/return', params)
+  return $axios.post("verify/list/return", params);
+}
+
+export function verifyReturnAction(params) {
+  return $axios.post("/verify/return", params);
 }

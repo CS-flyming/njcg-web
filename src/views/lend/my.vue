@@ -140,6 +140,10 @@ export default {
           title: "接收人"
         },
         {
+          key: "lendDepartName",
+          title: "部门"
+        },
+        {
           key: "createUserName",
           title: "创建人"
         },

@@ -53,7 +53,7 @@
 
 <script>
 import pagination from "components/pagination";
-import { getVerifyReturnList, verifyFirstItem } from "@/actions/verify";
+import { getVerifyReturnList, verifyReturnAction } from "@/actions/verify";
 export default {
   name: "stock_return",
   data() {
@@ -105,7 +105,7 @@ export default {
         },
         {
           key: "returnDesc",
-          title: "退货审核"
+          title: "状态"
         },
         {
           type: "action",
@@ -205,7 +205,7 @@ export default {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          verifyFirstItem(this.verifyForm).then(
+          verifyReturnAction(this.verifyForm).then(
             res => {
               this.modalLoading = false;
               this.handleCacelModal();
