@@ -25,6 +25,7 @@
                         <Option value="3">拒绝</Option>
                         <Option value="5">审核通过</Option>
                         <Option value="6">已入库</Option>
+                        <Option value="7">待收货</Option>
                     </Select>
                 </FormItem>
                 <FormItem class="submit">
@@ -63,7 +64,11 @@
 
 <script>
 import pagination from "components/pagination";
-import { getVerifyFinishList, verifyFirstItem } from "@/actions/verify";
+import {
+  getVerifyFinishList,
+  verifyFirstItem,
+  verifyOutAction
+} from "@/actions/verify";
 export default {
   name: "verify_finish",
   data() {
@@ -138,31 +143,70 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 120,
+          width: 200,
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                props: {
-                  type: "info"
-                },
-                style: {
-                  marginRight: "8px"
-                },
-                on: {
-                  click: () => {
-                    // this.showDetailModal(params.row.id);
-                    this.$router.push({
-                      name: "base-order-detail",
-                      params: {
-                        id: params.row.id
+            let delBtn =
+              params.row.status == 5
+                ? h(
+                    "Poptip",
+                    {
+                      props: {
+                        confirm: true,
+                        title: "您确定要出库吗?",
+                        transfer: true
+                      },
+                      on: {
+                        "on-ok": () => {
+                          verifyOutAction(params.row.id).then(res => {
+                            this.$Message.success("出库成功");
+                            this.loadData();
+                          });
+                        }
                       }
-                    });
+                    },
+                    [
+                      h(
+                        "Button",
+                        {
+                          style: {
+                            margin: "0 5px"
+                          },
+                          props: {
+                            type: "warning",
+                            placement: "top"
+                          }
+                        },
+                        "出库"
+                      )
+                    ]
+                  )
+                : "";
+            return h("div", [
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-order-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
                   }
-                }
-              },
-              "订单详情"
-            );
+                },
+                "订单详情"
+              ),
+              delBtn
+            ]);
           }
         }
         // {

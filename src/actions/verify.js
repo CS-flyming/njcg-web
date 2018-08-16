@@ -59,3 +59,7 @@ export function getVerifyReturnList(params) {
 export function verifyReturnAction(params) {
   return $axios.post("/verify/return", params);
 }
+
+export function verifyOutAction(id) {
+  return $axios.post(`/verify/out/${id}`)
+}

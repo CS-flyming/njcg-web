@@ -24,6 +24,7 @@
                         <Option value="3">拒绝</Option>
                         <Option value="5">完成</Option>
                         <Option value="6">入库</Option>
+                        <Option value="7">待收货</Option>
                     </Select>
                 </FormItem>
                 <FormItem class="submit">
