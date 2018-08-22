@@ -99,42 +99,40 @@ export default {
             //   },
             //   "初审"
             // );
-            const sh =
-              params.row.status == 5
-                ? h(
-                    "Poptip",
-                    {
-                      props: {
-                        confirm: true,
-                        title: "您确定要收货?",
-                        transfer: true
-                      },
-                      on: {
-                        "on-ok": () => {
-                          confirmOrder(params.row.id).then(res => {
-                            this.$Message.success("收货成功");
-                            this.loadData();
-                          });
-                        }
-                      }
+            const sh = h(
+              "Poptip",
+              {
+                props: {
+                  confirm: true,
+                  title: "您确定要收货?",
+                  transfer: true
+                },
+                on: {
+                  "on-ok": () => {
+                    confirmOrder(params.row.id).then(res => {
+                      this.$Message.success("收货成功");
+                      this.loadData();
+                    });
+                  }
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    style: {
+                      margin: "0 5px"
                     },
-                    [
-                      h(
-                        "Button",
-                        {
-                          style: {
-                            margin: "0 5px"
-                          },
-                          props: {
-                            type: "primary",
-                            placement: "top"
-                          }
-                        },
-                        "收货"
-                      )
-                    ]
-                  )
-                : "";
+                    props: {
+                      type: "primary",
+                      placement: "top"
+                    }
+                  },
+                  "收货"
+                )
+              ]
+            );
+
             return h("div", [
               h(
                 "Button",
