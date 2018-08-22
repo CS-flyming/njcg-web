@@ -292,6 +292,12 @@ export const appRouter = [
     component: Main,
     children: [
       {
+        path: "xh",
+        title: "消耗信息",
+        name: "stock_xh",
+        component: () => import("@/views/stock/xh.vue")
+      },
+      {
         path: "info",
         title: "库存信息",
         name: "stock_info",

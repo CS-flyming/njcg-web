@@ -28,6 +28,9 @@
                         <Option value="7">待收货</Option>
                     </Select>
                 </FormItem>
+                 <FormItem label="部门">
+                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
+                </FormItem>
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -64,6 +67,7 @@
 
 <script>
 import pagination from "components/pagination";
+import departCalSelector from "components/depart-cal-selector";
 import {
   getVerifyFinishList,
   verifyFirstItem,
@@ -143,7 +147,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 300,
           render: (h, params) => {
             let delBtn =
               params.row.status == 5
@@ -205,7 +209,45 @@ export default {
                 },
                 "订单详情"
               ),
-              delBtn
+              delBtn,
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "primary"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$downloadByForm(
+                        `/export/order/out/${params.row.id}`
+                      );
+                    }
+                  }
+                },
+                "出库单"
+              ),
+              h(
+                "Button",
+                {
+                  props: {
+                    type: "primary"
+                  },
+                  style: {
+                    marginRight: "8px"
+                  },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$downloadByForm(`/export/order/in/${params.row.id}`);
+                    }
+                  }
+                },
+                "入库单"
+              )
             ]);
           }
         }
@@ -271,7 +313,9 @@ export default {
         level: "",
         type: "",
         name: "",
-        status: ""
+        status: "",
+        _departId: [],
+        departId: ""
       },
       data: [],
       total: 0
@@ -320,7 +364,8 @@ export default {
     }
   },
   components: {
-    pagination
+    pagination,
+    departCalSelector
   }
 };
 </script>

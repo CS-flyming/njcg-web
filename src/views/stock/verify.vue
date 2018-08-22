@@ -120,14 +120,6 @@ export default {
           title: "状态"
         },
         {
-          key: "wasteTime",
-          title: "报废时间"
-        },
-        {
-          key: "wasteReason",
-          title: "报废原因"
-        },
-        {
           key: "useCount",
           title: "在库数量"
         },

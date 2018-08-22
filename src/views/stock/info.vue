@@ -56,6 +56,9 @@
                 <FormItem label="报废原因" prop="reason">
                     <Input v-model="verifyForm2.reason" placeholder="报废原因"  />
                 </FormItem>
+                <FormItem label="报废数量" prop="num">
+                     <InputNumber :max="verifyForm2.limit" :min="1" v-model="verifyForm2.num" style="width:100%;"/>
+                </FormItem>
             </Form>
             <div slot="footer">
                   <Button type="primary" @click="handleVerifyFirst2" :loading="modalLoading2">报废</Button>
@@ -78,6 +81,26 @@
                   <Button type="primary" @click="handleVerifyFirst3" :loading="modalLoading3">划拨</Button>
             </div>
         </Modal>
+        <Modal
+            v-model="showVerifyModal4"
+            title="消耗"
+            @on-cancel="handleCacelModal4"
+           >
+           <Form :model="verifyForm4" ref="verifyForm4" label-position="right" :label-width="120" :rules="rules4">
+                <FormItem label="消耗数量" prop="num">
+                     <InputNumber :max="verifyForm4.limit" :min="1" v-model="verifyForm4.num" style="width:100%;"/>
+                </FormItem>
+                <FormItem label="消耗人" prop="userId">
+                    <userLendSelector v-model="verifyForm4.userId"/>    
+                </FormItem>
+                <FormItem label="备注">
+                     <Input v-model="verifyForm4.info" placeholder="备注" style="width:100%;"/>
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                  <Button type="primary" @click="handleVerifyFirst4" :loading="modalLoading4">消耗</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -90,7 +113,8 @@ import {
   getStockInfoList,
   stockOutAction,
   stockWasteAction,
-  stockReturnAction
+  stockReturnAction,
+  xiaohaoAction
 } from "@/actions/stock";
 import { lendHisAction } from "@/actions/lend";
 export default {
@@ -104,6 +128,8 @@ export default {
       modalLoading2: false,
       showVerifyModal3: false,
       modalLoading3: false,
+      showVerifyModal4: false,
+      modalLoading4: false,
       rules: {
         userId: [
           {
@@ -128,6 +154,14 @@ export default {
             message: "请输入报废原因",
             trigger: "blur"
           }
+        ],
+        num: [
+          {
+            required: true,
+            type: "number",
+            message: "请输入出库数量",
+            trigger: "blur"
+          }
         ]
       },
       rules3: {
@@ -147,6 +181,23 @@ export default {
           }
         ]
       },
+      rules4: {
+        userId: [
+          {
+            required: true,
+            message: "请选择消耗人",
+            trigger: "change"
+          }
+        ],
+        num: [
+          {
+            required: true,
+            type: "number",
+            message: "请输入消耗数量",
+            trigger: "blur"
+          }
+        ]
+      },
       verifyForm: {
         id: "",
         count: 1,
@@ -155,12 +206,21 @@ export default {
       },
       verifyForm2: {
         id: "",
-        reason: ""
+        reason: "",
+        num: 1,
+        limit: 0
       },
       verifyForm3: {
         id: "",
         count: 1,
         userId: "",
+        limit: 0
+      },
+      verifyForm4: {
+        id: "",
+        info: "",
+        userId: "",
+        num: 1,
         limit: 0
       },
       columns: [
@@ -193,14 +253,6 @@ export default {
           title: "状态"
         },
         {
-          key: "wasteTime",
-          title: "报废时间"
-        },
-        {
-          key: "wasteReason",
-          title: "报废原因"
-        },
-        {
           key: "useCount",
           title: "在库数量"
         },
@@ -211,7 +263,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 300,
+          width: 360,
           render: (h, params) => {
             return h("div", [
               h(
@@ -220,8 +272,7 @@ export default {
                   on: {
                     click: () => {
                       this.verifyForm.id = params.row.id;
-                      this.verifyForm.limit =
-                        params.row.useCount - params.row.lendCount;
+                      this.verifyForm.limit = params.row.useCount;
                       this.showVerifyModal = true;
                     }
                   },
@@ -257,6 +308,7 @@ export default {
                   on: {
                     click: () => {
                       this.verifyForm2.id = params.row.id;
+                      this.verifyForm2.limit = params.row.allCount;
                       this.showVerifyModal2 = true;
                     }
                   },
@@ -268,6 +320,25 @@ export default {
                   }
                 },
                 "报废"
+              ),
+              h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
+                      this.verifyForm4.id = params.row.id;
+                      this.verifyForm4.limit = params.row.useCount;
+                      this.showVerifyModal4 = true;
+                    }
+                  },
+                  style: {
+                    marginLeft: "8px"
+                  },
+                  props: {
+                    type: "error"
+                  }
+                },
+                "消耗"
               ),
               h(
                 "Poptip",
@@ -376,7 +447,9 @@ export default {
     resetVerifyForm2() {
       this.verifyForm2 = {
         id: "",
-        reason: ""
+        reason: "",
+        num: 1,
+        limit: 0
       };
     },
     resetVerifyForm3() {
@@ -384,6 +457,15 @@ export default {
         id: "",
         count: 1,
         userId: "",
+        limit: 0
+      };
+    },
+    resetVerifyForm4() {
+      this.verifyForm4 = {
+        id: "",
+        info: "",
+        userId: "",
+        num: 1,
         limit: 0
       };
     },
@@ -398,6 +480,10 @@ export default {
     handleCacelModal3() {
       this.showVerifyModal3 = false;
       this.resetVerifyForm3();
+    },
+    handleCacelModal4() {
+      this.showVerifyModal4 = false;
+      this.resetVerifyForm4();
     },
     handleVerifyFirst() {
       this.$refs["verifyForm"].validate(valid => {
@@ -420,7 +506,7 @@ export default {
     handleVerifyFirst2() {
       this.$refs["verifyForm2"].validate(valid => {
         if (valid) {
-          this.modalLoading = true;
+          this.modalLoading2 = true;
           stockWasteAction(this.verifyForm2).then(
             res => {
               this.$lf.message("报废成功", "success");
@@ -438,7 +524,7 @@ export default {
     handleVerifyFirst3() {
       this.$refs["verifyForm3"].validate(valid => {
         if (valid) {
-          this.modalLoading = true;
+          this.modalLoading3 = true;
           lendHisAction(this.verifyForm3).then(
             res => {
               this.$lf.message("划拨成功", "success");
@@ -448,6 +534,24 @@ export default {
             },
             () => {
               this.modalLoading3 = false;
+            }
+          );
+        }
+      });
+    },
+    handleVerifyFirst4() {
+      this.$refs["verifyForm4"].validate(valid => {
+        if (valid) {
+          this.modalLoading4 = true;
+          xiaohaoAction(this.verifyForm4).then(
+            res => {
+              this.$lf.message("消耗成功", "success");
+              this.modalLoading4 = false;
+              this.handleCacelModal3();
+              this.loadData();
+            },
+            () => {
+              this.modalLoading4 = false;
             }
           );
         }

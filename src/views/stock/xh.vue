@@ -18,9 +18,9 @@
         </Card>
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <Button type="primary" @click="$downloadByForm('/export/stock/lose',filter)">导出</Button>
+            <!-- <Button type="primary" @click="$downloadByForm('/export/stock/xh',filter)">导出</Button> -->
         </div>
-        <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
+        <Table :loading="loading" border stripe :columns="columns" :data="data" @on-selection-change="handleSelect"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <!-- <Modal
             v-model="showVerifyModal"
@@ -60,9 +60,9 @@
 import pagination from "components/pagination";
 import dateRgSelector from "components/date-rg-selector";
 // import userSelector from "components/user-selector";
-import { getStockLoseList } from "@/actions/stock";
+import { getStockXhList } from "@/actions/stock";
 export default {
-  name: "stock_waste",
+  name: "stock_xh",
   data() {
     return {
       loading: false,
@@ -120,20 +120,20 @@ export default {
           title: "型号"
         },
         {
-          key: "num",
-          title: "报废量"
-        },
-        {
           key: "value",
           title: "价格"
         },
         {
-          key: "createTime",
-          title: "报废时间"
+          key: "num",
+          title: "消耗量"
         },
         {
-          key: "reason",
-          title: "报废原因"
+          key: "xhName",
+          title: "消耗人"
+        },
+        {
+          key: "createTime",
+          title: "消耗时间"
         }
         // {
         //   type: "action",
@@ -221,14 +221,29 @@ export default {
         startTime: "",
         endTime: ""
       },
+      daoFilter: {
+        ids: []
+      },
       data: [],
       total: 0
     };
   },
   methods: {
+    handleDaochu() {
+      if (this.daoFilter.ids.length) {
+        this.$downloadByForm("/export/stock/in/on", daoFilter);
+      } else {
+        this.$Message.error("请选择导出项");
+      }
+    },
+    handleSelect(selection) {
+      this.daoFilter.ids = selection.map(v => {
+        return v.id;
+      });
+    },
     loadData() {
       this.loading = true;
-      getStockLoseList(this.filter).then(res => {
+      getStockXhList(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;

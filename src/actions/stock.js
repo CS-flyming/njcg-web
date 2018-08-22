@@ -58,6 +58,15 @@ export function getStockLoseList(params) {
 }
 
 /**
+ * 报废记录
+ * @param {*} params
+ */
+export function getStockXhList(params) {
+    return $axios.post("/stock/list/xh", params);
+}
+
+
+/**
  * 出库审核记录
  * @param {*} params
  */
@@ -72,5 +81,10 @@ export function stockReturnAction(id) {
 export function stockVerifyAction(params) {
     return $axios.post('/stock/verify', params)
 }
+export function xiaohaoAction(params) {
+    return $axios.post('/stock/xh', params)
+}
+
+
 
 

@@ -19,8 +19,9 @@
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
             <Button type="primary" @click="$downloadByForm('/export/stock/in',filter)">导出</Button>
+            <Button type="primary" @click="handleDaochu">入库单</Button>
         </div>
-        <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
+        <Table :loading="loading" border stripe :columns="columns" :data="data" @on-selection-change="handleSelect"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <!-- <Modal
             v-model="showVerifyModal"
@@ -108,6 +109,11 @@ export default {
       },
       columns: [
         {
+          type: "selection",
+          width: 60,
+          align: "center"
+        },
+        {
           key: "name",
           title: "名称"
         },
@@ -134,14 +140,6 @@ export default {
         {
           key: "statusDesc",
           title: "状态"
-        },
-        {
-          key: "wasteTime",
-          title: "报废时间"
-        },
-        {
-          key: "wasteReason",
-          title: "报废原因"
         },
         {
           key: "useCount",
@@ -237,11 +235,26 @@ export default {
         startTime: "",
         endTime: ""
       },
+      daoFilter: {
+        ids: []
+      },
       data: [],
       total: 0
     };
   },
   methods: {
+    handleDaochu() {
+      if (this.daoFilter.ids.length) {
+        this.$downloadByForm("/export/stock/in/on", daoFilter);
+      } else {
+        this.$Message.error("请选择导出项");
+      }
+    },
+    handleSelect(selection) {
+      this.daoFilter.ids = selection.map(v => {
+        return v.id;
+      });
+    },
     loadData() {
       this.loading = true;
       getStockInList(this.filter).then(res => {
