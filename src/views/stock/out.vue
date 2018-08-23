@@ -251,7 +251,7 @@ export default {
   methods: {
     handleDaochu() {
       if (this.daoFilter.ids.length) {
-        this.$downloadByForm("/export/stock/out/on", daoFilter);
+        this.$downloadByForm("/export/stock/out/on", this.daoFilter);
       } else {
         this.$Message.error("请选择导出项");
       }
