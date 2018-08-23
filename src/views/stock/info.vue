@@ -91,7 +91,7 @@
                      <InputNumber :max="verifyForm4.limit" :min="1" v-model="verifyForm4.num" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="消耗人" prop="userId">
-                    <userLendSelector v-model="verifyForm4.userId"/>    
+                    <Input v-model="verifyForm4.userId" placeholder="消耗人" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="备注">
                      <Input v-model="verifyForm4.info" placeholder="备注" style="width:100%;"/>
@@ -186,7 +186,7 @@ export default {
           {
             required: true,
             message: "请选择消耗人",
-            trigger: "change"
+            trigger: "blur"
           }
         ],
         num: [

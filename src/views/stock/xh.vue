@@ -132,6 +132,10 @@ export default {
           title: "消耗人"
         },
         {
+          key: "info",
+          title: "备注"
+        },
+        {
           key: "createTime",
           title: "消耗时间"
         }
