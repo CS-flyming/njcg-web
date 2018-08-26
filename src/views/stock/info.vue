@@ -91,7 +91,7 @@
                      <InputNumber :max="verifyForm4.limit" :min="1" v-model="verifyForm4.num" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="消耗人" prop="userId">
-                    <userLendSelector v-model="verifyForm4.userId"/>    
+                    <Input v-model="verifyForm4.userId" placeholder="消耗人" style="width:100%;"/>
                 </FormItem>
                 <FormItem label="备注">
                      <Input v-model="verifyForm4.info" placeholder="备注" style="width:100%;"/>
@@ -186,7 +186,7 @@ export default {
           {
             required: true,
             message: "请选择消耗人",
-            trigger: "change"
+            trigger: "blur"
           }
         ],
         num: [
@@ -226,7 +226,8 @@ export default {
       columns: [
         {
           key: "name",
-          title: "名称"
+          title: "名称",
+          width: 200
         },
         {
           key: "standard",
@@ -263,9 +264,87 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 360,
+          width: 240,
           render: (h, params) => {
-            return h("div", [
+            let div1 = h(
+              "div",
+              {
+                style: {
+                  marginTop: "8px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    on: {
+                      click: () => {
+                        this.verifyForm2.id = params.row.id;
+                        this.verifyForm2.limit = params.row.allCount;
+                        this.showVerifyModal2 = true;
+                      }
+                    },
+                    props: {
+                      type: "error"
+                    }
+                  },
+                  "报废"
+                ),
+                h(
+                  "Button",
+                  {
+                    on: {
+                      click: () => {
+                        this.verifyForm4.id = params.row.id;
+                        this.verifyForm4.limit = params.row.useCount;
+                        this.showVerifyModal4 = true;
+                      }
+                    },
+                    style: {
+                      marginLeft: "8px"
+                    },
+                    props: {
+                      type: "error"
+                    }
+                  },
+                  "消耗"
+                ),
+                h(
+                  "Poptip",
+                  {
+                    props: {
+                      confirm: true,
+                      title: "您确定要退货?",
+                      transfer: true
+                    },
+                    on: {
+                      "on-ok": () => {
+                        stockReturnAction(params.row.id).then(res => {
+                          this.$lf.message("退货成功", "success");
+                          this.loadData();
+                        });
+                      }
+                    }
+                  },
+                  [
+                    h(
+                      "Button",
+                      {
+                        style: {
+                          margin: "0 5px"
+                        },
+                        props: {
+                          type: "error",
+                          placement: "top"
+                        }
+                      },
+                      "退货"
+                    )
+                  ]
+                )
+              ]
+            );
+            let div2 = h("div", [
               h(
                 "Button",
                 {
@@ -301,79 +380,17 @@ export default {
                   }
                 },
                 "划拨"
-              ),
-              h(
-                "Button",
-                {
-                  on: {
-                    click: () => {
-                      this.verifyForm2.id = params.row.id;
-                      this.verifyForm2.limit = params.row.allCount;
-                      this.showVerifyModal2 = true;
-                    }
-                  },
-                  style: {
-                    marginLeft: "8px"
-                  },
-                  props: {
-                    type: "error"
-                  }
-                },
-                "报废"
-              ),
-              h(
-                "Button",
-                {
-                  on: {
-                    click: () => {
-                      this.verifyForm4.id = params.row.id;
-                      this.verifyForm4.limit = params.row.useCount;
-                      this.showVerifyModal4 = true;
-                    }
-                  },
-                  style: {
-                    marginLeft: "8px"
-                  },
-                  props: {
-                    type: "error"
-                  }
-                },
-                "消耗"
-              ),
-              h(
-                "Poptip",
-                {
-                  props: {
-                    confirm: true,
-                    title: "您确定要退货?",
-                    transfer: true
-                  },
-                  on: {
-                    "on-ok": () => {
-                      stockReturnAction(params.row.id).then(res => {
-                        this.$lf.message("退货成功", "success");
-                        this.loadData();
-                      });
-                    }
-                  }
-                },
-                [
-                  h(
-                    "Button",
-                    {
-                      style: {
-                        margin: "0 5px"
-                      },
-                      props: {
-                        type: "error",
-                        placement: "top"
-                      }
-                    },
-                    "退货"
-                  )
-                ]
               )
             ]);
+            return h(
+              "div",
+              {
+                style: {
+                  padding: "5px"
+                }
+              },
+              [div2, div1]
+            );
             // return h("div", [
             //   h(
             //     "Poptip",
@@ -547,7 +564,7 @@ export default {
             res => {
               this.$lf.message("消耗成功", "success");
               this.modalLoading4 = false;
-              this.handleCacelModal3();
+              this.handleCacelModal4();
               this.loadData();
             },
             () => {
