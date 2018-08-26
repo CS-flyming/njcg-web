@@ -120,6 +120,9 @@ export function closeCurrentErrPage(vm, pathname) {
     name: pathname || "home_index"
   });
 }
+function isDate(str) {
+  return Object.prototype.toString.call(str) == '[object Date]'
+}
 export function downloadByForm(apiUrl, params, method) {
   let url =
     env === "development"
@@ -138,7 +141,12 @@ export function downloadByForm(apiUrl, params, method) {
     var input = document.createElement("input");
     input.type = "hidden";
     input.name = key;
-    input.value = params[key];
+    if (isDate(params[key])) {
+      input.value = new Date(params[key]).toISOString()
+    } else {
+      input.value = params[key];
+    }
+
     form.appendChild(input);
     // console.log(key);
     // console.log(parms[key]);
