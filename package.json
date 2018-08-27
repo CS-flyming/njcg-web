@@ -30,6 +30,7 @@
         "js-cookie": "^2.2.0",
         "moment": "^2.22.2",
         "moment-mini": "^2.19.4",
+        "nzh": "^1.0.3",
         "qs": "^6.5.2",
         "rasterizehtml": "^1.2.4",
         "simplemde": "^1.11.2",

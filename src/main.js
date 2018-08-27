@@ -16,7 +16,15 @@ import Confirm from "./plugins/confirm";
 import Spin from "./plugins/spin";
 import QueryFilter from "./plugins/query-filter";
 import CheckPermission from "./plugins/check-permission";
+import VueHtmlToPaper from "./libs/print";
 
+const options = {
+  name: "_blank",
+  specs: ["fullscreen=yes", "titlebar=yes", "scrollbars=yes"],
+  styles: []
+};
+
+Vue.use(VueHtmlToPaper, options);
 Vue.use(VueI18n);
 Vue.use(iView);
 Vue.use(Device);
@@ -27,7 +35,7 @@ Vue.use(Spin);
 // Vue.use(iviewArea);
 Vue.use(QueryFilter);
 Vue.use(CheckPermission);
-let bus = new Vue()
+let bus = new Vue();
 Vue.prototype.bus = bus;
 Vue.prototype.$util = Util;
 Vue.prototype.$ApiUrl = ApiUrl;

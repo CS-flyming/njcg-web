@@ -13,7 +13,7 @@ export function getProductList(params) {
 
 /**
  * 分类列表
- * @param {*} params 
+ * @param {*} params
  */
 export function getProductTypesList(params) {
   return $axios.post("/product/list/type", params);
@@ -21,25 +21,38 @@ export function getProductTypesList(params) {
 
 /**
  * 新增or更新分类
- * @param {*} params 
+ * @param {*} params
  */
 export function addOrUpdateTypes(params) {
-  return $axios.post("/product/type/add", params)
+  return $axios.post("/product/type/add", params);
 }
 
 /**
  * 新增商品
- * @param {*} params 
+ * @param {*} params
  */
 export function addOrUpdateProduct(params) {
-  return $axios.post("/product/add", params)
+  return $axios.post("/product/add", params);
 }
-
 
 /**
  * 商品详情
- * @param {*} params 
+ * @param {*} params
  */
 export function getProductDetail(id) {
-  return $axios.post(`/product/find/${id}`)
+  return $axios.post(`/product/find/${id}`);
+}
+
+export function getCompanyList(params) {
+  return $axios.post("/company/list", params);
+}
+export function deleteCompanyById(id) {
+  return $axios.post(`/company/delete/${id}`);
+}
+export function addOrUpdateCompany(params) {
+  return $axios.post("/company/add", params);
+}
+
+export function getCompanyDetail(id) {
+  return $axios.post(`/company/detail/${id}`);
 }

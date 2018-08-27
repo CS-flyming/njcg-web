@@ -16,6 +16,16 @@
         <div class="data-control">
             <Button type="primary" @click="showAddModal">申请配发</Button>
             <Button type="primary" @click="$downloadByForm('/export/issue/apply',filter)">导出</Button>
+            <Upload
+              ref="upload"
+              :show-upload-list="false"
+              :on-success="handleSuccess"
+              multiple
+              :headers="uploadConfig.headers"
+              :action="uploadConfig.serviceUrl"
+              style="display: inline-block;margin-left:10px;">
+               <Button icon="ios-cloud-upload-outline" type="primary">批量配发</Button>
+            </Upload>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -75,12 +85,19 @@
 import pagination from "components/pagination";
 // import userSelector from "components/user-selector";
 import { getIssueApplyList, addIssueItem } from "@/actions/issue";
+import { uploadConfig, ApiUrl } from "@/constants/constant";
 const moment = require("moment");
 
 export default {
   name: "issue_apply",
   data() {
     return {
+      uploadConfig: {
+        accept: "",
+        headers: uploadConfig.headers,
+        name: "file",
+        serviceUrl: `${ApiUrl}/issue/import`
+      },
       loading: false,
       showVerifyModal: false,
       modalLoading: false,
@@ -301,6 +318,14 @@ export default {
     };
   },
   methods: {
+    handleSuccess(res, file) {
+      if (res.code == "1000") {
+        this.$Message.success("上传成功");
+        this.loadData();
+      } else {
+        this.$Message.error(res.msg);
+      }
+    },
     showAddModal() {
       this.showVerifyModal = true;
     },

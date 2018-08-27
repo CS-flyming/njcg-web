@@ -1,12 +1,11 @@
 import $axios from "../constants/constant";
 
-
 /**
  * 我的订单
  * @param {*} params
  */
 export function getOrderMyList(params) {
-    return $axios.post("/order/list", params);
+  return $axios.post("/order/list", params);
 }
 
 /**
@@ -14,7 +13,7 @@ export function getOrderMyList(params) {
  * @param {*} params
  */
 export function getOrderInList(params) {
-    return $axios.post("/order/list/in", params);
+  return $axios.post("/order/list/in", params);
 }
 
 /**
@@ -22,7 +21,7 @@ export function getOrderInList(params) {
  * @param {*} params
  */
 export function getOrderTakeList(params) {
-    return $axios.post("/order/list/finish", params);
+  return $axios.post("/order/list/finish", params);
 }
 
 /**
@@ -30,11 +29,9 @@ export function getOrderTakeList(params) {
  * @param {*} params
  */
 export function getOrderRefuseList(params) {
-    return $axios.post("/order/list/refuse", params);
+  return $axios.post("/order/list/refuse", params);
 }
 
 export function confirmOrder(id) {
-    return $axios.post(`/product/take/${id}`)
+  return $axios.post(`/product/take/${id}`);
 }
-
-

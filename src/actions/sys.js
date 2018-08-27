@@ -225,7 +225,7 @@ export function getProductTypesSelect(params) {
  * @param {*} params
  */
 export function getUserSelect(params) {
-  let url = '/select/user'
+  let url = "/select/user";
   // if (id) {
   //   url = `/select/user/${id}`
   // }
@@ -240,13 +240,13 @@ export function changePwd(params) {
 }
 
 export function getNewsList(params) {
-  return $axios.post("/msg/list", params)
+  return $axios.post("/msg/list", params);
 }
 
 export function getMsgMy(params) {
-  return $axios.post("/msg/my", params)
+  return $axios.post("/msg/my", params);
 }
 
 export function readMsg(id) {
-  return $axios.post(`/msg/read/${id}`)
+  return $axios.post(`/msg/read/${id}`);
 }

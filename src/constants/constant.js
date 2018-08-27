@@ -8,7 +8,7 @@ export const ApiUrl =
   env === "development"
     ? "http://106.14.180.49:9009"
     : // "http://172.16.7.181:9001"
-    env === "production"
+      env === "production"
       ? ""
       : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952"; // "http://172.16.7.119:8080/zjhb"
 
@@ -23,7 +23,7 @@ export const uploadConfig = {
 axios.defaults.baseURL = ApiUrl;
 // axios.defaults.withCredentials = true;
 axios.defaults.transformRequest = [
-  function (data) {
+  function(data) {
     data = qs.stringify(data);
     return data;
   }
@@ -121,7 +121,7 @@ export function closeCurrentErrPage(vm, pathname) {
   });
 }
 function isDate(str) {
-  return Object.prototype.toString.call(str) == '[object Date]'
+  return Object.prototype.toString.call(str) == "[object Date]";
 }
 export function downloadByForm(apiUrl, params, method) {
   let url =
@@ -142,7 +142,7 @@ export function downloadByForm(apiUrl, params, method) {
     input.type = "hidden";
     input.name = key;
     if (isDate(params[key])) {
-      input.value = new Date(params[key]).toISOString()
+      input.value = new Date(params[key]).toISOString();
     } else {
       input.value = params[key];
     }

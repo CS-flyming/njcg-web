@@ -156,6 +156,18 @@ export const otherRouter = {
       component: () => import("@/views/sys/keep/edit.vue")
     },
     {
+      path: "product/company/add",
+      title: "新增供应商",
+      name: "product-company-add",
+      component: () => import("@/views/product/company/add.vue")
+    },
+    {
+      path: "product/company/:id/edit",
+      title: "编辑供应商",
+      name: "product-company-edit",
+      component: () => import("@/views/product/company/edit.vue")
+    },
+    {
       path: "assets/:id/detail",
       title: "资产详情",
       name: "assets-detail",
@@ -191,12 +203,6 @@ export const otherRouter = {
       name: "base-order-detail",
       component: () => import("@/views/order/detail.vue")
     },
-    // {
-    //   path: "plan/:id/detail",
-    //   title: "计划详情",
-    //   name: "plan-detail",
-    //   component: () => import("@/views/plan/detail.vue")
-    // },
     {
       path: "plan/add",
       title: "新增计划",
@@ -204,7 +210,7 @@ export const otherRouter = {
       component: () => import("@/views/plan/add.vue")
     }
   ]
-};
+}; // }, //   component: () => import("@/views/plan/detail.vue") //   name: "plan-detail", //   title: "计划详情", //   path: "plan/:id/detail", // {
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
@@ -428,7 +434,7 @@ export const appRouter = [
         title: "驳回",
         name: "issue_refuse",
         component: () => import("@/views/issue/refuse.vue")
-      },
+      }
     ]
   },
   {
@@ -448,6 +454,12 @@ export const appRouter = [
         title: "分类建立",
         name: "product_type",
         component: () => import("@/views/product/types/index.vue")
+      },
+      {
+        path: "company",
+        title: "供应商管理",
+        name: "product_company",
+        component: () => import("@/views/product/company/index.vue")
       }
     ]
   },

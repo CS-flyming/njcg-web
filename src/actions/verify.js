@@ -61,5 +61,9 @@ export function verifyReturnAction(params) {
 }
 
 export function verifyOutAction(id) {
-  return $axios.post(`/verify/out/${id}`)
+  return $axios.post(`/verify/out/${id}`);
+}
+
+export function getPrintOrderData(id) {
+  return $axios.post(`/data/order/${id}`);
 }

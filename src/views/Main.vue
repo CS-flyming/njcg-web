@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
-                    <!-- <Button type="primary"  size="large" style="right: 120px;display: inline-block;margin-left: -40px;" @click="goWeixiu">我要报修</Button> -->
+                    <Button type="primary" style="right: 120px;display: inline-block;margin-left: -40px;" @click="goWeixiu">前往商城</Button>
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                    
                     <router-link :to="{name:'message'}" style="right: -40px;
@@ -82,6 +82,7 @@ import messageTip from "./main-components/message-tip.vue";
 import themeSwitch from "./main-components/theme-switch/theme-switch.vue";
 import util from "@/libs/util.js";
 import { getMsgMy } from "@/actions/sys";
+import env from "../../build/env";
 export default {
   components: {
     shrinkableMenu,
@@ -185,12 +186,9 @@ export default {
       // console.log(isFullScreen);
     },
     goWeixiu() {
-      this.$router.push({
-        name: "keep-apply-add",
-        query: {
-          name: this.$route.name
-        }
-      });
+      env === "development"
+        ? window.open("http://localhost:8081")
+        : window.open(location.origin + "/sc/");
     },
     getMsgMy(flag) {
       getMsgMy().then(({ data }) => {
