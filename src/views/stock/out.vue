@@ -376,7 +376,7 @@ export default {
     },
     handleDaochu() {
       if (this.daoFilter.ids.length) {
-        getPrintOrderData(this.daoFilter).then(res => {
+        getPrintOrderOutData(this.daoFilter).then(res => {
           let { list } = res.data;
           if (list.length <= 8) {
             let dis = 8 - list.length;
