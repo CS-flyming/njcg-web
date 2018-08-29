@@ -1,5 +1,5 @@
 <style lang="less">
-#printMe {
+#printMe1 {
   width: 595px;
   margin: 0 auto;
   color: #333;
@@ -109,7 +109,7 @@
             @on-ok="print"
             width="640"
           >
-          <div id="printMe">
+          <div id="printMe1">
             <div class="print-content">
                 <div class="print-header">{{printType=='out'?'出库单':'入库单'}}</div>
                 <div class="print-base-info print-flex">
@@ -366,7 +366,7 @@ export default {
   },
   methods: {
     print() {
-      this.$htmlToPaper("printMe");
+      this.$htmlToPaper("printMe1");
     },
     handleDaochu() {
       if (this.daoFilter.ids.length) {

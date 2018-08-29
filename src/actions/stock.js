@@ -89,3 +89,6 @@ export function getPrintOrderData(params) {
 export function getPrintOrderOutData(params) {
   return $axios.post("/data/stock/out", params);
 }
+export function editFzrAction(params) {
+  return $axios.post("/stock/update", params);
+}

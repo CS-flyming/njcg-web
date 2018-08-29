@@ -41,12 +41,15 @@
 }
 .flex-1 {
   flex: 0 0 10%;
+  word-break: break-all;
 }
 .flex-3 {
   flex: 0 0 30%;
+  word-break: break-all;
 }
 .flex-7 {
   flex: 0 0 70%;
+  word-break: break-all;
 }
 </style>
 

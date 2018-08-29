@@ -101,6 +101,23 @@
                   <Button type="primary" @click="handleVerifyFirst4" :loading="modalLoading4">消耗</Button>
             </div>
         </Modal>
+        <Modal
+            v-model="showVerifyModal5"
+            title="编辑存储位置和负责人"
+            @on-cancel="handleCacelModal5"
+           >
+           <Form :model="verifyForm5" ref="verifyForm5" label-position="right" :label-width="120" :rules="rules5">
+                <FormItem label="存储位置" prop="location">
+                    <Input v-model="verifyForm5.location" placeholder="存储位置" style="width:100%;"/>
+                </FormItem>
+                <FormItem label="负责人" prop="fzr">
+                     <Input v-model="verifyForm5.fzr" placeholder="负责人" style="width:100%;"/>
+                </FormItem>
+            </Form>
+            <div slot="footer">
+                  <Button type="primary" @click="handleVerifyFirst5" :loading="modalLoading5">确定</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -114,7 +131,8 @@ import {
   stockOutAction,
   stockWasteAction,
   stockReturnAction,
-  xiaohaoAction
+  xiaohaoAction,
+  editFzrAction
 } from "@/actions/stock";
 import { lendHisAction } from "@/actions/lend";
 export default {
@@ -130,6 +148,8 @@ export default {
       modalLoading3: false,
       showVerifyModal4: false,
       modalLoading4: false,
+      showVerifyModal5: false,
+      modalLoading5: false,
       rules: {
         userId: [
           {
@@ -198,6 +218,22 @@ export default {
           }
         ]
       },
+      rules5: {
+        location: [
+          {
+            required: true,
+            message: "请选择存储位置",
+            trigger: "blur"
+          }
+        ],
+        fzr: [
+          {
+            required: true,
+            message: "请选择负责人",
+            trigger: "blur"
+          }
+        ]
+      },
       verifyForm: {
         id: "",
         count: 1,
@@ -223,6 +259,11 @@ export default {
         num: 1,
         limit: 0
       },
+      verifyForm5: {
+        id: "",
+        location: "",
+        fzr: ""
+      },
       columns: [
         {
           key: "name",
@@ -242,10 +283,6 @@ export default {
           title: "总数"
         },
         {
-          key: "createTime",
-          title: "入库时间"
-        },
-        {
           key: "typeDesc",
           title: "入库类型"
         },
@@ -260,6 +297,18 @@ export default {
         {
           key: "lendCount",
           title: "已划拨数量"
+        },
+        {
+          key: "location",
+          title: "存储位置"
+        },
+        {
+          key: "fzr",
+          title: "负责人"
+        },
+        {
+          key: "createTime",
+          title: "入库时间"
         },
         {
           type: "action",
@@ -382,6 +431,31 @@ export default {
                 "划拨"
               )
             ]);
+            let div3 = h(
+              "div",
+              {
+                style: {
+                  marginTop: "8px"
+                }
+              },
+              [
+                h(
+                  "Button",
+                  {
+                    on: {
+                      click: () => {
+                        this.verifyForm5.id = params.row.id;
+                        this.showVerifyModal5 = true;
+                      }
+                    },
+                    props: {
+                      type: "primary"
+                    }
+                  },
+                  "编辑存储位置和负责人"
+                )
+              ]
+            );
             return h(
               "div",
               {
@@ -389,7 +463,7 @@ export default {
                   padding: "5px"
                 }
               },
-              [div2, div1]
+              [div2, div1, div3]
             );
             // return h("div", [
             //   h(
@@ -486,6 +560,13 @@ export default {
         limit: 0
       };
     },
+    resetVerifyForm5() {
+      this.verifyForm5 = {
+        id: "",
+        location: "",
+        fzr: ""
+      };
+    },
     handleCacelModal() {
       this.showVerifyModal = false;
       this.resetVerifyForm();
@@ -501,6 +582,10 @@ export default {
     handleCacelModal4() {
       this.showVerifyModal4 = false;
       this.resetVerifyForm4();
+    },
+    handleCacelModal5() {
+      this.showVerifyModal5 = false;
+      this.resetVerifyForm5();
     },
     handleVerifyFirst() {
       this.$refs["verifyForm"].validate(valid => {
@@ -569,6 +654,24 @@ export default {
             },
             () => {
               this.modalLoading4 = false;
+            }
+          );
+        }
+      });
+    },
+    handleVerifyFirst5() {
+      this.$refs["verifyForm5"].validate(valid => {
+        if (valid) {
+          this.modalLoading5 = true;
+          editFzrAction(this.verifyForm5).then(
+            res => {
+              this.$lf.message("编辑成功", "success");
+              this.modalLoading5 = false;
+              this.handleCacelModal5();
+              this.loadData();
+            },
+            () => {
+              this.modalLoading5 = false;
             }
           );
         }
