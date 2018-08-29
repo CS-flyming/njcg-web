@@ -1,4 +1,53 @@
 <style lang="less">
+#printMe3 {
+  width: 595px;
+  margin: 0 auto;
+  color: #333;
+  font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}
+.print-content {
+  width: 100%;
+  position: relative;
+  border: 1px solid #888;
+}
+.print-header {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  padding: 5px 0;
+}
+.print-base-info,
+.print-order-info,
+.print-order-content {
+  font-size: 12px;
+  border-top: 1px solid #888;
+}
+.print-flex {
+  display: flex;
+}
+.print-flex-item {
+  flex: 1;
+  min-height: 20px;
+  padding: 2px;
+}
+.print-border-left {
+  border-left: 1px solid #888;
+}
+.print-float-right {
+  float: right;
+}
+.mg-rt-8 {
+  margin-right: 8px;
+}
+.flex-1 {
+  flex: 0 0 10%;
+}
+.flex-3 {
+  flex: 0 0 30%;
+}
+.flex-7 {
+  flex: 0 0 70%;
+}
 </style>
 
 <template>
@@ -17,8 +66,7 @@
             </Form>
         </Card>
         <div class="data-control">
-            <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
-            <!-- <Button type="primary" @click="$downloadByForm('/export/stock/xh',filter)">导出</Button> -->
+             <Button type="primary" @click="handleDaochu">打印</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data" @on-selection-change="handleSelect"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -53,14 +101,66 @@
                   <Button type="primary" @click="handleVerifyFirst2" :loading="modalLoading2">报废</Button>
             </div>
         </Modal> -->
+         <Modal
+            v-model="printModal"
+            title="打印预览"
+            @on-ok="print"
+            width="640"
+          >
+          <div id="printMe3">
+            <div class="print-content">
+                <div class="print-header">{{'消耗单'}}</div>
+                <div class="print-base-info print-flex">
+                  <div class="print-flex-item">{{'单位'}}：{{printData.departName}}</div>
+                  <div class="print-flex-item print-border-left">{{printData.date}}<span class="print-float-right mg-rt-8">订单号：{{printData.orderNo}}</span></div>
+                </div>
+                <div class="print-order-info print-flex">
+                  <div class="print-flex-item flex-1">序号</div>
+                  <div class="print-flex-item  flex-3 print-border-left">名称</div>
+                  <div class="print-flex-item flex-1 print-border-left">型号</div>
+                  <div class="print-flex-item flex-1 print-border-left">单位</div>
+                  <div class="print-flex-item flex-1 print-border-left">单价</div>
+                  <div class="print-flex-item flex-1 print-border-left">数量</div>
+                  <div class="print-flex-item flex-1 print-border-left">总价</div>
+                  <div class="print-flex-item flex-1 print-border-left">备注</div>
+                </div>
+                <div class="print-order-content print-flex" v-for="item in printData.list" :key="item.xh">
+                  <div class="print-flex-item flex-1">{{item.xh}}</div>
+                  <div class="print-flex-item  flex-3 print-border-left">{{item.name}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.model}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.departName}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.value}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.num}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.zj}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.bz}}</div>
+                </div>
+                <div class="print-order-content print-flex">
+                  <div class="print-flex-item flex-7">合计：</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{printData.num}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{printData.zj}}</div>
+                  <div class="print-flex-item flex-1 print-border-left"></div>
+                </div>
+                <div class="print-order-content print-flex">
+                  <div class="print-flex-item">核准数合计（大写）：</div>
+                  <div class="print-flex-item">{{printData.dxzj}}</div>
+                </div>
+                <div class="print-order-content print-flex">
+                  <div class="print-flex-item">股（连）长：</div>
+                  <div class="print-flex-item print-border-left">仓库负责人：</div>
+                  <div class="print-flex-item print-border-left">经办人：</div>
+                </div>
+            </div>
+          </div>
+        </Modal>
     </div>
 </template>
 
 <script>
+let nzhcn = require("nzh/cn");
 import pagination from "components/pagination";
 import dateRgSelector from "components/date-rg-selector";
 // import userSelector from "components/user-selector";
-import { getStockXhList } from "@/actions/stock";
+import { getStockXhList, getPrintXhData } from "@/actions/stock";
 export default {
   name: "stock_xh",
   data() {
@@ -107,6 +207,11 @@ export default {
         reason: ""
       },
       columns: [
+         {
+          type: "selection",
+          width: 60,
+          align: "center"
+        },
         {
           key: "name",
           title: "名称"
@@ -229,13 +334,29 @@ export default {
         ids: []
       },
       data: [],
-      total: 0
+      total: 0,
+      printData:'',
+      printModal:false
     };
   },
   methods: {
+     print() {
+      this.$htmlToPaper("printMe3");
+    },
     handleDaochu() {
       if (this.daoFilter.ids.length) {
-        this.$downloadByForm("/export/stock/in/on", daoFilter);
+        getPrintXhData(this.daoFilter).then(res => {
+          let { list } = res.data;
+          if (list.length <= 8) {
+            let dis = 8 - list.length;
+            for (let i = 0; i < dis; i++) {
+              list.push([]);
+            }
+          }
+          res.data.dxzj = nzhcn.toMoney(res.data.zj).replace("人民币", "");
+          this.printData = res.data;
+          this.printModal = true;
+        });
       } else {
         this.$Message.error("请选择导出项");
       }

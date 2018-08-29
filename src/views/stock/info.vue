@@ -103,7 +103,7 @@
         </Modal>
         <Modal
             v-model="showVerifyModal5"
-            title="编辑存储位置和负责人"
+            title="编辑"
             @on-cancel="handleCacelModal5"
            >
            <Form :model="verifyForm5" ref="verifyForm5" label-position="right" :label-width="120" :rules="rules5">
