@@ -15,7 +15,7 @@
                     <Select v-model="filter.type" clearable>
                         <Option value="1">上级配发</Option>
                         <Option value="2">标准采购</Option>
-                        <Option value="3">出库</Option>
+                        <Option value="3">发放</Option>
                         <Option value="4">非标准采购</Option>
                     </Select>
                 </FormItem>
@@ -32,19 +32,19 @@
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <Modal
             v-model="showVerifyModal"
-            title="出库"
+            title="发放"
             @on-cancel="handleCacelModal"
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
-                <FormItem label="出库数量" prop="count">
+                <FormItem label="发放数量" prop="count">
                      <InputNumber :max="verifyForm.limit" :min="1" v-model="verifyForm.count" style="width:100%;"/>
                 </FormItem>
-                <FormItem label="出库用户" prop="userId">
+                <FormItem label="发放用户" prop="userId">
                     <userLendSelector v-model="verifyForm.userId"/>    
                 </FormItem>
             </Form>
             <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">出库</Button>
+                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">发放</Button>
             </div>
         </Modal>
         <Modal
@@ -154,7 +154,7 @@ export default {
         userId: [
           {
             required: true,
-            message: "请选择出库用户",
+            message: "请选择发放用户",
             trigger: "change"
           }
         ],
@@ -162,7 +162,7 @@ export default {
           {
             required: true,
             type: "number",
-            message: "请输入出库数量",
+            message: "请输入发放数量",
             trigger: "blur"
           }
         ]
@@ -179,7 +179,7 @@ export default {
           {
             required: true,
             type: "number",
-            message: "请输入出库数量",
+            message: "请输入发放数量",
             trigger: "blur"
           }
         ]
@@ -408,7 +408,7 @@ export default {
                     type: "primary"
                   }
                 },
-                "出库"
+                "发放"
               ),
               h(
                 "Button",
@@ -593,7 +593,7 @@ export default {
           this.modalLoading = true;
           stockOutAction(this.verifyForm).then(
             res => {
-              this.$lf.message("出库成功", "success");
+              this.$lf.message("发放成功", "success");
               this.modalLoading = false;
               this.handleCacelModal();
               this.loadData();
