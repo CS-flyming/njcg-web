@@ -32,7 +32,7 @@
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
 import { addOrUpdatePlan } from "@/actions/notice";
-import fileUpload from "components/file-upload";
+import fileUpload from "components/file-upload/file-upload";
 export default {
   name: "notice-add",
   components: {
@@ -50,20 +50,20 @@ export default {
       rules: {
         name: [
           {
-             required: true,
+            required: true,
             message: "请输入标题",
             trigger: "blur"
           }
         ],
         info: [
           {
-             required: true,
+            required: true,
             message: "请输入内容",
             trigger: "blur"
           }
         ]
       }
-    }
+    };
   },
 
   methods: {
@@ -91,6 +91,5 @@ export default {
       this.$refs.form.resetFields();
     }
   }
-    
 };
 </script>
