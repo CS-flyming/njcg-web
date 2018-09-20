@@ -21,9 +21,6 @@
                 <FormItem label="内容" prop="info">
                     <DatePicker v-model="verifyForm.info"  format="yyyy-MM-dd"  style="width: 100%;"></DatePicker>
                 </FormItem>
-                 <FormItem label="创建时间" prop="createTime">
-                    <DatePicker v-model="verifyForm.createTime"  format="yyyy-MM-dd"  style="width: 100%;"></DatePicker>
-                </FormItem>
             </Form>
             <div slot="footer">
                   <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">确定</Button>
@@ -34,7 +31,12 @@
 
 <script>
 import pagination from "components/pagination";
-import { getNoticeList, deleteNotice, addOrUpdateNotice,detailNotice } from "@/actions/notice";
+import {
+  getNoticeList,
+  deleteNotice,
+  addOrUpdateNotice,
+  detailNotice
+} from "@/actions/notice";
 export default {
   name: "notice_list",
   data() {
@@ -47,7 +49,7 @@ export default {
         id: "",
         name: "",
         info: "",
-        createTime:""
+        createTime: ""
       },
       paramscolumns: [
         {
@@ -125,8 +127,8 @@ export default {
                   },
                   on: {
                     click: () => {
-                      let { id, name, info,wjIds } = params.row;
-                      this.verifyForm =  { id, name, info,wjIds };
+                      let { id, name, info, wjIds } = params.row;
+                      this.verifyForm = { id, name, info, wjIds };
                       console.log(this.verifyForm);
                       this.showVerifyModal = true;
                     }
@@ -134,7 +136,6 @@ export default {
                 },
                 "编辑"
               )
-            
             ]);
           }
         }
@@ -146,22 +147,21 @@ export default {
       rules: {
         name: [
           {
-             required: true,
+            required: true,
             message: "请输入标题",
             trigger: "blur"
           }
         ],
         info: [
           {
-             required: true,
+            required: true,
             message: "请输入内容",
             trigger: "blur"
           }
         ]
       },
       data: [],
-      total: 0,
-     
+      total: 0
     };
   },
   methods: {
