@@ -20,7 +20,9 @@
                 <Input v-model="form.info" placeholder="内容"  />
             </FormItem>
             <FormItem label="附件">
-                <fileUpload v-model="form.wjIds" ref="fileUpload"/>
+              <Upload ref='upload'  :action="uploadConfig.serviceUrl" :on-success="uploadSuccess" :before-upload="beforeUpload">
+                  <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+              </Upload>
             </FormItem>
             <FormItem >
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
@@ -30,18 +32,16 @@
 </template>
 
 <script>
-import { closeCurrentErrPage } from "@/constants/constant";
+import { closeCurrentErrPage, uploadConfig } from "@/constants/constant";
 import { addOrUpdatePlan } from "@/actions/notice";
-import fileUpload from "components/file-upload/file-upload";
+
 export default {
   name: "notice-add",
-  components: {
-    fileUpload
-  },
   data() {
     return {
       loading: false,
       keepUserArr: [],
+      uploadConfig,
       form: {
         name: "",
         info: "",
@@ -67,6 +67,12 @@ export default {
   },
 
   methods: {
+    beforeUpload() {
+      this.$refs.upload.clearFiles();
+    },
+    uploadSuccess(res, file) {
+      this.wjIds = res.data;
+    },
     submit(e) {
       let { name } = this.$route.query;
       this.$refs.form.validate(valid => {
