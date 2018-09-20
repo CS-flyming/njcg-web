@@ -105,7 +105,12 @@ export default {
       this.$emit("input", idArr);
     },
     clearFileList() {
-      this.uploadList = [];
+      const fileList = this.$refs.upload.fileList;
+      for (let index = 0; index < fileList.length; index++) {
+        const element = fileList[index];
+        this.$refs.upload.fileList.splice(fileList.indexOf(element), 1);
+        this.handleChange();
+      }
     }
   },
   created() {

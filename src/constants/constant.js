@@ -6,11 +6,11 @@ import env from "../../build/env";
 import qs from "qs";
 export const ApiUrl =
   env === "development"
-    ? "http://127.0.0.1:9001"
+    ? "http://106.14.180.49:9009"
     : // "http://172.16.7.181:9001"
-      env === "production"
+    env === "production"
       ? ""
-      : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952"; 
+      : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952";
 
 const uploadMaxSize = 2048;
 export const uploadConfig = {
@@ -23,7 +23,7 @@ export const uploadConfig = {
 axios.defaults.baseURL = ApiUrl;
 // axios.defaults.withCredentials = true;
 axios.defaults.transformRequest = [
-  function(data) {
+  function (data) {
     data = qs.stringify(data);
     return data;
   }
