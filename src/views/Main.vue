@@ -267,9 +267,9 @@ export default {
     this.$store.commit("setOpenedList");
     this.getMsgMy();
     this.setTimer();
-    this.bus.$on("toGetMsg", () => {
-      this.getMsgMy("fromnews");
-    });
+    //this.bus.$on("toGetMsg", () => {
+     // this.getMsgMy("fromnews");
+  //  });
   }
 };
 </script>

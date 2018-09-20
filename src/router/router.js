@@ -208,6 +208,24 @@ export const otherRouter = {
       title: "新增计划",
       name: "plan-add",
       component: () => import("@/views/plan/add.vue")
+    },
+    {
+      path: "notice/add",
+      title: "新增公告",
+      name: "notice-add",
+      component: () => import("@/views/notice/add.vue")
+    },
+    {
+      path: "notice/edit",
+      title: "编辑公告",
+      name: "notice-edit",
+      component: () => import("@/views/notice/edit.vue")
+    },
+    {
+      path: "notice/:id/detail",
+      title: "公告详情",
+      name: "notice-detail",
+      component: () => import("@/views/notice/detail.vue")
     }
   ]
 }; // }, //   component: () => import("@/views/plan/detail.vue") //   name: "plan-detail", //   title: "计划详情", //   path: "plan/:id/detail", // {
@@ -474,6 +492,20 @@ export const appRouter = [
         title: "需求计划",
         name: "plan_list",
         component: () => import("@/views/plan/list.vue")
+      }
+    ]
+  },
+  {
+    path: "/notice",
+    name: "notice",
+    title: "公告 ",
+    component: Main,
+    children: [
+      {
+        path: "list",
+        title: "公告",
+        name: "notice_list",
+        component: () => import("@/views/notice/list.vue")
       }
     ]
   }

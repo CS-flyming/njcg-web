@@ -10,7 +10,7 @@ export const ApiUrl =
     : // "http://172.16.7.181:9001"
       env === "production"
       ? ""
-      : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952"; // "http://172.16.7.119:8080/zjhb"
+      : "http://120.77.147.241:10000/mock/59db10974720a62cc0517952"; 
 
 const uploadMaxSize = 2048;
 export const uploadConfig = {
