@@ -20,7 +20,7 @@
                 <Input v-model="form.info" placeholder="内容"  />
             </FormItem>
             <FormItem label="附件">
-              <Upload ref='upload'  :action="uploadConfig.serviceUrl" :on-success="uploadSuccess" :before-upload="beforeUpload">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess" :before-upload="beforeUpload" :on-remove="handleRemove">
                   <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
               </Upload>
             </FormItem>
@@ -68,10 +68,19 @@ export default {
 
   methods: {
     beforeUpload() {
-      this.$refs.upload.clearFiles();
+      // this.$refs.upload.clearFiles();
+    },
+    handleRemove(file, fileList) {
+      let arr = this.form.wjIds;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.form.wjIds = arr;
     },
     uploadSuccess(res, file) {
-      this.wjIds = res.data;
+      let arr = this.form.wjIds;
+      arr.push(res.data);
+      this.form.wjIds = arr;
     },
     submit(e) {
       let { name } = this.$route.query;
