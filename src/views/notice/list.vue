@@ -3,6 +3,16 @@
 
 <template>
     <div style="margin-top:20px;">
+      <Card class="filter-wrap">
+            <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="120" >
+                <FormItem label="公告标题">
+                   <Input v-model="filter.name" clearable/>
+                </FormItem>
+                <FormItem class="submit">
+                    <Button type="primary" html-type="submit">筛选</Button>
+                </FormItem>
+            </Form>
+        </Card>
         <div class="data-control">
             <Button type="primary" @click="$router.push({ name: 'notice-add',query:{name:$route.name} })">新增公告</Button>
             <!-- <Button type="primary" @click="$downloadByForm('root/user/down',filter)">导出</Button> -->

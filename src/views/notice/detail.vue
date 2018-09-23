@@ -1,78 +1,77 @@
 <template>
-    <Card>
-        <p slot="title">
-            详情
-        </p>
-        <Table border ref="selection" :columns="columns2" :data="selectOrder" size="large" ></Table>
-     <Spin size="large" fix v-if="spinShow"></Spin>
-    </Card>
+  <div style="padding-top:36px;">
+    <!-- <Sreach></Sreach> -->
+    <!-- <ShopHeader></ShopHeader> -->
+    <!-- <GoodsDetailNav></GoodsDetailNav> -->
+    <div>
+         <Card>
+            <p slot="title">
+                {{pData.name}}
+            </p>
+            <div>
+                {{pData.info}}
+            </div>
+            <div style="margin-top:20px;">
+                <Row>
+                    <Col span="2">附件：</Col> 
+                    <Col span="20">
+                         <Row>
+                            <Col v-for="item in pData.files" :key="item.id" span="6">
+                                <a :href="item.url" target="_blanks">{{item.name}}</a>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
+        </Card>
+    </div>
+    <Footer></Footer>
+    <Spin size="large" fix v-if="isLoading"></Spin>
+  </div>
 </template>
 
 <script>
-import { getOrderDetail } from "@/actions/verify";
+import { detailNotice } from "@/actions/notice";
 export default {
-  name: "base-order-detail",
+  name: "NoticeDetail",
+  beforeRouteEnter(to, from, next) {
+    window.scrollTo(0, 0);
+    next();
+  },
   data() {
     return {
-      spinShow: false,
-      columns2: [
-        {
-          title: "商品名称",
-          render: (h, params) => {
-            return h("div", params.row.product.name || "--");
-          }
-        },
-        {
-          title: "规格",
-          render: (h, params) => {
-            return h("div", params.row.product.standard || "--");
-          }
-        },
-        {
-          title: "型号",
-          render: (h, params) => {
-            return h("div", params.row.product.model || "--");
-          }
-        },
-        {
-          title: "价格",
-          render: (h, params) => {
-            return h("div", params.row.product.value || "--");
-          }
-        },
-        {
-          title: "采购数量",
-          key: "num",
-          align: "center"
-        },
-        {
-          title: "总价",
-          key: "zj"
-        },
-        {
-          title: "经费类型",
-          key: "typeDesc",
-          align: "center"
-        }
-      ],
-      selectOrder: []
+      query: {},
+      pData: {},
+      isLoading: false
     };
   },
-  activated() {
+  created() {
     let { id } = this.$route.params;
-    this.spinShow = true;
-    getOrderDetail(id).then(
+    this.query = this.$route.params;
+    this.isLoading = true;
+    detailNotice(id).then(
       res => {
-        this.spinShow = false;
-        this.selectOrder = res.data;
+        this.isLoading = false;
+        this.pData = res.data;
       },
       () => {
-        this.$router.goBack();
+        this.isLoading = false;
       }
     );
-  }
+  },
+ 
 };
 </script>
 
-<style>
+<style scoped>
+.shop-item-path {
+  height: 38px;
+  background-color: rgb(236, 235, 235);
+  line-height: 38px;
+  color: #2c2c2c;
+}
+.shop-nav-container {
+  margin: 0px auto;
+  width: 80%;
+}
 </style>
