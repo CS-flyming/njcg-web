@@ -16,10 +16,10 @@
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
                 <FormItem label="标题" prop="name">
-                    <DatePicker v-model="verifyForm.name"  format="yyyy-MM-dd"  style="width: 100%;"></DatePicker>
+                    <Input v-model="verifyForm.name"   style="width: 100%;"/>
                 </FormItem>
                 <FormItem label="内容" prop="info">
-                    <DatePicker v-model="verifyForm.info"  format="yyyy-MM-dd"  style="width: 100%;"></DatePicker>
+                    <Input v-model="verifyForm.info"   style="width: 100%;"/>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -67,17 +67,13 @@ export default {
           title: "标题"
         },
         {
-          key: "info",
-          title: "内容"
-        },
-        {
           key: "createTime",
           title: "创建时间"
         },
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 300,
           render: (h, params) => {
             return h("div", [
               h(
@@ -90,7 +86,7 @@ export default {
                   },
                   on: {
                     "on-ok": () => {
-                      deletePlan(params.row.id).then(
+                      deleteNotice(params.row.id).then(
                         res => {
                           this.loading = false;
                           this.$lf.message("删除成功", "success");
@@ -122,6 +118,7 @@ export default {
               h(
                 "Button",
                 {
+                  
                   props: {
                     type: "primary"
                   },
@@ -135,10 +132,33 @@ export default {
                   }
                 },
                 "编辑"
+              ),
+               h(
+                "Button",
+                {
+                 style: {
+                        margin: "0 5px"
+                      },
+                  props: {
+                    type: "primary"
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({
+                        name: "notice-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
+                  }
+                },
+                "详情"
               )
             ]);
           }
-        }
+        },
+        
       ],
       filter: {
         limit: 10,
@@ -193,7 +213,7 @@ export default {
         if (valid) {
           console.log(this.verifyForm);
           this.modalLoading = true;
-          addOrUpdatePlan(this.verifyForm).then(
+          addOrUpdateNotice(this.verifyForm).then(
             res => {
               this.modalLoading = false;
               this.handleCacelModal();
