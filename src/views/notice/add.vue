@@ -33,7 +33,7 @@
 
 <script>
 import { closeCurrentErrPage, uploadConfig } from "@/constants/constant";
-import { addOrUpdatePlan } from "@/actions/notice";
+import { addOrUpdateNotice } from "@/actions/notice";
 
 export default {
   name: "notice-add",
@@ -88,7 +88,7 @@ export default {
         if (valid) {
           this.loading = true;
           let formData = this.form;
-          addOrUpdatePlan(formData).then(
+          addOrUpdateNotice(formData).then(
             res => {
               this.loading = false;
               this.$lf.message("保存成功", "success");

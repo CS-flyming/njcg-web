@@ -1,7 +1,7 @@
 <template>
     <Card>
         <p slot="title">
-            订单详情
+            详情
         </p>
         <Table border ref="selection" :columns="columns2" :data="selectOrder" size="large" ></Table>
      <Spin size="large" fix v-if="spinShow"></Spin>
