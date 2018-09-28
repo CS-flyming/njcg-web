@@ -54,6 +54,19 @@ export default {
         item.children = child;
         item.loading = false;
         callback();
+      }).then(res => {
+        let child = res.data.map(v => {
+          v.value = v.id;
+          v.label = v.name;
+          if (v.nodes && v.nodes.length) {
+            v.children = [];
+            v.loading = false;
+          }
+          return v;
+        });
+        item.children = child;
+        item.loading = false;
+        callback();
       });
     },
     handleChange(val, arr) {

@@ -91,7 +91,9 @@
         <div class="data-control">
             <!-- <Button type="primary" @click="$router.push({ name: 'product-add-add' })">新增商品</Button> -->
             <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">导出</Button>
+             <Button type="primary" @click="$downloadByForm('/export/typeproduct',filter)">分类导出</Button>
         </div>
+       
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <Modal
