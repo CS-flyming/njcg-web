@@ -98,6 +98,10 @@ export default {
           title: "分类"
         },
         {
+          key: "code",
+          title: "商品编号"
+        },
+        {
           key: "standard",
           title: "规格"
         },
