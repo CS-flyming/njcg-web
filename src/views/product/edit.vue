@@ -23,6 +23,7 @@
             <FormItem label="商品规格" prop="standard" >
                 <Input v-model="form.standard" placeholder="商品规格"  />
             </FormItem>
+            
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
@@ -49,8 +50,12 @@
 
 <script>
 import { getProductDetail,addOrUpdateProduct } from "@/actions/product";
+import productTypesSelector from "components/product-types-selector";
 export default {
   name: "product-add-edit",
+  components: {
+    productTypesSelector
+  },
   data() {
     return {
       loading: false,
@@ -71,13 +76,9 @@ export default {
       ],
        form: {
         name: "",
-        value: 0,
-        type: [],
+        value:0,
         standard: "",
-        model: "",
-        wjId: [],
-        wjIds: [],
-        files: []
+        model: ""
       },
       rules: {
          name: [
@@ -195,14 +196,23 @@ export default {
       });
     },
    submit(e) {
+   
       this.$refs.form.validate(valid => {
+          console.log(valid)
+            console.log(this.paramsArr);
+              formData.json = this.arr2Json(this.paramsArr);
+            return;
         if (valid) {
           this.loading = true;
-          let formData = Object.assign({}, this.form);
+          console.log(this.paramsArr);
+          let formData = {};
           formData.json = this.arr2Json(this.paramsArr);
-          formData.type = formData.type[formData.type.length - 1];
-           console.log(1231231)
-          
+          formData.id = this.form.id;
+          formData.name =this.form.name;
+          formData.value =this.form.value;
+          formData.model= this.form.model;
+          formData.standard = this.form.standard;
+          formData.type = this.form.type;
           addOrUpdateProduct(formData).then(
              res => {
               this.loading = false;
@@ -216,6 +226,20 @@ export default {
           );
         }
       });
+    },
+     arr2Json(arr = []) {
+        console.log(arr);
+      let jsonObj = {};
+      arr.map(v => {
+        for (const key in v) {
+          if (v.hasOwnProperty(key)) {
+            jsonObj[key] = v[key];
+          }
+        }
+      });
+     
+      console.log(JSON.stringify(jsonObj));
+      return JSON.stringify(jsonObj);
     },
     json2arr(jsonstr = "") {
       if (jsonstr) {
@@ -234,6 +258,7 @@ export default {
         return [];
       }
     },
+     
     resetForm() {
       this.form = {
         name: "",
