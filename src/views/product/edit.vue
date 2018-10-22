@@ -1,8 +1,9 @@
 
+
 <template>
     <Card>
         <p slot="title">
-            新增角色
+            编辑商品
         </p>
         <Form 
             style="max-width: 800px;" 
@@ -13,13 +14,32 @@
             :label-width="120" 
             label-position="right"
             :rules="rules">
-            <FormItem label="角色名称" prop="name" >
-                <Input v-model="form.name" placeholder="角色名称"  />
+            <FormItem label="商品名称" prop="name" >
+                <Input v-model="form.name" placeholder="商品名称"  />
             </FormItem>
-            <FormItem label="角色菜单" prop="menuIds" >
-                <menuTreeSelector v-model="form.menuIds"/>
+            <FormItem label="商品单价" prop="value" >
+                <InputNumber v-model="form.value" style="width:100%;"  :min="0"/>
             </FormItem>
-           
+            <FormItem label="商品规格" prop="standard" >
+                <Input v-model="form.standard" placeholder="商品规格"  />
+            </FormItem>
+            <FormItem label="商品型号" prop="model" >
+                <Input v-model="form.model" placeholder="商品型号"  />
+            </FormItem>
+            <FormItem label="商品参数">
+                <Table :columns="paramscolumns" :data="paramsArr" border></Table>
+                <Row style="margin-top:10px;">
+                  <Col span="11">
+                    <Input v-model="params.key" placeholder="参数名称"  />
+                  </Col>
+                  <Col span="11">
+                    <Input v-model="params.value" placeholder="参数数值"  />
+                  </Col>
+                  <Col span="2" style="text-align:right;">
+                    <Button type="primary" @click="pushParams">+</Button>
+                  </Col>
+                </Row> 
+            </FormItem>
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
             </FormItem>
@@ -28,51 +48,167 @@
 </template>
 
 <script>
-import { closeCurrentErrPage } from "@/constants/constant";
-import { addOrUpdateRole } from "@/actions/sys";
-import menuTreeSelector from "components/menu-tree-selector";
+import { getProductDetail,addOrUpdateProduct } from "@/actions/product";
 export default {
   name: "product-add-edit",
-  components: {
-    menuTreeSelector
-  },
   data() {
     return {
       loading: false,
-      form: {
+      paramsArr: [],
+      params: {
+        key: "",
+        value: ""
+      },
+      paramscolumns: [
+        {
+          title: "参数名称",
+          key: "key"
+        },
+        {
+          title: "参数数值",
+          key: "value"
+        }
+      ],
+       form: {
         name: "",
-        menuIds: []
+        value: 0,
+        type: [],
+        standard: "",
+        model: "",
+        wjId: [],
+        wjIds: [],
+        files: []
       },
       rules: {
-        name: [
+         name: [
           {
-            required: true,
-            message: "请输入单位名称",
+            required: false,
+            message: "请输入商品名称",
             trigger: "blur"
           }
         ],
-        menuIds: [
+        value: [
           {
-            required: true,
+            required: false,
+            type: "number",
+            message: "请输入商品单价",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: false,
             type: "array",
-            message: "请选择角色菜单",
+            message: "请选择商品分类",
             trigger: "change"
+          }
+        ],
+        standard: [
+          {
+            required: false,
+            message: "请输入商品规格1",
+            trigger: "blur"
+          }
+        ],     
+        model: [
+          {
+            required: false,
+            message: "请输入商品型号",
+            trigger: "blur"
+          }
+        ],
+        json: [
+          {
+            required: false,
+            type: "array",
+            message: "请输入商品参数",
+            trigger: "blur"
           }
         ]
       }
     };
   },
+   paramscolumns: [
+        {
+          title: "参数名称",
+          render: (h, params) => {
+            console.log(params.row);
+            let row = params.row,
+              keys = [];
+            for (const key in row) {
+              if (
+                row.hasOwnProperty(key) &&
+                key != "_index" &&
+                key != "_rowKey"
+              ) {
+                keys.push(key);
+              }
+            }
+            return h("div", keys.join(""));
+          }
+        },
+        {
+          title: "参数数值",
+          render: (h, params) => {
+            console.log(params.row);
+            let row = params.row,
+              values = [];
+            for (const key in row) {
+              if (
+                row.hasOwnProperty(key) &&
+                key != "_index" &&
+                key != "_rowKey"
+              ) {
+                values.push(row[key]);
+              }
+            }
+            return h("div", values.join(""));
+          }
+        }
+      ],
+ activated() {
+    this.getDetail();
+  },
   methods: {
-    submit(e) {
+     pushParams() {
+      if (this.params.value && this.params.key) {
+        let obj = {},
+        params = this.params;
+        obj["key"] = params.key;
+        obj["value"] = params.value;
+        console.log(obj);
+        this.paramsArr.push(obj);
+        console.log(this.paramsArr);
+        this.params = {
+          key: "",
+          value: ""
+        };
+      } else {
+        this.$lf.message("参数输入有误", "error");
+      }
+    },
+    getDetail() {
+      let { id } = this.$route.params;
+      getProductDetail(id).then(res => {
+        this.form = res.data;
+        this.paramsArr = this.json2arr(res.data.json);
+      });
+    },
+   submit(e) {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;
-          let formData = this.form;
-          addOrUpdateRole(formData).then(
-            res => {
+          let formData = Object.assign({}, this.form);
+          formData.json = this.arr2Json(this.paramsArr);
+          formData.type = formData.type[formData.type.length - 1];
+           console.log(1231231)
+          
+          addOrUpdateProduct(formData).then(
+             res => {
               this.loading = false;
               this.$lf.message("保存成功", "success");
-              closeCurrentErrPage(this, "base_role");
+              this.resetForm();
+              closeCurrentErrPage(this, "product_add");
             },
             () => {
               this.loading = false;
@@ -80,6 +216,35 @@ export default {
           );
         }
       });
+    },
+    json2arr(jsonstr = "") {
+      if (jsonstr) {
+        let jsonObj = JSON.parse(jsonstr);
+        let paramsArr = [];
+        for (const key in jsonObj) {
+          if (jsonObj.hasOwnProperty(key)) {
+            let obj = {};
+            obj.key = key;
+            obj.value = jsonObj[key];
+            paramsArr.push(obj);
+          }
+        }
+        return paramsArr;
+      } else {
+        return [];
+      }
+    },
+    resetForm() {
+      this.form = {
+        name: "",
+        value: 0,
+        type: [],
+        standard: "",
+        model: "",
+        wjId: [],
+        wjIds: [],
+        files: []
+      };
     }
   }
 };

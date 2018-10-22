@@ -150,7 +150,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 250,
           render: (h, params) => {
             return h("div", [
               h(
@@ -180,9 +180,6 @@ export default {
                   h(
                     "Button",
                     {
-                      style: {
-                        margin: "0 5px"
-                      },
                       props: {
                         type: "error",
                         placement: "top"
@@ -192,28 +189,31 @@ export default {
                   )
                 ]
               ),
-              // h(
-              //   "Button",
-              //   {
-              //     props: {
-              //       type: "primary"
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.$router.push({
-              //           name: "sys-manager-edit",
-              //           params: {
-              //             id: params.row.id
-              //           },
-              //           query: {
-              //             item: JSON.stringify(params.row)
-              //           }
-              //         });
-              //       }
-              //     }
-              //   },
-              //   "编辑"
-              // ),
+              h(
+                "Button",
+                {
+                   style: {
+                        margin: "0 5px"
+                      },
+                  props: {
+                    type: "primary"
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({
+                        name: "product-add-edit",
+                        params: {
+                          id: params.row.id
+                        },
+                        query: {
+                          item: JSON.stringify(params.row)
+                        }
+                      });
+                    }
+                  }
+                },
+                "编辑"
+              ),
               h(
                 "Button",
                 {
