@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import { getProductDetail,addOrUpdateProduct } from "@/actions/product";
+import { closeCurrentErrPage } from "@/constants/constant";
+import { getProductDetail, addOrUpdateProduct } from "@/actions/product";
 import productTypesSelector from "components/product-types-selector";
 export default {
   name: "product-add-edit",
@@ -74,14 +75,14 @@ export default {
           key: "value"
         }
       ],
-       form: {
+      form: {
         name: "",
-        value:0,
+        value: 0,
         standard: "",
         model: ""
       },
       rules: {
-         name: [
+        name: [
           {
             required: false,
             message: "请输入商品名称",
@@ -110,7 +111,7 @@ export default {
             message: "请输入商品规格1",
             trigger: "blur"
           }
-        ],     
+        ],
         model: [
           {
             required: false,
@@ -129,57 +130,48 @@ export default {
       }
     };
   },
-   paramscolumns: [
-        {
-          title: "参数名称",
-          render: (h, params) => {
-            console.log(params.row);
-            let row = params.row,
-              keys = [];
-            for (const key in row) {
-              if (
-                row.hasOwnProperty(key) &&
-                key != "_index" &&
-                key != "_rowKey"
-              ) {
-                keys.push(key);
-              }
-            }
-            return h("div", keys.join(""));
-          }
-        },
-        {
-          title: "参数数值",
-          render: (h, params) => {
-            console.log(params.row);
-            let row = params.row,
-              values = [];
-            for (const key in row) {
-              if (
-                row.hasOwnProperty(key) &&
-                key != "_index" &&
-                key != "_rowKey"
-              ) {
-                values.push(row[key]);
-              }
-            }
-            return h("div", values.join(""));
+  paramscolumns: [
+    {
+      title: "参数名称",
+      render: (h, params) => {
+        console.log(params.row);
+        let row = params.row,
+          keys = [];
+        for (const key in row) {
+          if (row.hasOwnProperty(key) && key != "_index" && key != "_rowKey") {
+            keys.push(key);
           }
         }
-      ],
- activated() {
+        return h("div", keys.join(""));
+      }
+    },
+    {
+      title: "参数数值",
+      render: (h, params) => {
+        console.log(params.row);
+        let row = params.row,
+          values = [];
+        for (const key in row) {
+          if (row.hasOwnProperty(key) && key != "_index" && key != "_rowKey") {
+            values.push(row[key]);
+          }
+        }
+        return h("div", values.join(""));
+      }
+    }
+  ],
+  activated() {
     this.getDetail();
   },
   methods: {
-     pushParams() {
+    pushParams() {
       if (this.params.value && this.params.key) {
+        console.log(this.paramsArr);
         let obj = {},
-        params = this.params;
+          params = this.params;
         obj["key"] = params.key;
         obj["value"] = params.value;
-        console.log(obj);
         this.paramsArr.push(obj);
-       console.log(this.arr2Json(this.paramsArr)) ;
         this.params = {
           key: "",
           value: ""
@@ -195,26 +187,23 @@ export default {
         this.paramsArr = this.json2arr(res.data.json);
       });
     },
-   submit(e) {
-   
+    submit(e) {
       this.$refs.form.validate(valid => {
-            formData.json = this.arr2Json(this.paramsArr);
-            return;
         if (valid) {
           this.loading = true;
           console.log(this.paramsArr);
           let formData = {};
           formData.json = this.arr2Json(this.paramsArr);
           formData.id = this.form.id;
-          formData.name =this.form.name;
-          formData.value =this.form.value;
-          formData.model= this.form.model;
+          formData.name = this.form.name;
+          formData.value = this.form.value;
+          formData.model = this.form.model;
           formData.standard = this.form.standard;
           formData.type = this.form.type;
           addOrUpdateProduct(formData).then(
-             res => {
+            res => {
               this.loading = false;
-              this.$lf.message("保存成功", "success");
+              this.$lf.message("编辑成功", "success");
               this.resetForm();
               closeCurrentErrPage(this, "product_add");
             },
@@ -225,13 +214,14 @@ export default {
         }
       });
     },
-     arr2Json(arr = []) {
-      let jsonObj = {};
-       for (let i=0;i<arr.length;i++)
-        {
-            jsonObj[arr[i].key] =  jsonObj[arr[i].value];
-        }
-      return JSON.stringify(jsonObj);
+    arr2Json(arr = []) {
+      let obj1 = {};
+      for (let i = 0; i < arr.length; i++) {
+        console.log(arr[i]);
+        obj1[arr[i].key] = arr[i].value;
+      }
+      console.log(obj1);
+      return JSON.stringify(obj1);
     },
     json2arr(jsonstr = "") {
       if (jsonstr) {
@@ -250,7 +240,7 @@ export default {
         return [];
       }
     },
-     
+
     resetForm() {
       this.form = {
         name: "",
