@@ -179,7 +179,7 @@ export default {
         obj["value"] = params.value;
         console.log(obj);
         this.paramsArr.push(obj);
-        console.log(this.paramsArr);
+       console.log(this.arr2Json(this.paramsArr)) ;
         this.params = {
           key: "",
           value: ""
@@ -198,9 +198,7 @@ export default {
    submit(e) {
    
       this.$refs.form.validate(valid => {
-          console.log(valid)
-            console.log(this.paramsArr);
-              formData.json = this.arr2Json(this.paramsArr);
+            formData.json = this.arr2Json(this.paramsArr);
             return;
         if (valid) {
           this.loading = true;
@@ -228,17 +226,11 @@ export default {
       });
     },
      arr2Json(arr = []) {
-        console.log(arr);
       let jsonObj = {};
-      arr.map(v => {
-        for (const key in v) {
-          if (v.hasOwnProperty(key)) {
-            jsonObj[key] = v[key];
-          }
+       for (let i=0;i<arr.length;i++)
+        {
+            jsonObj[arr[i].key] =  jsonObj[arr[i].value];
         }
-      });
-     
-      console.log(JSON.stringify(jsonObj));
       return JSON.stringify(jsonObj);
     },
     json2arr(jsonstr = "") {
