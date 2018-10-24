@@ -58,7 +58,7 @@
 <script>
 import pagination from "components/pagination";
 import productTypesSelector from "components/product-types-selector";
-import { getProductList } from "@/actions/product";
+import { getProductList,deleteProduct} from "@/actions/product";
 import { uploadConfig, ApiUrl } from "@/constants/constant";
 export default {
   name: "product_add",
@@ -163,7 +163,7 @@ export default {
                   },
                   on: {
                     "on-ok": () => {
-                      deleteManagerById(params.row.id).then(
+                      deleteProduct(params.row.id).then(
                         res => {
                           this.loading = false;
                           this.$lf.message("删除成功", "success");
