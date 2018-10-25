@@ -35,6 +35,15 @@ export function addOrUpdateProduct(params) {
   return $axios.post("/product/add", params);
 }
 
+
+/**
+ * 新增商品
+ * @param {*} params
+ */
+export function deleteProduct(id) {
+  return $axios.post(`/product/delete/${id}`);
+}
+
 /**
  * 商品详情
  * @param {*} params

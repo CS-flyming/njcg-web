@@ -147,7 +147,7 @@ export default {
         ],
         standard: [
           {
-            required: true,
+            required: false,
             message: "请输入商品规格",
             trigger: "blur"
           }

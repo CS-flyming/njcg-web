@@ -58,7 +58,7 @@
 <script>
 import pagination from "components/pagination";
 import productTypesSelector from "components/product-types-selector";
-import { getProductList } from "@/actions/product";
+import { getProductList,deleteProduct} from "@/actions/product";
 import { uploadConfig, ApiUrl } from "@/constants/constant";
 export default {
   name: "product_add",
@@ -154,7 +154,7 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 200,
+          width: 250,
           render: (h, params) => {
             return h("div", [
               h(
@@ -167,7 +167,7 @@ export default {
                   },
                   on: {
                     "on-ok": () => {
-                      deleteManagerById(params.row.id).then(
+                      deleteProduct(params.row.id).then(
                         res => {
                           this.loading = false;
                           this.$lf.message("删除成功", "success");
@@ -184,9 +184,6 @@ export default {
                   h(
                     "Button",
                     {
-                      style: {
-                        margin: "0 5px"
-                      },
                       props: {
                         type: "error",
                         placement: "top"
@@ -196,28 +193,31 @@ export default {
                   )
                 ]
               ),
-              // h(
-              //   "Button",
-              //   {
-              //     props: {
-              //       type: "primary"
-              //     },
-              //     on: {
-              //       click: () => {
-              //         this.$router.push({
-              //           name: "sys-manager-edit",
-              //           params: {
-              //             id: params.row.id
-              //           },
-              //           query: {
-              //             item: JSON.stringify(params.row)
-              //           }
-              //         });
-              //       }
-              //     }
-              //   },
-              //   "编辑"
-              // ),
+              h(
+                "Button",
+                {
+                   style: {
+                        margin: "0 5px"
+                      },
+                  props: {
+                    type: "primary"
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({
+                        name: "product-add-edit",
+                        params: {
+                          id: params.row.id
+                        },
+                        query: {
+                          item: JSON.stringify(params.row)
+                        }
+                      });
+                    }
+                  }
+                },
+                "编辑"
+              ),
               h(
                 "Button",
                 {

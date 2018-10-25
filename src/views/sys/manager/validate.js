@@ -44,10 +44,5 @@ export let validateData = {
             trigger: "blur"
         },
         { validator: validePassword, trigger: "blur" }
-    ],
-    status: {
-        required: true,
-        message: "请选择状态",
-        trigger: "change"
-    }
+    ]
 };

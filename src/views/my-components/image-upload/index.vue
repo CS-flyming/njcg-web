@@ -104,7 +104,7 @@ export default {
       });
       this.$emit("input", idArr);
     },
-    clearFileList() {
+   clearFileList() {
       const fileList = this.$refs.upload.fileList;
       for (let index = 0; index < fileList.length; index++) {
         const element = fileList[index];
