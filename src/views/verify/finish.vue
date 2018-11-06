@@ -56,7 +56,7 @@
 <template>
     <div>
         <Card class="filter-wrap">
-            <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="120" >
+            <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="100" >
                 <FormItem label="采购类型">
                     <Select v-model="filter.type" clearable>
                         <Option value="1">集中采购</Option>
