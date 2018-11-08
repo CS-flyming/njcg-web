@@ -16,10 +16,10 @@
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
                 <FormItem label="开始时间" prop="startTime">
-                    <DatePicker v-model="verifyForm.startTime"  format="yyyy-MM-dd"   type="date"  placeholder="选择开始时间" style="width: 100%;"></DatePicker>
+                    <DatePicker v-model="verifyForm.startTime"  format="yyyy-MM-dd"   type="date"  placeholder="选择开始时间" ></DatePicker>
                 </FormItem>
                 <FormItem label="结束时间" prop="endTime">
-                    <DatePicker v-model="verifyForm.endTime"  format="yyyy-MM-dd"   type="date"  placeholder="选择结束时间" style="width: 100%;"></DatePicker>
+                    <DatePicker v-model="verifyForm.endTime"  format="yyyy-MM-dd"   type="date"  placeholder="选择结束时间" ></DatePicker>
                 </FormItem>
             </Form>
             <div slot="footer">
