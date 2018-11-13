@@ -39,7 +39,7 @@
                         width: 32px;
                         height: 32px;">
                         <Badge :count="messageNum" type="error" >
-                        <Icon size="24" type="android-notifications-none"/>
+                        <a href="#message"><Icon size="24" type="android-notifications-none"/></a> 
                       </Badge>
                     </router-link>
                     <!-- <lock-screen></lock-screen> -->
@@ -199,32 +199,32 @@ export default {
               top: 130,
               duration: 5
             });
-            this.$Notice.open({
-              title: "消息提醒",
-              name: "my-message",
-              desc: data.msg,
-              render: h => {
-                return h(
-                  "div",
-                  {
-                    style: {
-                      cursor: "pointer",
-                      minHeight: "32px",
-                      lineHeight: "32px"
-                    },
-                    on: {
-                      click: () => {
-                        this.$Notice.close("my-message");
-                        this.$router.push({
-                          name: "message"
-                        });
-                      }
-                    }
-                  },
-                  data.msg
-                );
-              }
-            });
+            // this.$Notice.open({
+            //   title: "消息提醒",
+            //   name: "my-message",
+            //   desc: data.msg,
+            //   render: h => {
+            //     return h(
+            //       "div",
+            //       {
+            //         style: {
+            //           cursor: "pointer",
+            //           minHeight: "32px",
+            //           lineHeight: "32px"
+            //         },
+            //         on: {
+            //           click: () => {
+            //             this.$Notice.close("my-message");
+            //             this.$router.push({
+            //               name: "message"
+            //             });
+            //           }
+            //         }
+            //       },
+            //       data.msg
+            //     );
+            //   }
+            // });
           } else {
             this.messageNum = data.num || 0;
           }

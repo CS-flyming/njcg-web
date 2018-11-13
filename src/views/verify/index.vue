@@ -5,18 +5,13 @@
     <div>
         <Card class="filter-wrap">
             <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="120" >
-                <FormItem label="采购类型">
-                    <Select v-model="filter.type" clearable>
-                        <Option value="1">集中采购</Option>
-                        <Option value="2">自行采购</Option>
-                    </Select>
+                  <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
                 </FormItem>
-                <FormItem label="紧急程度">
-                    <Select v-model="filter.level" clearable>
-                        <Option value="1">月度上报</Option>
-                        <Option value="2">紧急购买</Option>
-                    </Select>
+                 <FormItem label="申请部门">
+                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
                 </FormItem>
+          
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -63,6 +58,9 @@
 
 <script>
 import pagination from "components/pagination";
+import dateRgSelector from "components/date-rg-selector";
+import departCalSelector from "components/depart-cal-selector";
+
 import {
   getVerifyFirstList,
   verifyFirstItem,
@@ -148,39 +146,37 @@ export default {
           align: "center"
         },
         {
-          key: "orderNo",
-          title: "订单号"
-        },
-        {
-          title: "总价",
-          render: (h, params) => {
-            return h("div", params.row.zj ? params.row.zj + "元" : "--");
-          }
-        },
-        {
-          key: "levelDesc",
-          title: "紧急程度"
-        },
-        {
-          key: "typeDesc",
-          title: "采购类型"
-        },
-        {
-          key: "createName",
-          title: "申请人"
-        },
-        {
+          align: "center",
           key: "applyDepartName",
           title: "申请部门"
         },
         {
+          align: "center",
+          key: "createName",
+          title: "申请人"
+        },
+        {
+          align: "center",
+          key: "orderNo",
+          title: "订单号"
+        },
+        {
+          align: "center",
+          title: "金额",
+          render: (h, params) => {
+            return h("div", "￥" + params.row.zj ? params.row.zj : "--");
+          }
+        },
+
+        {
+          align: "center",
           key: "createTime",
-          title: "添加时间"
+          title: "申请时间"
         },
         {
           type: "action",
           title: "操作",
-          width: 200,
+          align: "center",
           render: (h, params) => {
             return h("div", [
               h(
@@ -340,6 +336,8 @@ export default {
     }
   },
   components: {
+    dateRgSelector,
+    departCalSelector,
     pagination
   }
 };

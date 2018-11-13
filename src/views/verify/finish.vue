@@ -57,22 +57,16 @@
     <div>
         <Card class="filter-wrap">
             <Form @submit.native.prevent="handleFilter" :model="filter" ref="filterForm" label-position="right" :label-width="100">
-                <FormItem label="采购类型">
-                    <Select v-model="filter.type" clearable>
-                        <Option value="1">集中采购</Option>
-                        <Option value="2">自行采购</Option>
-                    </Select>
+                  <FormItem label="部门">
+                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
                 </FormItem>
-                <FormItem label="紧急程度">
-                    <Select v-model="filter.level" clearable>
-                        <Option value="1">月度上报</Option>
-                        <Option value="2">紧急购买</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="需求计划">
+                 <FormItem label="需求计划">
                     <DatePicker v-model="filter.name" type="month" format="yyyy-MM" placeholder="选择年月" style="width:100%;"></DatePicker>
                 </FormItem>
-                <FormItem label="状态">
+                 <FormItem label="起止时间">
+                   <dateRgSelector style="width:100%;" v-model="filter._dateRange" :start-date.sync="filter.startTime" :end-date.sync="filter.endTime" clearable />
+                </FormItem>
+                  <FormItem label="状态">
                     <Select v-model="filter.status" clearable>
                         <Option value="3">拒绝</Option>
                         <Option value="5">审核通过</Option>
@@ -80,9 +74,7 @@
                         <Option value="7">待收货</Option>
                     </Select>
                 </FormItem>
-                 <FormItem label="部门">
-                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
-                </FormItem>
+              
                 <FormItem class="submit">
                     <Button type="primary" html-type="submit">筛选</Button>
                 </FormItem>
@@ -173,6 +165,7 @@
 <script>
 let nzhcn = require("nzh/cn");
 import pagination from "components/pagination";
+import dateRgSelector from "components/date-rg-selector";
 import departCalSelector from "components/depart-cal-selector";
 import {
   getVerifyFinishList,
@@ -230,31 +223,27 @@ export default {
         reason: ""
       },
       columns: [
-        {
-          key: "orderNo",
-          title: "订单号"
+         {
+          align: "center",
+          key: "applyDepartName",
+          title: "申请部门"
         },
         {
-          title: "总价",
-          render: (h, params) => {
-            return h("div", params.row.zj ? params.row.zj + "元" : "--");
-          }
-        },
-        {
-          key: "levelDesc",
-          title: "紧急程度"
-        },
-        {
-          key: "typeDesc",
-          title: "采购类型"
-        },
-        {
+          align: "center",
           key: "createName",
           title: "申请人"
         },
         {
-          key: "applyDepartName",
-          title: "申请部门"
+          align: "center",
+          key: "orderNo",
+          title: "订单号"
+        },
+        {
+          align: "center",
+          title: "金额",
+          render: (h, params) => {
+            return h("div", "￥" + params.row.zj ? params.row.zj : "--");
+          }
         },
         {
           key: "createTime",
@@ -265,17 +254,14 @@ export default {
           title: "需求计划"
         },
         {
-          key: "reason",
-          title: "驳回原因"
-        },
-        {
           key: "statusDesc",
           title: "状态"
         },
         {
           type: "action",
           title: "操作",
-          width: 300,
+          width: 350,
+           align: "left",
           render: (h, params) => {
             let delBtn =
               params.row.status == 5
@@ -335,7 +321,7 @@ export default {
                     }
                   }
                 },
-                "订单详情"
+                "详情"
               ),
               delBtn,
               h(
@@ -522,7 +508,8 @@ export default {
   },
   components: {
     pagination,
-    departCalSelector
+    departCalSelector,
+    dateRgSelector
   }
 };
 </script>

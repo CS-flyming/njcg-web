@@ -309,197 +309,165 @@ export default {
         {
           key: "createTime",
           title: "入库时间"
-        },
-        {
-          type: "action",
-          title: "操作",
-          width: 240,
-          render: (h, params) => {
-            let div1 = h(
-              "div",
-              {
-                style: {
-                  marginTop: "8px"
-                }
-              },
-              [
-                h(
-                  "Button",
-                  {
-                    on: {
-                      click: () => {
-                        this.verifyForm2.id = params.row.id;
-                        this.verifyForm2.limit = params.row.allCount;
-                        this.showVerifyModal2 = true;
-                      }
-                    },
-                    props: {
-                      type: "error"
-                    }
-                  },
-                  "报废"
-                ),
-                h(
-                  "Button",
-                  {
-                    on: {
-                      click: () => {
-                        this.verifyForm4.id = params.row.id;
-                        this.verifyForm4.limit = params.row.useCount;
-                        this.showVerifyModal4 = true;
-                      }
-                    },
-                    style: {
-                      marginLeft: "8px"
-                    },
-                    props: {
-                      type: "error"
-                    }
-                  },
-                  "消耗"
-                ),
-                h(
-                  "Poptip",
-                  {
-                    props: {
-                      confirm: true,
-                      title: "您确定要退货?",
-                      transfer: true
-                    },
-                    on: {
-                      "on-ok": () => {
-                        stockReturnAction(params.row.id).then(res => {
-                          this.$lf.message("退货成功", "success");
-                          this.loadData();
-                        });
-                      }
-                    }
-                  },
-                  [
-                    h(
-                      "Button",
-                      {
-                        style: {
-                          margin: "0 5px"
-                        },
-                        props: {
-                          type: "error",
-                          placement: "top"
-                        }
-                      },
-                      "退货"
-                    )
-                  ]
-                )
-              ]
-            );
-            let div2 = h("div", [
-              h(
-                "Button",
-                {
-                  on: {
-                    click: () => {
-                      this.verifyForm.id = params.row.id;
-                      this.verifyForm.limit = params.row.useCount;
-                      this.showVerifyModal = true;
-                    }
-                  },
-                  props: {
-                    type: "primary"
-                  }
-                },
-                "出库"
-              ),
-              h(
-                "Button",
-                {
-                  on: {
-                    click: () => {
-                      this.verifyForm3.id = params.row.id;
-                      this.verifyForm3.limit =
-                        params.row.useCount - params.row.lendCount;
-                      this.showVerifyModal3 = true;
-                    }
-                  },
-                  style: {
-                    marginLeft: "8px"
-                  },
-                  props: {
-                    type: "primary"
-                  }
-                },
-                "划拨"
-              )
-            ]);
-            let div3 = h(
-              "div",
-              {
-                style: {
-                  marginTop: "8px"
-                }
-              },
-              [
-                h(
-                  "Button",
-                  {
-                    on: {
-                      click: () => {
-                        this.verifyForm5.id = params.row.id;
-                        this.showVerifyModal5 = true;
-                      }
-                    },
-                    props: {
-                      type: "primary"
-                    }
-                  },
-                  "编辑存储位置和负责人"
-                )
-              ]
-            );
-            return h(
-              "div",
-              {
-                style: {
-                  padding: "5px"
-                }
-              },
-              [div2, div1, div3]
-            );
-            // return h("div", [
-            //   h(
-            //     "Poptip",
-            //     {
-            //       props: {
-            //         confirm: true,
-            //         title: "您确定要删除?",
-            //         transfer: true
-            //       },
-            //       on: {
-            //         "on-ok": () => {
-            //           this.verifyForm.id = params.row.id;
-            //           this.showVerifyModal = true;
-            //         }
-            //       }
-            //     },
-            //     [
-            //       h(
-            //         "Button",
-            //         {
-            //           style: {
-            //             margin: "0 5px"
-            //           },
-            //           props: {
-            //             type: "error",
-            //             placement: "top"
-            //           }
-            //         },
-            //         "删除"
-            //       )
-            //     ]
-            //   )
-            // ]);
-          }
         }
+        // ,{
+        //   type: "action",
+        //   title: "操作",
+        //   width: 240,
+        //   render: (h, params) => {
+        //     let div1 = h(
+        //       "div",
+        //       {
+        //         style: {
+        //           marginTop: "8px"
+        //         }
+        //       },
+        //       [
+        //         h(
+        //           "Button",
+        //           {
+        //             on: {
+        //               click: () => {
+        //                 this.verifyForm2.id = params.row.id;
+        //                 this.verifyForm2.limit = params.row.allCount;
+        //                 this.showVerifyModal2 = true;
+        //               }
+        //             },
+        //             props: {
+        //               type: "error"
+        //             }
+        //           },
+        //           "报废"
+        //         ),
+        //         h(
+        //           "Button",
+        //           {
+        //             on: {
+        //               click: () => {
+        //                 this.verifyForm4.id = params.row.id;
+        //                 this.verifyForm4.limit = params.row.useCount;
+        //                 this.showVerifyModal4 = true;
+        //               }
+        //             },
+        //             style: {
+        //               marginLeft: "8px"
+        //             },
+        //             props: {
+        //               type: "error"
+        //             }
+        //           },
+        //           "消耗"
+        //         ),
+        //         h(
+        //           "Poptip",
+        //           {
+        //             props: {
+        //               confirm: true,
+        //               title: "您确定要退货?",
+        //               transfer: true
+        //             },
+        //             on: {
+        //               "on-ok": () => {
+        //                 stockReturnAction(params.row.id).then(res => {
+        //                   this.$lf.message("退货成功", "success");
+        //                   this.loadData();
+        //                 });
+        //               }
+        //             }
+        //           },
+        //           [
+        //             h(
+        //               "Button",
+        //               {
+        //                 style: {
+        //                   margin: "0 5px"
+        //                 },
+        //                 props: {
+        //                   type: "error",
+        //                   placement: "top"
+        //                 }
+        //               },
+        //               "退货"
+        //             )
+        //           ]
+        //         )
+        //       ]
+        //     );
+        //     let div2 = h("div", [
+        //       h(
+        //         "Button",
+        //         {
+        //           on: {
+        //             click: () => {
+        //               this.verifyForm.id = params.row.id;
+        //               this.verifyForm.limit = params.row.useCount;
+        //               this.showVerifyModal = true;
+        //             }
+        //           },
+        //           props: {
+        //             type: "primary"
+        //           }
+        //         },
+        //         "出库"
+        //       ),
+        //       h(
+        //         "Button",
+        //         {
+        //           on: {
+        //             click: () => {
+        //               this.verifyForm3.id = params.row.id;
+        //               this.verifyForm3.limit =
+        //                 params.row.useCount - params.row.lendCount;
+        //               this.showVerifyModal3 = true;
+        //             }
+        //           },
+        //           style: {
+        //             marginLeft: "8px"
+        //           },
+        //           props: {
+        //             type: "primary"
+        //           }
+        //         },
+        //         "划拨"
+        //       )
+        //     ]);
+        //     let div3 = h(
+        //       "div",
+        //       {
+        //         style: {
+        //           marginTop: "8px"
+        //         }
+        //       },
+        //       [
+        //         h(
+        //           "Button",
+        //           {
+        //             on: {
+        //               click: () => {
+        //                 this.verifyForm5.id = params.row.id;
+        //                 this.showVerifyModal5 = true;
+        //               }
+        //             },
+        //             props: {
+        //               type: "primary"
+        //             }
+        //           },
+        //           "编辑存储位置和负责人"
+        //         )
+        //       ]
+        //     );
+        //     return h(
+        //       "div",
+        //       {
+        //         style: {
+        //           padding: "5px"
+        //         }
+        //       },
+        //       [div2, div1, div3]
+        //     );
+         
+        //   }
+        // }
       ],
       filter: {
         limit: 10,
