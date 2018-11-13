@@ -29,7 +29,7 @@ module.exports = merge(webpackBaseConfig, {
       minChunks: Infinity
     }),
     new HtmlWebpackPlugin({
-      title: "集中采购管理服务平台" + package.version,
+      title: "物资采购管理服务平台" + package.version,
       filename: "../index.html",
       inject: false
     }),
