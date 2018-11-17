@@ -226,15 +226,18 @@ export default {
          {
           align: "center",
           key: "applyDepartName",
+            align:"center",
           title: "申请部门"
         },
         {
           align: "center",
           key: "createName",
+            align:"center",
           title: "申请人"
         },
         {
           align: "center",
+           
           key: "orderNo",
           title: "订单号"
         },
@@ -247,14 +250,17 @@ export default {
         },
         {
           key: "createTime",
+            align:"center",
           title: "添加时间"
         },
         {
           key: "monthName",
+            align:"center",
           title: "需求计划"
         },
         {
           key: "statusDesc",
+            align:"center",
           title: "状态"
         },
         {

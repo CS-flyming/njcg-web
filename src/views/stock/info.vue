@@ -298,14 +298,7 @@ export default {
           key: "lendCount",
           title: "已划拨数量"
         },
-        {
-          key: "location",
-          title: "存储位置"
-        },
-        {
-          key: "fzr",
-          title: "负责人"
-        },
+       
         {
           key: "createTime",
           title: "入库时间"
