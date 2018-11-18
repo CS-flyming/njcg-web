@@ -106,7 +106,7 @@ export default {
           }
         },
         {
-          title: "采购数量",
+          title: "数量",
           key: "num",
           align: "center"
         },

@@ -126,7 +126,7 @@
                   <div class="print-flex-item flex-1 print-border-left">单位</div>
                   <div class="print-flex-item flex-1 print-border-left">单价</div>
                   <div class="print-flex-item flex-1 print-border-left">数量</div>
-                  <div class="print-flex-item flex-1 print-border-left">总价</div>
+                  <div class="print-flex-item flex-1 print-border-left">小计</div>
                   <div class="print-flex-item flex-1 print-border-left">备注</div>
                 </div>
                 <div class="print-order-content print-flex" v-for="item in printData.list" :key="item.xh">
@@ -187,7 +187,7 @@ export default {
             departName: " 单位",
             value: "219 单价",
             num: "数量",
-            zj: "总价",
+            zj: "小计",
             bz: " 备注"
           }
         ],

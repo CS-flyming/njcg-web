@@ -24,33 +24,38 @@ export default {
         },
         {
           title: "规格",
+           width:180,
           render: (h, params) => {
             return h("div", params.row.product.standard || "--");
           }
         },
         {
           title: "型号",
+          width:180,
           render: (h, params) => {
             return h("div", params.row.product.model || "--");
           }
         },
         {
           title: "价格",
+          width:180,
           render: (h, params) => {
             return h("div", params.row.product.value || "--");
           }
         },
         {
-          title: "采购数量",
-          key: "num",
-          align: "center"
+          title: "数量",
+          width:180,
+          key: "num"
         },
         {
-          title: "总价",
+          title: "小计",
+          width:180,
           key: "zj"
         },
         {
           title: "经费类型",
+           width:200,
           key: "typeDesc",
           align: "center"
         }
