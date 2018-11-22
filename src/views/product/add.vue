@@ -125,8 +125,9 @@ export default {
         name: [
           {
             required: true,
-            message: "请输入商品名称",
-            trigger: "blur"
+            message: "名称不能超过20",
+            trigger: "blur",
+            max: 20
           }
         ],
         value: [
