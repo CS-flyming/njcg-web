@@ -100,7 +100,7 @@ export default {
           }
         },
         {
-          title: "总价",
+          title: "小计",
           render: (h, params) => {
             return h("div", params.row.product.zj || "--");
           }

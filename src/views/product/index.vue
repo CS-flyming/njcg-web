@@ -113,6 +113,10 @@ export default {
           key: "value",
           title: "价格"
         },
+          {
+          key: "companyName",
+          title: "供货商"
+        },
         {
           key: "createTime",
           title: "添加时间"

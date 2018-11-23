@@ -27,6 +27,9 @@
              <FormItem label="商品编号：">
                 <span>{{form.code}}</span>
             </FormItem>
+            <FormItem label="供货商：">
+                <span>{{form.companyName}}</span>
+            </FormItem>
             <FormItem label="商品参数：">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
             </FormItem>

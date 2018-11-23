@@ -27,6 +27,9 @@
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
+             <FormItem label="供货商" prop="companyId">
+                <company-selector v-model="form.companyId"></company-selector>
+            </FormItem>
             <FormItem label="商品参数">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
                 <Row style="margin-top:10px;">
@@ -51,11 +54,13 @@
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
 import { getProductDetail, addOrUpdateProduct } from "@/actions/product";
+import companySelector from "components/company-selector";
 import productTypesSelector from "components/product-types-selector";
 export default {
   name: "product-add-edit",
   components: {
-    productTypesSelector
+    productTypesSelector,
+    companySelector
   },
   data() {
     return {
@@ -200,6 +205,7 @@ export default {
           formData.model = this.form.model;
           formData.standard = this.form.standard;
           formData.type = this.form.type;
+          formData.companyId = this.form.companyId;
           addOrUpdateProduct(formData).then(
             res => {
               this.loading = false;
@@ -250,7 +256,8 @@ export default {
         model: "",
         wjId: [],
         wjIds: [],
-        files: []
+        files: [],
+        companyId:""
       };
     }
   }

@@ -191,7 +191,7 @@ export default {
             departName: " 单位",
             value: "219 单价",
             num: "数量",
-            zj: "总价",
+            zj: "小计",
             bz: " 备注"
           }
         ],

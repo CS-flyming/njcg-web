@@ -65,3 +65,7 @@ export function addOrUpdateCompany(params) {
 export function getCompanyDetail(id) {
   return $axios.post(`/company/detail/${id}`);
 }
+
+export function getCompanySelect(params) {
+  return $axios.post("/select/company", params);
+}

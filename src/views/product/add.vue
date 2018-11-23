@@ -28,6 +28,9 @@
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
+             <FormItem label="供货商" prop="companyId">
+                <company-selector v-model="form.companyId"></company-selector>
+            </FormItem>
             <FormItem label="商品参数">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
                 <Row style="margin-top:10px;">
@@ -58,13 +61,15 @@
 <script>
 import { closeCurrentErrPage } from "@/constants/constant";
 import { addOrUpdateProduct } from "@/actions/product";
+import companySelector from "components/company-selector";
 import productTypesSelector from "components/product-types-selector";
 import imageUpload from "components/image-upload";
 export default {
   name: "product-add-add",
   components: {
     productTypesSelector,
-    imageUpload
+    imageUpload,
+    companySelector
   },
   data() {
     return {
@@ -118,6 +123,7 @@ export default {
         type: [],
         standard: "",
         model: "",
+        companyId:"",
         wjId: [],
         wjIds: []
       },
