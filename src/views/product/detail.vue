@@ -24,6 +24,9 @@
             <FormItem label="商品型号：">
                 <span>{{form.model}}</span>
             </FormItem>
+             <FormItem label="供货商：">
+                <span>{{form.companyName}}</span>
+            </FormItem>
             <FormItem label="商品参数：">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
             </FormItem>
@@ -80,7 +83,8 @@ export default {
         model: "",
         wjId: [],
         wjIds: [],
-        files: []
+        files: [],
+        companyName:""
       }
     };
   },

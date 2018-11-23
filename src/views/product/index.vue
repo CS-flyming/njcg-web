@@ -101,6 +101,10 @@ export default {
           key: "standard",
           title: "规格"
         },
+         {
+          key: "companyName",
+          title: "供货商"
+        },
         {
           key: "model",
           title: "型号"

@@ -6,7 +6,7 @@ import env from "../../build/env";
 import qs from "qs";
 export const ApiUrl =
   env === "development"
-    ? "http://106.14.180.49:9008"
+    ? "http://127.0.0.1:9001"
     : // "http://172.16.7.181:9001"
       env === "production"
       ? ""
