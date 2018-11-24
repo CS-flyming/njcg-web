@@ -28,9 +28,9 @@
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
-             <FormItem label="供货商" prop="companyId">
+             <!-- <FormItem label="供货商" prop="companyId">
                 <company-selector v-model="form.companyId"></company-selector>
-            </FormItem>
+            </FormItem> -->
             <FormItem label="商品参数">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
                 <Row style="margin-top:10px;">
@@ -131,9 +131,9 @@ export default {
         name: [
           {
             required: true,
-            message: "名称不能超过20",
+            message: "名称不能超过50",
             trigger: "blur",
-            max: 20
+            max: 50
           }
         ],
         value: [
