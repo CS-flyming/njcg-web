@@ -243,10 +243,7 @@ export default {
           key: "name",
           title: "名称"
         },
-        {
-          key: "standard",
-          title: "规格"
-        },
+     
         {
           key: "model",
           title: "型号"
