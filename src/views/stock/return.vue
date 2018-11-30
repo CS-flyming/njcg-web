@@ -118,7 +118,7 @@ export default {
         },
         {
           key: "allCount",
-          title: "总数"
+          title: "数量"
         },
         {
           key: "createTime",

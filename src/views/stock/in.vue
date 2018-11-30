@@ -237,7 +237,8 @@ export default {
         },
         {
           key: "name",
-          title: "名称"
+          title: "名称",
+           width: 300
         },
       
         {
@@ -246,7 +247,8 @@ export default {
         },
         {
           key: "allCount",
-          title: "总数"
+           width: 100,
+          title: "数量"
         },
         {
           key: "createTime",
