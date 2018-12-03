@@ -268,7 +268,7 @@ export default {
         {
           key: "name",
           title: "名称",
-          width: 200
+          width: 300
         },
         {
           key: "model",

@@ -76,7 +76,7 @@ module.exports = merge(webpackBaseConfig, {
       }
     ),
     new HtmlWebpackPlugin({
-      title: "物资采购管理服务平台",
+      title: "物资采购管理系统",
       // favicon: "./favicon.ico",
       filename: "../index.html",
       template: "!!ejs-loader!./src/template/index.ejs",

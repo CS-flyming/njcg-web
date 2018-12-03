@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { ApiUrl } from "../constants/constant";
 let util = {};
 util.title = function(title) {
-  title = "物资采购管理服务平台";
+  title = "物资采购管理系统";
   window.document.title = title;
 };
 

@@ -12,7 +12,7 @@
                 :open-names="openedSubmenuArr"
                 :menu-list="menuList">
                 <div slot="top" class="logo-con">
-                    <div class="logo-title" >物资采购管理服务平台</div>
+                    <div class="logo-title" >物资采购管理系统</div>
                     <div class="login-info">
                         <img src="../images/userinfo.png" class="avtor">
                         <div class="login-name">{{userName.userName}}</div>
