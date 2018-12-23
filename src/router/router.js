@@ -267,9 +267,15 @@ export const appRouter = [
       },
       {
         path: "finish",
-        title: "已完成",
+        title: "采购入库",
         name: "verify_finish",
         component: () => import("@/views/verify/finish.vue")
+      },
+      {
+        path: "all",
+        title: "已审核",
+        name: "verify_all",
+        component: () => import("@/views/verify/finishVerify.vue")
       },
       {
         path: "refuse",
@@ -283,6 +289,7 @@ export const appRouter = [
         name: "stock_return",
         component: () => import("@/views/verify/stock_return.vue")
       },
+    
       {
         path: "verify",
         title: "配发审核",
