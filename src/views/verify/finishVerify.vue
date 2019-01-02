@@ -69,39 +69,38 @@
             <Option value="2">自行采购</Option>
           </Select>
         </FormItem>
-        <FormItem label="紧急程度">
-          <Select v-model="filter.level" clearable>
-            <Option value="1">月度上报</Option>
-            <Option value="2">紧急购买</Option>
-          </Select>
-        </FormItem>
         <FormItem label="是否标准件">
-          <Select v-model="filter.level" clearable>
-            <Option value="1">月度上报</Option>
-            <Option value="2">紧急购买</Option>
+          <Select v-model="filter.normal" clearable>
+            <Option value="3">标准件</Option>
+            <Option value="4">非标准件</Option>
           </Select>
         </FormItem>
         <FormItem label="需求计划">
-          <Select v-model="filter.status" clearable>
-            <Option value="2018">2018</Option>
-            <Option value="2019">2019</Option>
-            <Option value="2020">2020</Option>
-            <Option value="2021">2021</Option>
-            <Option value="2022">2022</Option>
+          <Select v-model="filter.year" clearable>
+            <Option value="2018年">2018</Option>
+            <Option value="2019年">2019</Option>
+            <Option value="2020年">2020</Option>
+            <Option value="2021年">2021</Option>
+            <Option value="2022年">2022</Option>
+            <Option value="2023年">2022</Option>
+            <Option value="2024年">2022</Option>
+            <Option value="2025年">2022</Option>
+            <Option value="2026年">2022</Option>
+            <Option value="2027年">2022</Option>
           </Select>
-          <Select v-model="filter.status" multiple>
-            <Option value="1">1月</Option>
-            <Option value="2">2月</Option>
-            <Option value="3">3月</Option>
-            <Option value="4">4月</Option>
-            <Option value="5">5月</Option>
-            <Option value="6">6月</Option>
-            <Option value="7">7月</Option>
-            <Option value="8">8月</Option>
-            <Option value="9">9月</Option>
-            <Option value="10">10月</Option>
-            <Option value="11">11月</Option>
-            <Option value="12">12月</Option>
+          <Select v-model="filter.month" multiple>
+            <Option value="01月计划">1月</Option>
+            <Option value="02月计划">2月</Option>
+            <Option value="03月计划">3月</Option>
+            <Option value="04月计划">4月</Option>
+            <Option value="05月计划">5月</Option>
+            <Option value="06月计划">6月</Option>
+            <Option value="07月计划">7月</Option>
+            <Option value="08月计划">8月</Option>
+            <Option value="09月计划">9月</Option>
+            <Option value="10月计划">10月</Option>
+            <Option value="11月计划">11月</Option>
+            <Option value="12月计划">12月</Option>
           </Select>
         </FormItem>
         <FormItem label="状态">
@@ -209,7 +208,7 @@ let nzhcn = require("nzh/cn");
 import pagination from "components/pagination";
 import departCalSelector from "components/depart-cal-selector";
 import {
-  getVerifyFinishList,
+  getAllVerify,
   verifyFirstItem,
   verifyOutAction,
   getPrintOrderData
@@ -278,9 +277,17 @@ export default {
           key: "levelDesc",
           title: "紧急程度"
         },
+         {
+          key: "jjyy",
+          title: "紧急原因"
+        },
         {
           key: "typeDesc",
           title: "采购类型"
+        },
+          {
+          key: "normalDesc",
+          title: "采购标准"
         },
         {
           key: "createName",
@@ -421,61 +428,7 @@ export default {
             ]);
           }
         }
-        // {
-        //   type: "action",
-        //   title: "操作",
-        //   width: 200,
-        //   render: (h, params) => {
-        //     return h(
-        //       "Button",
-        //       {
-        //         on: {
-        //           click: () => {
-        //             this.verifyForm.id = params.row.id;
-        //             this.showVerifyModal = true;
-        //           }
-        //         },
-        //         props: {
-        //           type: "primary"
-        //         }
-        //       },
-        //       "初审"
-        //     );
-        //     // return h("div", [
-        //     //   h(
-        //     //     "Poptip",
-        //     //     {
-        //     //       props: {
-        //     //         confirm: true,
-        //     //         title: "您确定要删除?",
-        //     //         transfer: true
-        //     //       },
-        //     //       on: {
-        //     //         "on-ok": () => {
-        //     //           this.verifyForm.id = params.row.id;
-        //     //           this.showVerifyModal = true;
-        //     //         }
-        //     //       }
-        //     //     },
-        //     //     [
-        //     //       h(
-        //     //         "Button",
-        //     //         {
-        //     //           style: {
-        //     //             margin: "0 5px"
-        //     //           },
-        //     //           props: {
-        //     //             type: "error",
-        //     //             placement: "top"
-        //     //           }
-        //     //         },
-        //     //         "删除"
-        //     //       )
-        //     //     ]
-        //     //   )
-        //     // ]);
-        //   }
-        // }
+     
       ],
       filter: {
         limit: 10,
@@ -484,6 +437,9 @@ export default {
         type: "",
         name: "",
         status: "",
+        year:"",
+        normal:"",
+        month:[],
         _departId: [],
         departId: ""
       },
@@ -497,7 +453,7 @@ export default {
     },
     loadData() {
       this.loading = true;
-      getVerifyFinishList(this.filter).then(res => {
+      getAllVerify(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;

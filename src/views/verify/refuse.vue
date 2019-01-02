@@ -97,6 +97,14 @@ export default {
           key: "levelDesc",
           title: "紧急程度"
         },
+         {
+          key: "jjyy",
+          title: "紧急原因"
+        },
+          {
+          key: "normalDesc",
+          title: "采购标准"
+        },
         {
           key: "typeDesc",
           title: "采购类型"

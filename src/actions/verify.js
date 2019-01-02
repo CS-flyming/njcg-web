@@ -67,3 +67,7 @@ export function verifyOutAction(id) {
 export function getPrintOrderData(id) {
   return $axios.post(`/data/order/${id}`);
 }
+export function getAllVerify(params) {
+  return $axios.post("verify/list/verify/finish", params);
+}
+
