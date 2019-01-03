@@ -1,0 +1,256 @@
+<style lang="less">
+</style>
+
+<template>
+  <div>
+    <Card class="filter-wrap">
+      <Form
+        @submit.native.prevent="handleFilter"
+        :model="filter"
+        ref="filterForm"
+        label-position="right"
+        :label-width="120"
+      >
+        <FormItem label="项目名称">
+          <Input v-model="filter.name" style="width:100%;"/>
+        </FormItem>
+        <FormItem label="经费类型">
+          <Select v-model="filter.type" clearable>
+            <Option value="5">装备经费</Option>
+            <Option value="6">后勤经费</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="招标方式">
+          <Select v-model="filter.method" clearable>
+            <Option value="1">询价</Option>
+            <Option value="2">邀请招标</Option>
+            <Option value="3">公开招标</Option>
+            <Option value="4">单一来源</Option>
+            <Option value="5">竞争性谈判</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="起止时间">
+          <dateRgSelector
+            style="width:100%;"
+            v-model="filter._dateRange"
+            :start-date.sync="filter.startTime"
+            :end-date.sync="filter.endTime"
+            clearable
+          />
+        </FormItem>
+           <FormItem label="需求部门">
+                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
+                </FormItem>
+        <FormItem class="submit">
+          <Button type="primary" html-type="submit">筛选</Button>
+        </FormItem>
+      </Form>
+    </Card>
+
+    <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
+    <pagination
+      :total="total"
+      :limit.sync="filter.limit"
+      :offset.sync="filter.offset"
+      @on-load="loadData"
+    ></pagination>
+    <Modal v-model="showVerifyModal" title="复审" @on-cancel="handleCacelModal">
+      <Form
+        :model="verifyForm"
+        ref="verifyForm"
+        label-position="right"
+        :label-width="120"
+        :rules="rules"
+      >
+        <FormItem label="审核状态" prop="status">
+          <RadioGroup v-model="verifyForm.status">
+            <Radio label="1">通过</Radio>
+            <Radio label="2">拒绝</Radio>
+          </RadioGroup>
+        </FormItem>
+        <FormItem label="拒绝原因" v-if="verifyForm.status=='3'" prop="reason">
+          <Input v-model="verifyForm.reason" placeholder="拒绝原因"/>
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">初审</Button>
+      </div>
+    </Modal>
+  </div>
+</template>
+
+<script>
+import pagination from "components/pagination";
+import dateRgSelector from "components/date-rg-selector";
+import { getBidSecondList,verifyBid } from "@/actions/bid";
+import departCalSelector from "components/depart-cal-selector";
+export default {
+  name: "bid_second",
+  data() {
+    return {
+      loading: false,
+      modalLoading:false,
+      verifyForm: {
+        id: "",
+        status: "1",
+        reason: ""
+      },
+      showVerifyModal: false,
+
+      rules: {
+        reason: [
+          {
+            required: true,
+            message: "请输入拒绝原因",
+            trigger: "blur"
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: "请选择审核状态",
+            trigger: "change"
+          }
+        ]
+      },
+      columns: [
+        {
+          title: "项目名称",
+          key: "name",
+          align: "center"
+        },
+        {
+          title: "项目需求",
+          key: "xmxq",
+          align: "center"
+        },
+        {
+          title: "招标方式",
+          key: "methodDesc",
+          align: "center"
+        },
+        {
+          title: "经费类型",
+          key: "typeDesc",
+          align: "center"
+        },
+        {
+          title: "经费预算",
+          key: "planMoney",
+          align: "center"
+        },
+        {
+          title: "需求部门",
+
+          key: "departName",
+          align: "center"
+        },
+        {
+          title: "开始时间",
+          key: "startTime",
+          align: "center"
+        },
+        {
+          title: "结束时间",
+          key: "endTime",
+          align: "center"
+         },
+         
+        {
+          title: "状态",
+          key: "statusDesc",
+          align: "center"
+        },
+          {
+          title: "备注",
+          key: "info",
+          align: "center"
+        },
+        {
+          type: "action",
+          title: "操作",
+          align: "center",
+          render: (h, params) => {
+            return h(
+              "Button",
+              {
+                on: {
+                  click: () => {
+                    this.verifyForm.id = params.row.id;
+                    this.showVerifyModal = true;
+                  }
+                },
+                props: {
+                  type: "primary"
+                }
+              },
+              "复审"
+            );
+          }
+        }
+      ],
+     filter: {
+        limit: 10,
+        offset: 0,
+        name: "",
+        method: "",
+        type: "",
+        _dateRange: ["", ""],
+        startTime: "",
+        endTime: "",
+         _departId: [],
+        departId: ""
+      },
+      data: [],
+      total: 0
+    };
+  },
+  methods: {
+    loadData() {
+      this.loading = true;
+      getBidSecondList(this.filter).then(res => {
+        this.loading = false;
+        this.data = res.data.rows;
+        this.total = res.data.total;
+      });
+    },
+    handleFilter() {
+      this.filter.offset = 0;
+      this.loadData();
+    },
+    resetVerifyForm() {
+      this.verifyForm = {
+        id: "",
+        status: "1",
+        reason: ""
+      };
+    },
+    handleCacelModal() {
+      this.showVerifyModal = false;
+      this.resetVerifyForm();
+    },
+    handleVerifyFirst() {
+      this.$refs["verifyForm"].validate(valid => {
+        if (valid) {
+          this.modalLoading = true;
+          verifyBid(this.verifyForm).then(
+            res => {
+              this.modalLoading = false;
+              this.handleCacelModal();
+              this.loadData();
+            },
+            () => {
+              this.modalLoading = false;
+            }
+          );
+        }
+      });
+    }
+  },
+  components: {
+    pagination,
+    dateRgSelector,
+    departCalSelector
+  }
+};
+</script>

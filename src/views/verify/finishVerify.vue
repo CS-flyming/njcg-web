@@ -88,7 +88,7 @@
             <Option value="2026年">2022</Option>
             <Option value="2027年">2022</Option>
           </Select>
-          <Select v-model="filter.month" multiple>
+          <Select v-model="filter.month" placeholder="请选择月份" multiple>
             <Option value="01月计划">1月</Option>
             <Option value="02月计划">2月</Option>
             <Option value="03月计划">3月</Option>

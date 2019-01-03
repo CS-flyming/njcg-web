@@ -265,12 +265,7 @@ export const appRouter = [
         name: "verify_second",
         component: () => import("@/views/verify/second.vue")
       },
-      {
-        path: "finish",
-        title: "采购入库",
-        name: "verify_finish",
-        component: () => import("@/views/verify/finish.vue")
-      },
+    
       {
         path: "all",
         title: "已审核",
@@ -346,18 +341,6 @@ export const appRouter = [
         name: "stock_verify",
         component: () => import("@/views/stock/verify.vue")
       }
-      // {
-      //   path: "refuse",
-      //   title: "驳回",
-      //   name: "verify_refuse",
-      //   component: () => import("@/views/verify/refuse.vue")
-      // },
-      // {
-      //   path: "stock_return",
-      //   title: "退货审核",
-      //   name: "stock_return",
-      //   component: () => import("@/views/verify/stock_return.vue")
-      // },
     ]
   },
   {
@@ -481,6 +464,44 @@ export const appRouter = [
         title: "需求计划",
         name: "plan_list",
         component: () => import("@/views/plan/list.vue")
+      },
+      {
+        path: "finish",
+        title: "月采购计划",
+        name: "verify_finish",
+        component: () => import("@/views/verify/finish.vue")
+      },
+    ]
+  },
+  {
+    path: "/bid",
+    name: "bid",
+    title: "招投标 ",
+    component: Main,
+    children: [
+      {
+        path: "my",
+        title: "我的",
+        name: "bid_my",
+        component: () => import("@/views/bid/my.vue")
+      },
+      {
+        path: "first",
+        title: "初审",
+        name: "bid_first",
+        component: () => import("@/views/bid/first.vue")
+      },
+      {
+        path: "second",
+        title: "复审",
+        name: "bid_second",
+        component: () => import("@/views/bid/second.vue")
+      },
+      {
+        path: "finish",
+        title: "已审核",
+        name: "bid_finish",
+        component: () => import("@/views/bid/finish.vue")
       }
     ]
   }
