@@ -28,32 +28,13 @@
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
-        <Modal
-            v-model="showVerifyModal"
-            title="审核"
-            @on-cancel="handleCacelModal"
-           >
-           <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
-                <FormItem label="审核状态" prop="status">
-                   <RadioGroup v-model="verifyForm.status">
-                      <Radio label="1">通过</Radio>
-                      <Radio label="2">拒绝</Radio>
-                  </RadioGroup>
-                </FormItem>
-                <FormItem label="拒绝原因" v-if="verifyForm.status=='2'" prop="reason">
-                    <Input v-model="verifyForm.reason" placeholder="拒绝原因"  />
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">审核</Button>
-            </div>
-        </Modal>
+        
     </div>
 </template>
 
 <script>
 import pagination from "components/pagination";
-import { getVerifyReturnList, verifyReturnAction } from "@/actions/verify";
+import {getStockReturnFinish } from "@/actions/verify";
 export default {
   name: "stock_return",
   data() {
@@ -79,7 +60,7 @@ export default {
       },
       verifyForm: {
         id: "",
-        status: "1",
+        status: "2",
         reason: ""
       },
       columns: [
@@ -106,33 +87,6 @@ export default {
         {
           key: "returnDesc",
           title: "状态"
-        },
-        
-           {
-          title: "操作",
-          render: (h, params) => {
-            let btn =
-              params.row.returnStatus == 1
-                ? h(
-                    "Button",
-                    {
-                      on: {
-                        click: () => {
-                          this.verifyForm.id = params.row.id;
-                          this.showVerifyModal = true;
-                        }
-                      },
-                      props: {
-                        type: "primary"
-                      }
-                    },
-                    "初审"
-                  )
-                : h();
-            return h("div", [
-              btn
-            ]);
-          }
         }
       ],
       filter: {
@@ -148,7 +102,7 @@ export default {
   methods: {
     loadData() {
       this.loading = true;
-      getVerifyReturnList(this.filter).then(res => {
+      getStockReturnFinish(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;
@@ -161,31 +115,11 @@ export default {
     resetVerifyForm() {
       this.verifyForm = {
         id: "",
-        status: "1",
+        status: "2",
         reason: ""
       };
-    },
-    handleCacelModal() {
-      this.showVerifyModal = false;
-      this.resetVerifyForm();
-    },
-    handleVerifyFirst() {
-      this.$refs["verifyForm"].validate(valid => {
-        if (valid) {
-          this.modalLoading = true;
-          verifyReturnAction(this.verifyForm).then(
-            res => {
-              this.modalLoading = false;
-              this.handleCacelModal();
-              this.loadData();
-            },
-            () => {
-              this.modalLoading = false;
-            }
-          );
-        }
-      });
     }
+    
   },
   components: {
     pagination

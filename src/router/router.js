@@ -280,11 +280,22 @@ export const appRouter = [
       },
       {
         path: "stock_return",
-        title: "退货审核",
+        title: "退货初审",
         name: "stock_return",
         component: () => import("@/views/verify/stock_return.vue")
       },
-    
+      {
+        path: "stock_second",
+        title: "退货复审",
+        name: "stock_second",
+        component: () => import("@/views/verify/stock_second.vue")
+      },
+      {
+        path: "stock_finish",
+        title: "退货已审核",
+        name: "stock_finish",
+        component: () => import("@/views/verify/stock_finish.vue")
+      },
       {
         path: "verify",
         title: "配发审核",

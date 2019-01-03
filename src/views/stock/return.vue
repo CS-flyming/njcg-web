@@ -132,16 +132,8 @@ export default {
           title: "入库类型"
         },
         {
-          key: "statusDesc",
+          key: "returnDesc",
           title: "状态"
-        },
-        {
-          key: "useCount",
-          title: "在库数量"
-        },
-        {
-          key: "lendCount",
-          title: "已划拨数量"
         }
         // {
         //   type: "action",

@@ -40,13 +40,7 @@ export function getVerifyRefuseList(params) {
   return $axios.post("/verify/list/refuse", params);
 }
 
-/**
- * 退货审核
- * @param {*} params
- */
-export function getStockReturnList(params) {
-  return $axios.post("/stock/list/return", params);
-}
+
 
 export function getOrderDetail(id) {
   return $axios.post(`/order/find/${id}`);
@@ -69,5 +63,21 @@ export function getPrintOrderData(id) {
 }
 export function getAllVerify(params) {
   return $axios.post("verify/list/verify/finish", params);
+}
+
+/**
+ * 退货审核
+ * @param {*} params
+ */
+export function getStockReturnList(params) {
+  return $axios.post("/verify/list/return", params);
+}
+
+export function getStockReturnSecond(params) {
+  return $axios.post("/verify/list/return/second", params);
+}
+
+export function getStockReturnFinish(params) {
+  return $axios.post("/verify/list/return/finish", params);
 }
 

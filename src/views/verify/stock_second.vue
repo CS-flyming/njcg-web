@@ -53,9 +53,9 @@
 
 <script>
 import pagination from "components/pagination";
-import { getVerifyReturnList, verifyReturnAction } from "@/actions/verify";
+import { getStockReturnSecond, verifyReturnAction } from "@/actions/verify";
 export default {
-  name: "stock_return",
+  name: "stock_finish",
   data() {
     return {
       loading: false,
@@ -112,8 +112,7 @@ export default {
           title: "操作",
           render: (h, params) => {
             let btn =
-              params.row.returnStatus == 1
-                ? h(
+            h(
                     "Button",
                     {
                       on: {
@@ -126,9 +125,9 @@ export default {
                         type: "primary"
                       }
                     },
-                    "初审"
+                    "复审"
                   )
-                : h();
+                
             return h("div", [
               btn
             ]);
@@ -148,7 +147,7 @@ export default {
   methods: {
     loadData() {
       this.loading = true;
-      getVerifyReturnList(this.filter).then(res => {
+      getStockReturnSecond(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;
