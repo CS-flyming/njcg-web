@@ -81,3 +81,20 @@ export function getStockReturnFinish(params) {
   return $axios.post("/verify/list/return/finish", params);
 }
 
+
+/**
+ * 完成
+ * @param {*} params
+ */
+export function getjjcgList(params) {
+  return $axios.post("/verify/list/jjcg", params);
+}
+
+
+/**
+ * 完成
+ * @param {*} params
+ */
+export function getNonormalList(params) {
+  return $axios.post("/verify/list/nonormal", params);
+}

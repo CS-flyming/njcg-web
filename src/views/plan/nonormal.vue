@@ -30,7 +30,6 @@
   min-height: 20px;
   padding: 2px;
 }
-
 .print-border-left {
   border-left: 1px solid #888;
 }
@@ -68,6 +67,12 @@
           <Select v-model="filter.type" clearable>
             <Option value="1">集中采购</Option>
             <Option value="2">自行采购</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="紧急程度">
+          <Select v-model="filter.level" clearable>
+            <Option value="1">月度上报</Option>
+            <Option value="2">紧急购买</Option>
           </Select>
         </FormItem>
         <FormItem label="需求计划">
@@ -116,7 +121,7 @@
       </Form>
     </Card>
     <div class="data-control">
-      <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">导出</Button>
+      <Button type="primary" @click="$downloadByForm('/export/verify/nonormal',filter)">导出</Button>
     </div>
     <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
     <pagination
@@ -185,8 +190,8 @@
             <div class="print-flex-item flex-1 print-border-left"></div>
           </div>
           <div class="print-order-content print-flex">
-            <div class="print-flex-item">核准数合计（大写）：{{printData.dxzj}}</div>
-             </div>
+            <div class="print-flex-item">核准数合计（大写）：{{printData.dxzj}}</div>          
+          </div>
           <div class="print-order-content print-flex">
             <div class="print-flex-item">股（连）长：</div>
             <div class="print-flex-item print-border-left">仓库负责人：</div>
@@ -203,13 +208,13 @@ let nzhcn = require("nzh/cn");
 import pagination from "components/pagination";
 import departCalSelector from "components/depart-cal-selector";
 import {
-  getVerifyFinishList,
+  getNonormalList,
   verifyFirstItem,
   verifyOutAction,
   getPrintOrderData
 } from "@/actions/verify";
 export default {
-  name: "verify_finish",
+  name: "plan_nonormal",
   data() {
     return {
       loading: false,
@@ -267,6 +272,14 @@ export default {
           render: (h, params) => {
             return h("div", params.row.zj ? params.row.zj + "元" : "--");
           }
+        },
+        {
+          key: "levelDesc",
+          title: "紧急程度"
+        },
+        {
+          key: "jjyy",
+          title: "紧急原因"
         },
         {
           key: "typeDesc",
@@ -508,7 +521,7 @@ export default {
     },
     loadData() {
       this.loading = true;
-      getVerifyFinishList(this.filter).then(res => {
+      getNonormalList(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;

@@ -482,12 +482,24 @@ export const appRouter = [
         name: "verify_finish",
         component: () => import("@/views/verify/finish.vue")
       },
+      {
+        path: "jjcg",
+        title: "紧急采购",
+        name: "plan_jjcg",
+        component: () => import("@/views/plan/jjcg.vue")
+      },
+      {
+        path: "nonormal",
+        title: "非标准件采购",
+        name: "plan_nonormal",
+        component: () => import("@/views/plan/nonormal.vue")
+      },
     ]
   },
   {
     path: "/bid",
     name: "bid",
-    title: "招投标 ",
+    title: "招投标受理 ",
     component: Main,
     children: [
       {

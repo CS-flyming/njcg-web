@@ -30,7 +30,6 @@
   min-height: 20px;
   padding: 2px;
 }
-
 .print-border-left {
   border-left: 1px solid #888;
 }
@@ -70,35 +69,7 @@
             <Option value="2">自行采购</Option>
           </Select>
         </FormItem>
-        <FormItem label="需求计划">
-          <Select v-model="filter.year" clearable>
-            <Option value="2018年">2018</Option>
-            <Option value="2019年">2019</Option>
-            <Option value="2020年">2020</Option>
-            <Option value="2021年">2021</Option>
-            <Option value="2022年">2022</Option>
-            <Option value="2023年">2022</Option>
-            <Option value="2024年">2022</Option>
-            <Option value="2025年">2022</Option>
-            <Option value="2026年">2022</Option>
-            <Option value="2027年">2022</Option>
-          </Select>
-          <Select v-model="filter.month" placeholder="请选择月份" multiple>
-            <Option value="01月计划">1月</Option>
-            <Option value="02月计划">2月</Option>
-            <Option value="03月计划">3月</Option>
-            <Option value="04月计划">4月</Option>
-            <Option value="05月计划">5月</Option>
-            <Option value="06月计划">6月</Option>
-            <Option value="07月计划">7月</Option>
-            <Option value="08月计划">8月</Option>
-            <Option value="09月计划">9月</Option>
-            <Option value="10月计划">10月</Option>
-            <Option value="11月计划">11月</Option>
-            <Option value="12月计划">12月</Option>
-          </Select>
-        </FormItem>
-        <FormItem label="状态">
+     <FormItem label="状态">
           <Select v-model="filter.status" clearable>
             <Option value="3">拒绝</Option>
             <Option value="5">审核通过</Option>
@@ -116,7 +87,7 @@
       </Form>
     </Card>
     <div class="data-control">
-      <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">导出</Button>
+      <Button type="primary" @click="$downloadByForm('/export/verify/jjcg',filter)">导出</Button>
     </div>
     <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
     <pagination
@@ -185,7 +156,7 @@
             <div class="print-flex-item flex-1 print-border-left"></div>
           </div>
           <div class="print-order-content print-flex">
-            <div class="print-flex-item">核准数合计（大写）：{{printData.dxzj}}</div>
+                <div class="print-flex-item">核准数合计（大写）：{{printData.dxzj}}</div>          
              </div>
           <div class="print-order-content print-flex">
             <div class="print-flex-item">股（连）长：</div>
@@ -203,13 +174,13 @@ let nzhcn = require("nzh/cn");
 import pagination from "components/pagination";
 import departCalSelector from "components/depart-cal-selector";
 import {
-  getVerifyFinishList,
+  getjjcgList,
   verifyFirstItem,
   verifyOutAction,
   getPrintOrderData
 } from "@/actions/verify";
 export default {
-  name: "verify_finish",
+  name: "plan_jjcg",
   data() {
     return {
       loading: false,
@@ -267,6 +238,10 @@ export default {
           render: (h, params) => {
             return h("div", params.row.zj ? params.row.zj + "元" : "--");
           }
+        },
+        {
+          key: "jjyy",
+          title: "紧急原因"
         },
         {
           key: "typeDesc",
@@ -508,7 +483,7 @@ export default {
     },
     loadData() {
       this.loading = true;
-      getVerifyFinishList(this.filter).then(res => {
+      getjjcgList(this.filter).then(res => {
         this.loading = false;
         this.data = res.data.rows;
         this.total = res.data.total;
