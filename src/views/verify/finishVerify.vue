@@ -189,9 +189,8 @@
             <div class="print-flex-item flex-1 print-border-left"></div>
           </div>
           <div class="print-order-content print-flex">
-            <div class="print-flex-item">核准数合计（大写）：</div>
-           <div class="print-float-right mg-rt-8">{{printData.dxzj}}</div>
-         </div>
+            <div class="print-flex-item">核准数合计（大写）：{{printData.dxzj}}</div>
+          </div>
           <div class="print-order-content print-flex">
             <div class="print-flex-item">股（连）长：</div>
             <div class="print-flex-item print-border-left">仓库负责人：</div>
