@@ -330,7 +330,7 @@ export const appRouter = [
       },
       {
         path: "out",
-        title: "出库信息",
+        title: "发付信息",
         name: "stock_out",
         component: () => import("@/views/stock/out.vue")
       },
@@ -348,7 +348,7 @@ export const appRouter = [
       },
       {
         path: "verify",
-        title: "出库审核",
+        title: "发付审核",
         name: "stock_verify",
         component: () => import("@/views/stock/verify.vue")
       }
@@ -357,18 +357,18 @@ export const appRouter = [
   {
     path: "/lend",
     name: "lend",
-    title: "划拨管理",
+    title: "借出管理",
     component: Main,
     children: [
       {
         path: "his",
-        title: "已划拨",
+        title: "已借出",
         name: "lend_his",
         component: () => import("@/views/lend/his.vue")
       },
       {
         path: "my",
-        title: "接受划拨",
+        title: "接受借出",
         name: "lend_my",
         component: () => import("@/views/lend/my.vue")
       },

@@ -25,37 +25,7 @@
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
-        <!-- <Modal
-            v-model="showVerifyModal"
-            title="出库"
-            @on-cancel="handleCacelModal"
-           >
-           <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">
-                <FormItem label="出库数量" prop="count">
-                     <InputNumber :max="verifyForm.limit" :min="1" v-model="verifyForm.count" style="width:100%;"/>
-                </FormItem>
-                <FormItem label="出库用户" prop="userId">
-                    <userSelector v-model="verifyForm.userId"/>    
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">出库</Button>
-            </div>
-        </Modal>
-        <Modal
-            v-model="showVerifyModal2"
-            title="报废物品"
-            @on-cancel="handleCacelModal2"
-           >
-           <Form :model="verifyForm2" ref="verifyForm2" label-position="right" :label-width="120" :rules="rules2">
-                <FormItem label="报废原因" prop="reason">
-                    <Input v-model="verifyForm2.reason" placeholder="报废原因"  />
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst2" :loading="modalLoading2">报废</Button>
-            </div>
-        </Modal> -->
+      
     </div>
 </template>
 
@@ -78,7 +48,7 @@ export default {
         userId: [
           {
             required: true,
-            message: "请选择出库用户",
+            message: "请选择发付用户",
             trigger: "change"
           }
         ],
@@ -86,7 +56,7 @@ export default {
           {
             required: true,
             type: "number",
-            message: "请输入出库数量",
+            message: "请输入发付数量",
             trigger: "blur"
           }
         ]
@@ -125,7 +95,7 @@ export default {
         },
         {
           key: "lendCount",
-          title: "划拨数量"
+          title: "借出数量"
         },
         {
           key: "reason",

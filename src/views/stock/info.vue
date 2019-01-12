@@ -66,19 +66,19 @@
         </Modal>
         <Modal
             v-model="showVerifyModal3"
-            title="划拨"
+            title="借出"
             @on-cancel="handleCacelModal3"
            >
            <Form :model="verifyForm3" ref="verifyForm3" label-position="right" :label-width="120" :rules="rules3">
-                <FormItem label="划拨数量" prop="count">
+                <FormItem label="借出数量" prop="count">
                      <InputNumber :max="verifyForm3.limit" :min="1" v-model="verifyForm3.count" style="width:100%;"/>
                 </FormItem>
-                <FormItem label="划拨用户" prop="userId">
+                <FormItem label="借出用户" prop="userId">
                     <userLendSelector v-model="verifyForm3.userId"/>    
                 </FormItem>
             </Form>
             <div slot="footer">
-                  <Button type="primary" @click="handleVerifyFirst3" :loading="modalLoading3">划拨</Button>
+                  <Button type="primary" @click="handleVerifyFirst3" :loading="modalLoading3">借出</Button>
             </div>
         </Modal>
         <Modal
@@ -188,7 +188,7 @@ export default {
         userId: [
           {
             required: true,
-            message: "请选择划拨用户",
+            message: "请选择借出用户",
             trigger: "change"
           }
         ],
@@ -196,7 +196,7 @@ export default {
           {
             required: true,
             type: "number",
-            message: "请输入划拨数量",
+            message: "请输入借出数量",
             trigger: "blur"
           }
         ]
@@ -296,7 +296,7 @@ export default {
         },
         {
           key: "lendCount",
-          title: "已划拨数量"
+          title: "已借出数量"
         },
         {
           key: "location",
@@ -313,16 +313,29 @@ export default {
         {
           type: "action",
           title: "操作",
-          width: 240,
+          width: 260,
           render: (h, params) => {
             let div1 = h(
               "div",
-              {
-                style: {
-                  marginTop: "8px"
-                }
-              },
+            
               [
+                 h(
+                  "Button",
+                  {
+                    on: {
+                      click: () => {
+                        this.verifyForm4.id = params.row.id;
+                        this.verifyForm4.limit = params.row.useCount;
+                        this.showVerifyModal4 = true;
+                      }
+                    },
+                  
+                    props: {
+                      type: "error"
+                    }
+                  },
+                  "消耗"
+                ),
                 h(
                   "Button",
                   {
@@ -333,31 +346,17 @@ export default {
                         this.showVerifyModal2 = true;
                       }
                     },
+                     
+                        style: {
+                          margin: "0 5px"
+                        },
                     props: {
                       type: "error"
                     }
                   },
                   "报废"
                 ),
-                h(
-                  "Button",
-                  {
-                    on: {
-                      click: () => {
-                        this.verifyForm4.id = params.row.id;
-                        this.verifyForm4.limit = params.row.useCount;
-                        this.showVerifyModal4 = true;
-                      }
-                    },
-                    style: {
-                      marginLeft: "8px"
-                    },
-                    props: {
-                      type: "error"
-                    }
-                  },
-                  "消耗"
-                ),
+               
                 h(
                   "Poptip",
                   {
@@ -393,7 +392,13 @@ export default {
                 )
               ]
             );
-            let div2 = h("div", [
+            let div2 = h("div", 
+             {
+                style: {
+                  marginTop: "8px"
+                }
+              },
+            [
               h(
                 "Button",
                 {
@@ -408,7 +413,7 @@ export default {
                     type: "primary"
                   }
                 },
-                "出库"
+                "发付"
               ),
               h(
                 "Button",
@@ -428,7 +433,7 @@ export default {
                     type: "primary"
                   }
                 },
-                "划拨"
+                "借出"
               )
             ]);
             let div3 = h(
@@ -463,7 +468,7 @@ export default {
                   padding: "5px"
                 }
               },
-              [div2, div1, div3]
+              [div1, div2, div3]
             );
             // return h("div", [
             //   h(
@@ -593,7 +598,7 @@ export default {
           this.modalLoading = true;
           stockOutAction(this.verifyForm).then(
             res => {
-              this.$lf.message("出库成功", "success");
+              this.$lf.message("发付成功", "success");
               this.modalLoading = false;
               this.handleCacelModal();
               this.loadData();
@@ -629,7 +634,7 @@ export default {
           this.modalLoading3 = true;
           lendHisAction(this.verifyForm3).then(
             res => {
-              this.$lf.message("划拨成功", "success");
+              this.$lf.message("借出成功", "success");
               this.modalLoading3 = false;
               this.handleCacelModal3();
               this.loadData();

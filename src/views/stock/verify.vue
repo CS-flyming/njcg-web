@@ -125,7 +125,7 @@ export default {
         },
         {
           key: "lendCount",
-          title: "已划拨数量"
+          title: "已借出数量"
         },
         {
           type: "action",

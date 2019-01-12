@@ -36,7 +36,7 @@
 import pagination from "components/pagination";
 import {getStockReturnFinish } from "@/actions/verify";
 export default {
-  name: "stock_return",
+  name: "stock_finish",
   data() {
     return {
       loading: false,

@@ -120,7 +120,7 @@ export default {
         },
         {
           key: "lendCount",
-          title: "划拨数量"
+          title: "借出数量"
         },
         {
           key: "reason",
