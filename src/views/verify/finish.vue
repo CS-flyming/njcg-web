@@ -116,7 +116,7 @@
       </Form>
     </Card>
     <div class="data-control">
-      <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">导出</Button>
+      <Button type="primary" @click="$downloadByForm('/export/verify/finish',filter)">分类导出</Button>
     </div>
     <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
     <pagination
