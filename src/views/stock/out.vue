@@ -254,6 +254,10 @@ export default {
           key: "outCount",
           title: "出库数量"
         },
+          {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "statusDesc",
           title: "状态"

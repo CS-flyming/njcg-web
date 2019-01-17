@@ -282,6 +282,10 @@ export default {
           key: "allCount",
           title: "总数"
         },
+         {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "typeDesc",
           title: "入库类型"
