@@ -122,6 +122,10 @@ export default {
           key: "lendCount",
           title: "借出数量"
         },
+         {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "reason",
           title: "拒绝理由"

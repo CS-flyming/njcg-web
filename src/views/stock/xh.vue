@@ -66,7 +66,7 @@
             </Form>
         </Card>
         <div class="data-control">
-             <Button type="primary" @click="handleDaochu">打印消耗</Button>
+             <Button type="primary" @click="handleDaochu">打印消耗单</Button>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data" @on-selection-change="handleSelect"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
@@ -230,6 +230,10 @@ export default {
         {
           key: "num",
           title: "消耗量"
+        },
+            {
+          key: "unit",
+          title: "单位"
         },
         {
           key: "xhName",

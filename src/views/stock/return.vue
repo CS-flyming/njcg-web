@@ -62,7 +62,7 @@ import dateRgSelector from "components/date-rg-selector";
 // import userSelector from "components/user-selector";
 import { getStockReturnList } from "@/actions/stock";
 export default {
-  name: "stock_return",
+  name: "stock_refund",
   data() {
     return {
       loading: false,
@@ -122,6 +122,10 @@ export default {
         {
           key: "allCount",
           title: "总数"
+        },
+        {
+          key: "unit",
+          title: "单位"
         },
         {
           key: "createTime",

@@ -123,6 +123,10 @@ export default {
           key: "num",
           title: "报废量"
         },
+          {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "value",
           title: "价格"

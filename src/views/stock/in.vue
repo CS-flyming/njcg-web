@@ -251,6 +251,10 @@ export default {
           title: "总数"
         },
         {
+          key: "unit",
+          title: "单位"
+        },
+        {
           key: "createTime",
           title: "入库时间"
         },
