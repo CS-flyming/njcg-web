@@ -23,7 +23,9 @@
             <FormItem label="商品规格" prop="standard" >
                 <Input v-model="form.standard" placeholder="商品规格"  />
             </FormItem>
-            
+             <FormItem label="单位" prop="unit" >
+                <Input v-model="form.unit" placeholder="单位"  />
+            </FormItem>
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
@@ -84,7 +86,8 @@ export default {
         name: "",
         value: 0,
         standard: "",
-        model: ""
+        model: "",
+        unit:""
       },
       rules: {
         name: [
@@ -113,7 +116,7 @@ export default {
         standard: [
           {
             required: false,
-            message: "请输入商品规格1",
+            message: "请输入商品规格",
             trigger: "blur"
           }
         ],
@@ -206,6 +209,7 @@ export default {
           formData.standard = this.form.standard;
           formData.type = this.form.type;
           formData.companyId = this.form.companyId;
+          formData.unit = this.form.unit;
           addOrUpdateProduct(formData).then(
             res => {
               this.loading = false;
@@ -257,7 +261,8 @@ export default {
         wjId: [],
         wjIds: [],
         files: [],
-        companyId:""
+        companyId:"",
+        unit:""
       };
     }
   }

@@ -46,6 +46,12 @@ export default {
           align: "center"
         },
         {
+          title: "单位",
+           render: (h, params) => {
+           return h("div", params.row.product.unit || "--");
+          }
+        },
+        {
           title: "总价",
           key: "zj"
         },

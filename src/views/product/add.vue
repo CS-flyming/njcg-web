@@ -25,6 +25,9 @@
             <FormItem label="商品规格" prop="standard" >
                 <Input v-model="form.standard" placeholder="商品规格"  />
             </FormItem>
+             <FormItem label="单位" prop="unit" >
+                <Input v-model="form.unit" placeholder="单位"  />
+            </FormItem>
             <FormItem label="商品型号" prop="model" >
                 <Input v-model="form.model" placeholder="商品型号"  />
             </FormItem>
@@ -126,13 +129,21 @@ export default {
         model: "",
         wjId: [],
         wjIds: [],
-        companyId:""
+        companyId:"",
+        unit:""
       },
       rules: {
         name: [
           {
             required: true,
             message: "请输入商品名称",
+            trigger: "blur"
+          }
+        ],
+        unit: [
+          {
+            required: true,
+            message: "请输入单位名称",
             trigger: "blur"
           }
         ],

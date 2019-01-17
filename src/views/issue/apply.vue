@@ -50,6 +50,9 @@
                 <FormItem label="数量" prop="issueCount">
                     <InputNumber  :min="1" v-model="verifyForm.issueCount" style="width:100%;"/>
                 </FormItem>
+                 <FormItem label="单位" prop="unit">
+                    <Input v-model="verifyForm.unit" placeholder="单位"  />
+                </FormItem>
                 <FormItem label="类型" prop="type">
                    <RadioGroup v-model="verifyForm.type">
                       <Radio label="1">普通</Radio>
@@ -178,7 +181,8 @@ export default {
         model: "",
         issueCount: 1,
         type: "1",
-        endTime: ""
+        endTime: "",
+        unit:""
       },
       verifyForm2: {
         id: "",
@@ -205,6 +209,10 @@ export default {
         {
           key: "issueCount",
           title: "申请数量"
+        },
+        {
+          key: "unit",
+          title: "单位"
         },
         {
           key: "reason",

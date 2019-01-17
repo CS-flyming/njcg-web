@@ -66,9 +66,17 @@ export default {
           key: "model",
           title: "型号"
         },
+          {
+          key: "reason",
+          title: "驳回原因"
+        },
         {
           key: "issueCount",
           title: "申请数量"
+        },
+          {
+          key: "unit",
+          title: "单位"
         },
         {
           key: "reason",

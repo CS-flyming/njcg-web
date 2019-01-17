@@ -112,6 +112,10 @@ export default {
           key: "issueCount",
           title: "申请数量"
         },
+          {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "reason",
           title: "驳回原因"

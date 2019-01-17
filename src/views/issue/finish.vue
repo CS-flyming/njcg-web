@@ -70,18 +70,10 @@ export default {
           key: "issueCount",
           title: "申请数量"
         },
-        // {
-        //   key: "reason",
-        //   title: "拒绝理由"
-        // },
-        // {
-        //   key: "statusDesc",
-        //   title: "状态"
-        // },
-        // {
-        //   key: "lendUserName",
-        //   title: "接收人"
-        // },
+        {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "createName",
           title: "创建人"

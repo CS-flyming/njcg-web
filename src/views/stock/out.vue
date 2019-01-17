@@ -133,7 +133,7 @@
                   <div class="print-flex-item flex-1">{{item.xh}}</div>
                   <div class="print-flex-item  flex-3 print-border-left">{{item.name}}</div>
                   <div class="print-flex-item flex-1 print-border-left">{{item.model}}</div>
-                  <div class="print-flex-item flex-1 print-border-left">{{item.departName}}</div>
+                  <div class="print-flex-item flex-1 print-border-left">{{item.unit}}</div>
                   <div class="print-flex-item flex-1 print-border-left">{{item.value}}</div>
                   <div class="print-flex-item flex-1 print-border-left">{{item.num}}</div>
                   <div class="print-flex-item flex-1 print-border-left">{{item.zj}}</div>

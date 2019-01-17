@@ -109,6 +109,10 @@ export default {
           key: "model",
           title: "型号"
         },
+         {
+          key: "unit",
+          title: "单位"
+        },
         {
           key: "value",
           title: "价格"
