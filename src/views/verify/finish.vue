@@ -429,61 +429,6 @@ export default {
             ]);
           }
         }
-        // {
-        //   type: "action",
-        //   title: "操作",
-        //   width: 200,
-        //   render: (h, params) => {
-        //     return h(
-        //       "Button",
-        //       {
-        //         on: {
-        //           click: () => {
-        //             this.verifyForm.id = params.row.id;
-        //             this.showVerifyModal = true;
-        //           }
-        //         },
-        //         props: {
-        //           type: "primary"
-        //         }
-        //       },
-        //       "初审"
-        //     );
-        //     // return h("div", [
-        //     //   h(
-        //     //     "Poptip",
-        //     //     {
-        //     //       props: {
-        //     //         confirm: true,
-        //     //         title: "您确定要删除?",
-        //     //         transfer: true
-        //     //       },
-        //     //       on: {
-        //     //         "on-ok": () => {
-        //     //           this.verifyForm.id = params.row.id;
-        //     //           this.showVerifyModal = true;
-        //     //         }
-        //     //       }
-        //     //     },
-        //     //     [
-        //     //       h(
-        //     //         "Button",
-        //     //         {
-        //     //           style: {
-        //     //             margin: "0 5px"
-        //     //           },
-        //     //           props: {
-        //     //             type: "error",
-        //     //             placement: "top"
-        //     //           }
-        //     //         },
-        //     //         "删除"
-        //     //       )
-        //     //     ]
-        //     //   )
-        //     // ]);
-        //   }
-        // }
       ],
       filter: {
         limit: 10,

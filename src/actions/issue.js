@@ -50,3 +50,6 @@ export function verifyIssueItem(params) {
 }
 
 
+export function getPrint(id) {
+    return $axios.post(`/issue/print/${id}`);
+}

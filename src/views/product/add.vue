@@ -34,7 +34,18 @@
                  <FormItem label="供货商" prop="companyId">
                 <company-selector v-model="form.companyId"></company-selector>
             </FormItem>
-        
+          <FormItem label="类型" prop="gdzc">
+                   <RadioGroup v-model="form.gdzc">
+                      <Radio label="1">固定资产</Radio>
+                      <Radio label="2">医药用品</Radio>
+                    </RadioGroup>
+                </FormItem>
+                <FormItem label="生产日期" prop="scrq"  v-if="form.gdzc=='2'">
+                    <DatePicker style="width:100%;" type="date" v-model="form.scrq" :options="options" placeholder="选择生产日期"></DatePicker>
+                </FormItem>
+                <FormItem label="过期时间" prop="gqsj"  v-if="form.gdzc=='2'">
+                    <DatePicker style="width:100%;" type="date" v-model="form.gqsj" :options="options" placeholder="选择过期时间"></DatePicker>
+                </FormItem>
             <FormItem label="商品参数">
                 <Table :columns="paramscolumns" :data="paramsArr" border></Table>
                 <Row style="margin-top:10px;">
@@ -58,6 +69,7 @@
             <FormItem>
                 <Button type="primary" :loading="loading" html-type="submit">提交</Button>
             </FormItem>
+          
         </Form>
     </Card>
 </template>
@@ -130,7 +142,10 @@ export default {
         wjId: [],
         wjIds: [],
         companyId:"",
-        unit:""
+        unit:"",
+        gdzc:"",
+        scrq:"",
+        gqsj:""
       },
       rules: {
         name: [

@@ -14,7 +14,7 @@
             </Form>
         </Card>
         <div class="data-control">
-            <Button type="primary" @click="showAddModal">申请配发</Button>
+            <Button type="primary" @click="showAddModal">单项录入</Button>
             <Button type="primary" @click="$downloadByForm('/export/issue/apply',filter)">导出</Button>
             <Upload
               ref="upload"
@@ -24,14 +24,14 @@
               :headers="uploadConfig.headers"
               :action="uploadConfig.serviceUrl"
               style="display: inline-block;margin-left:10px;">
-               <Button icon="ios-cloud-upload-outline" type="primary">批量配发</Button>
+               <Button icon="ios-cloud-upload-outline" type="primary">批量导入</Button>
             </Upload>
         </div>
         <Table :loading="loading" border stripe :columns="columns" :data="data"></Table>
         <pagination :total="total" :limit.sync="filter.limit" :offset.sync="filter.offset" @on-load="loadData"></pagination>
         <Modal
             v-model="showVerifyModal"
-            title="申请配发"
+            title="单项录入"
             @on-cancel="handleCacelModal"
            >
            <Form :model="verifyForm" ref="verifyForm" label-position="right" :label-width="120" :rules="rules">

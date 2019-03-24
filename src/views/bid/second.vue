@@ -38,9 +38,9 @@
             clearable
           />
         </FormItem>
-           <FormItem label="需求部门">
-                   <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable />
-                </FormItem>
+        <FormItem label="需求部门">
+          <departCalSelector v-model="filter._departId" :departId.sync="filter.departId" clearable/>
+        </FormItem>
         <FormItem class="submit">
           <Button type="primary" html-type="submit">筛选</Button>
         </FormItem>
@@ -76,27 +76,85 @@
         <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">初审</Button>
       </div>
     </Modal>
+
+    <Modal v-model="showModal" title="资料录入" @on-cancel="handleModal">
+      <Form
+        :model="infoform"
+        ref="infoform"
+        label-position="right"
+        :label-width="120"
+        :rules="rules"
+      >
+         <FormItem label="项目名称" prop="name" >
+                <Input v-model="infoform.name" placeholder="项目名称"  />
+            </FormItem>
+             <FormItem label="招标方式" prop="methodDesc" >
+                <Input v-model="infoform.methodDesc" placeholder="招标方式"  />
+            </FormItem>
+         <FormItem label="投标单位" prop="bidDepart" >
+                <Input v-model="infoform.bidDepart" placeholder="投标单位"  />
+            </FormItem>
+            <FormItem label="中标单位" prop="trueDepart" >
+                <Input v-model="infoform.trueDepart" placeholder="中标单位"/>
+            </FormItem>
+            <FormItem label="备选单位"  prop="selectDepart">
+                <Input v-model="infoform.selectDepart" placeholder="备选单位"/>
+            </FormItem>
+            <FormItem label="中标价格" prop="trueValue" >
+                <Input v-model="infoform.trueValue" placeholder="中标价格"  />
+            </FormItem>
+             <FormItem label="备注" prop="trueInfo" >
+                <Input v-model="infoform.trueInfo" placeholder="备注"  />
+            </FormItem>
+      
+            <FormItem label="商品说明图片">
+                <imageUpload v-model="infoform.tbwj" ref="imgupload1"/>
+            </FormItem>
+            <FormItem label="商品详情图片">
+                <imageUpload v-model="infoform.zbzl" limit="1" ref="imgupload2"/>
+            </FormItem>
+               <FormItem label="商品详情图片">
+                <imageUpload v-model="infoform.ckwb" limit="1" ref="imgupload2"/>
+            </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button type="primary" @click="addInfo">确定</Button>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import pagination from "components/pagination";
 import dateRgSelector from "components/date-rg-selector";
-import { getBidSecondList,verifyBid } from "@/actions/bid";
+import { getBidSecondList, verifyBid } from "@/actions/bid";
 import departCalSelector from "components/depart-cal-selector";
 export default {
   name: "bid_second",
   data() {
     return {
       loading: false,
-      modalLoading:false,
+      modalLoading: false,
       verifyForm: {
         id: "",
         status: "1",
         reason: ""
       },
+       infoform: {
+        id: "",
+        name:"",
+        methodDesc:"",
+        bidDepart: "",
+        trueDepart: "",
+        selectDepart:"",
+        trueInfo:"",
+        trueValue:"",
+        tbwj:[],
+        zbzl:[],
+        ckwb:[]
+      },
       showVerifyModal: false,
-
+      showModal: false,
       rules: {
         reason: [
           {
@@ -154,14 +212,14 @@ export default {
           title: "结束时间",
           key: "endTime",
           align: "center"
-         },
-         
+        },
+
         {
           title: "状态",
           key: "statusDesc",
           align: "center"
         },
-          {
+        {
           title: "备注",
           key: "info",
           align: "center"
@@ -171,25 +229,45 @@ export default {
           title: "操作",
           align: "center",
           render: (h, params) => {
-            return h(
-              "Button",
-              {
-                on: {
-                  click: () => {
-                    this.verifyForm.id = params.row.id;
-                    this.showVerifyModal = true;
+            return h("div", [
+              h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
+                      this.verifyForm.id = params.row.id;
+                      this.showVerifyModal = true;
+                    }
+                  },
+                  style: { margin: "0 5px" },
+                  props: {
+                    type: "primary"
                   }
                 },
-                props: {
-                  type: "primary"
-                }
-              },
-              "复审"
-            );
+                "复审"
+              ),
+              h(
+                "Button",
+                {
+                  on: {
+                    click: () => {
+                      this.infoform.id = params.row.id;
+                      this.infoform.name = params.row.name;
+                      this.infoform.methodDesc = params.row.methodDesc;
+                      this.showModal = true;
+                    }
+                  },
+                  props: {
+                    type: "primary"
+                  }
+                },
+                "资料录入"
+              )
+            ]);
           }
         }
       ],
-     filter: {
+      filter: {
         limit: 10,
         offset: 0,
         name: "",
@@ -198,7 +276,7 @@ export default {
         _dateRange: ["", ""],
         startTime: "",
         endTime: "",
-         _departId: [],
+        _departId: [],
         departId: ""
       },
       data: [],
@@ -225,10 +303,20 @@ export default {
         reason: ""
       };
     },
+   resetForm() {
+      this.$refs.infoform.resetFields();
+      this.$refs.imgupload1.clearFileList();
+      this.$refs.imgupload2.clearFileList();
+    },
     handleCacelModal() {
       this.showVerifyModal = false;
       this.resetVerifyForm();
     },
+   handleModal() {
+      this.showModal = false;
+      this.resetForm();
+    },
+
     handleVerifyFirst() {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {

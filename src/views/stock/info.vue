@@ -335,7 +335,7 @@ export default {
                     },
                   
                     props: {
-                      type: "error"
+                      type: "primary"
                     }
                   },
                   "消耗"
@@ -355,7 +355,7 @@ export default {
                           margin: "0 5px"
                         },
                     props: {
-                      type: "error"
+                      type: "primary"
                     }
                   },
                   "报废"
@@ -386,7 +386,7 @@ export default {
                           margin: "0 5px"
                         },
                         props: {
-                          type: "error",
+                         type: "primary",
                           placement: "top"
                         }
                       },
@@ -414,7 +414,7 @@ export default {
                     }
                   },
                   props: {
-                    type: "primary"
+                   type: "primary"
                   }
                 },
                 "发付"
@@ -426,7 +426,7 @@ export default {
                     click: () => {
                       this.verifyForm3.id = params.row.id;
                       this.verifyForm3.limit =
-                        params.row.useCount - params.row.lendCount;
+                      params.row.useCount - params.row.lendCount;
                       this.showVerifyModal3 = true;
                     }
                   },
@@ -458,7 +458,7 @@ export default {
                       }
                     },
                     props: {
-                      type: "primary"
+                      type: params.row.location==null?"error":"primary"
                     }
                   },
                   "编辑存储位置和负责人"
