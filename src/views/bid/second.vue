@@ -113,12 +113,12 @@
               </Upload>
             </FormItem>
              <FormItem label="招标资料">
-              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess1" :before-upload="beforeUpload" :on-remove="handleRemove">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess1" :before-upload="beforeUpload" :on-remove="handleRemove1">
                   <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
               </Upload>
             </FormItem>
              <FormItem label="参考文本">
-              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess2" :before-upload="beforeUpload" :on-remove="handleRemove">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess2" :before-upload="beforeUpload" :on-remove="handleRemove2">
                   <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
               </Upload>
             </FormItem>
@@ -240,6 +240,7 @@ export default {
         {
           type: "action",
           title: "操作",
+          width:250,
           align: "center",
           render: (h, params) => {
             return h("div", [
@@ -275,7 +276,28 @@ export default {
                   }
                 },
                 "资料录入"
-              )
+              ),
+                h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                   style: { margin: "0 5px" },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-bid-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
+                  }
+                },
+                "详情"
+              ),
             ]);
           }
         }
@@ -306,6 +328,20 @@ export default {
         return v != file.response.data;
       });
       this.infoform.tbwj = arr;
+    },
+     handleRemove1(file, fileList) {
+      let arr = this.infoform.zbzl;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.infoform.zbzl = arr;
+    },
+     handleRemove2(file, fileList) {
+      let arr = this.infoform.ckwb;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.infoform.ckwb = arr;
     },
     uploadSuccess(res, file) {
       let arr = this.infoform.tbwj
@@ -368,6 +404,19 @@ export default {
       };
     },
    resetForm() {
+      this.infoform={
+        id: "",
+        name:"",
+        methodDesc:"",
+        bidDepart: "",
+        trueDepart: "",
+        selectDepart:"",
+        trueInfo:"",
+        trueValue:"",
+        tbwj:[],
+        zbzl:[],
+        ckwb:[]
+      };
       this.$refs.infoform.resetFields();
     },
     handleCacelModal() {

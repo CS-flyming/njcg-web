@@ -204,6 +204,12 @@ export const otherRouter = {
       component: () => import("@/views/order/detail.vue")
     },
     {
+      path: "bid/:id/detail",
+      title: "资料详情",
+      name: "base-bid-detail",
+      component: () => import("@/views/bid/detail.vue")
+    },
+    {
       path: "plan/add",
       title: "新增计划",
       name: "plan-add",
