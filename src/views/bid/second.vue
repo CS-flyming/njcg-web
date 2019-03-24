@@ -107,14 +107,20 @@
                 <Input v-model="infoform.trueInfo" placeholder="备注"  />
             </FormItem>
       
-            <FormItem label="商品说明图片">
-                <imageUpload v-model="infoform.tbwj" ref="imgupload1"/>
+             <FormItem label="投标文件">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess" :before-upload="beforeUpload" :on-remove="handleRemove">
+                  <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+              </Upload>
             </FormItem>
-            <FormItem label="商品详情图片">
-                <imageUpload v-model="infoform.zbzl" limit="1" ref="imgupload2"/>
+             <FormItem label="招标资料">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess1" :before-upload="beforeUpload" :on-remove="handleRemove">
+                  <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+              </Upload>
             </FormItem>
-               <FormItem label="商品详情图片">
-                <imageUpload v-model="infoform.ckwb" limit="1" ref="imgupload2"/>
+             <FormItem label="参考文本">
+              <Upload ref='upload' multiple :action="uploadConfig.serviceUrl" :on-success="uploadSuccess2" :before-upload="beforeUpload" :on-remove="handleRemove">
+                  <Button type="ghost" icon="ios-cloud-upload-outline">上传附件</Button>
+              </Upload>
             </FormItem>
       </Form>
       <div slot="footer">
@@ -128,11 +134,18 @@
 import pagination from "components/pagination";
 import dateRgSelector from "components/date-rg-selector";
 import { getBidSecondList, verifyBid } from "@/actions/bid";
+import { uploadConfig, ApiUrl } from "@/constants/constant";
 import departCalSelector from "components/depart-cal-selector";
 export default {
   name: "bid_second",
   data() {
     return {
+       uploadConfig: {
+        accept: "",
+        headers: uploadConfig.headers,
+        name: "file",
+        serviceUrl: `${ApiUrl}/issue/import`
+      },
       loading: false,
       modalLoading: false,
       verifyForm: {
@@ -284,6 +297,58 @@ export default {
     };
   },
   methods: {
+    beforeUpload() {
+      // this.$refs.upload.clearFiles();
+    },
+    handleRemove(file, fileList) {
+      let arr = this.infoform.tbwj;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.infoform.tbwj = arr;
+    },
+    uploadSuccess(res, file) {
+      let arr = this.infoform.tbwj
+      arr.push(res.data);
+      this.infoform.tbwj = arr;
+    },
+    handleRemove1(file, fileList) {
+      let arr = this.infoform.zbzl;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.infoform.zbzl = arr;
+    },
+    uploadSuccess1(res, file) {
+      let arr = this.infoform.zbzl
+      arr.push(res.data);
+      this.infoform.zbzl = arr;
+    },
+    handleRemove2(file, fileList) {
+      let arr = this.infoform.ckwb;
+      arr = arr.filter(v => {
+        return v != file.response.data;
+      });
+      this.infoform.ckwb = arr;
+    },
+    uploadSuccess2(res, file) {
+      let arr = this.infoform.ckwb
+      arr.push(res.data);
+      this.infoform.ckwb = arr;
+    },
+
+      addInfo() {
+      verifyBid(this.infoform).then(
+        res => {
+          this.loading = false;
+          this.$Message.success("提交成功");
+          this.showModal = false;
+          this.restFbzItem();
+           this.loadData();
+        },
+        () => {}
+      );
+    },
     loadData() {
       this.loading = true;
       getBidSecondList(this.filter).then(res => {
