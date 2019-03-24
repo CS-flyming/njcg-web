@@ -22,3 +22,15 @@ export function getBidFinishList(params) {
 export function verifyBid(params) {
   return $axios.post("/bid/verify",params);
 }
+
+export function addBidInfo(params) {
+  return $axios.post("/bid/add/info",params);
+}
+
+/**
+ * 报废资产
+ * @param {*} id
+ */
+export function getBidInfo(id) {
+  return $axios.post(`/bid/get/info/${id}`);
+}

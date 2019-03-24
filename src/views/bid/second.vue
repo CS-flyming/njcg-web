@@ -133,7 +133,7 @@
 <script>
 import pagination from "components/pagination";
 import dateRgSelector from "components/date-rg-selector";
-import { getBidSecondList, verifyBid } from "@/actions/bid";
+import { getBidSecondList, verifyBid,addBidInfo} from "@/actions/bid";
 import { uploadConfig, ApiUrl } from "@/constants/constant";
 import departCalSelector from "components/depart-cal-selector";
 export default {
@@ -144,7 +144,7 @@ export default {
         accept: "",
         headers: uploadConfig.headers,
         name: "file",
-        serviceUrl: `${ApiUrl}/issue/import`
+        serviceUrl: `${ApiUrl}/file/upload`
       },
       loading: false,
       modalLoading: false,
@@ -338,13 +338,12 @@ export default {
     },
 
       addInfo() {
-      verifyBid(this.infoform).then(
+      addBidInfo(this.infoform).then(
         res => {
           this.loading = false;
           this.$Message.success("提交成功");
-          this.showModal = false;
-          this.restFbzItem();
-           this.loadData();
+          this.handleModal();       
+          this.loadData();
         },
         () => {}
       );
@@ -370,8 +369,6 @@ export default {
     },
    resetForm() {
       this.$refs.infoform.resetFields();
-      this.$refs.imgupload1.clearFileList();
-      this.$refs.imgupload2.clearFileList();
     },
     handleCacelModal() {
       this.showVerifyModal = false;
@@ -386,7 +383,7 @@ export default {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          verifyBid(this.verifyForm).then(
+          verifyBid(this.infoform).then(
             res => {
               this.modalLoading = false;
               this.handleCacelModal();
