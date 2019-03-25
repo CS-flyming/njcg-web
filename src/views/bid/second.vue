@@ -54,7 +54,7 @@
       :offset.sync="filter.offset"
       @on-load="loadData"
     ></pagination>
-    <Modal v-model="showVerifyModal" title="复审" @on-cancel="handleCacelModal">
+    <Modal v-model="showVerifyModal" title="受理" @on-cancel="handleCacelModal">
       <Form
         :model="verifyForm"
         ref="verifyForm"
@@ -68,12 +68,12 @@
             <Radio label="2">拒绝</Radio>
           </RadioGroup>
         </FormItem>
-        <FormItem label="拒绝原因" v-if="verifyForm.status=='3'" prop="reason">
+        <FormItem label="拒绝原因" v-if="verifyForm.status=='2'" prop="reason">
           <Input v-model="verifyForm.reason" placeholder="拒绝原因"/>
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">初审</Button>
+        <Button type="primary" @click="handleVerifyFirst" :loading="modalLoading">受理</Button>
       </div>
     </Modal>
 
@@ -240,11 +240,11 @@ export default {
         {
           type: "action",
           title: "操作",
-          width:250,
           align: "center",
           render: (h, params) => {
-            return h("div", [
-              h(
+             let verifybtn =
+              params.row.status == 2
+                ?  h(
                 "Button",
                 {
                   on: {
@@ -259,8 +259,10 @@ export default {
                   }
                 },
                 "复审"
-              ),
-              h(
+              )
+                : "";
+           let addinfobtn = 
+             params.row.status == 6?  h(
                 "Button",
                 {
                   on: {
@@ -276,28 +278,10 @@ export default {
                   }
                 },
                 "资料录入"
-              ),
-                h(
-                "Button",
-                {
-                  props: {
-                    type: "info"
-                  },
-                   style: { margin: "0 5px" },
-                  on: {
-                    click: () => {
-                      // this.showDetailModal(params.row.id);
-                      this.$router.push({
-                        name: "base-bid-detail",
-                        params: {
-                          id: params.row.id
-                        }
-                      });
-                    }
-                  }
-                },
-                "详情"
-              ),
+              ): ""; 
+            return h("div", [
+            verifybtn,
+            addinfobtn
             ]);
           }
         }
@@ -432,7 +416,7 @@ export default {
       this.$refs["verifyForm"].validate(valid => {
         if (valid) {
           this.modalLoading = true;
-          verifyBid(this.infoform).then(
+          verifyBid(this.verifyForm).then(
             res => {
               this.modalLoading = false;
               this.handleCacelModal();

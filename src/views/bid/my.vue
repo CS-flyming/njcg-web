@@ -225,6 +225,11 @@ export default {
           align: "center"
         },
         {
+          title: "拒绝原因",
+          key: "reason",
+          align: "center"
+        },
+        {
           title: "状态",
           key: "statusDesc",
           align: "center"

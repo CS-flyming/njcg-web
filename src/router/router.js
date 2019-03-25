@@ -522,15 +522,21 @@ export const appRouter = [
       },
       {
         path: "second",
-        title: "复审",
+        title: "受理",
         name: "bid_second",
         component: () => import("@/views/bid/second.vue")
       },
       {
         path: "finish",
-        title: "已审核",
+        title: "已受理",
         name: "bid_finish",
         component: () => import("@/views/bid/finish.vue")
+      },
+      {
+        path: "myfinish",
+        title: "已完成",
+        name: "bid_myfinish",
+        component: () => import("@/views/bid/myfinish.vue")
       }
     ]
   }

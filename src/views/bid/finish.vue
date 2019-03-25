@@ -146,6 +146,39 @@ export default {
           title: "状态",
           key: "statusDesc",
           align: "center"
+        },
+      
+        {
+          type: "action",
+          title: "操作",
+          align: "center",
+          render: (h, params) => {          
+          let infobtn = 
+             params.row.status == 5?   h(
+                "Button",
+                {
+                  props: {
+                    type: "info"
+                  },
+                   style: { margin: "0 5px" },
+                  on: {
+                    click: () => {
+                      // this.showDetailModal(params.row.id);
+                      this.$router.push({
+                        name: "base-bid-detail",
+                        params: {
+                          id: params.row.id
+                        }
+                      });
+                    }
+                  }
+                },
+                "详情"
+              ): ""; 
+            return h("div", [
+               infobtn
+            ]);
+          }
         }
       ],
       filter: {

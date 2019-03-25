@@ -18,7 +18,9 @@ export function getBidSecondList(params) {
 export function getBidFinishList(params) {
   return $axios.post("/bid/finish/list",params);
 }
-
+export function getBidMyFinishList(params) {
+  return $axios.post("/bid/finish/my/list",params);
+}
 export function verifyBid(params) {
   return $axios.post("/bid/verify",params);
 }
