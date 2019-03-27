@@ -1,56 +1,79 @@
 
 
 <template>
-    <Card>
-        <p slot="title">
-            编辑商品
-        </p>
-        <Form 
-            style="max-width: 800px;" 
-            ref="form" 
-            method="post" 
-            @submit.prevent.native="submit" 
-            :model="form" 
-            :label-width="120" 
-            label-position="right"
-            :rules="rules">
-            <FormItem label="商品名称" prop="name" >
-                <Input v-model="form.name" placeholder="商品名称"  />
-            </FormItem>
-            <FormItem label="商品单价" prop="value" >
-                <InputNumber v-model="form.value" style="width:100%;"  :min="0"/>
-            </FormItem>
-            <FormItem label="商品规格" prop="standard" >
-                <Input v-model="form.standard" placeholder="商品规格"  />
-            </FormItem>
-             <FormItem label="单位" prop="unit" >
-                <Input v-model="form.unit" placeholder="单位"  />
-            </FormItem>
-            <FormItem label="商品型号" prop="model" >
-                <Input v-model="form.model" placeholder="商品型号"  />
-            </FormItem>
-             <FormItem label="供货商" prop="companyId">
-                <company-selector v-model="form.companyId"></company-selector>
-            </FormItem>
-            <FormItem label="商品参数">
-                <Table :columns="paramscolumns" :data="paramsArr" border></Table>
-                <Row style="margin-top:10px;">
-                  <Col span="11">
-                    <Input v-model="params.key" placeholder="参数名称"  />
-                  </Col>
-                  <Col span="11">
-                    <Input v-model="params.value" placeholder="参数数值"  />
-                  </Col>
-                  <Col span="2" style="text-align:right;">
-                    <Button type="primary" @click="pushParams">+</Button>
-                  </Col>
-                </Row> 
-            </FormItem>
-            <FormItem>
-                <Button type="primary" :loading="loading" html-type="submit">提交</Button>
-            </FormItem>
-        </Form>
-    </Card>
+  <Card>
+    <p slot="title">编辑商品</p>
+    <Form
+      style="max-width: 800px;"
+      ref="form"
+      method="post"
+      @submit.prevent.native="submit"
+      :model="form"
+      :label-width="120"
+      label-position="right"
+      :rules="rules"
+    >
+      <FormItem label="商品名称" prop="name">
+        <Input v-model="form.name" placeholder="商品名称"/>
+      </FormItem>
+      <FormItem label="商品单价" prop="value">
+        <InputNumber v-model="form.value" style="width:100%;" :min="0"/>
+      </FormItem>
+      <FormItem label="商品规格" prop="standard">
+        <Input v-model="form.standard" placeholder="商品规格"/>
+      </FormItem>
+      <FormItem label="单位" prop="unit">
+        <Input v-model="form.unit" placeholder="单位"/>
+      </FormItem>
+      <FormItem label="商品型号" prop="model">
+        <Input v-model="form.model" placeholder="商品型号"/>
+      </FormItem>
+      <FormItem label="供货商" prop="companyId">
+        <company-selector v-model="form.companyId"></company-selector>
+      </FormItem>
+      <FormItem label="类型" prop="gdzc">
+        <RadioGroup v-model="form.gdzc">
+          <Radio label="1">固定资产</Radio>
+          <Radio label="2">医药用品</Radio>
+        </RadioGroup>
+      </FormItem>
+      <FormItem label="生产日期" prop="scrq" v-if="form.gdzc=='2'">
+        <DatePicker
+          style="width:100%;"
+          type="date"
+          v-model="form.scrq"
+          :options="options"
+          placeholder="选择生产日期"
+        ></DatePicker>
+      </FormItem>
+      <FormItem label="过期时间" prop="gqsj" v-if="form.gdzc=='2'">
+        <DatePicker
+          style="width:100%;"
+          type="date"
+          v-model="form.gqsj"
+          :options="options"
+          placeholder="选择过期时间"
+        ></DatePicker>
+      </FormItem>
+      <FormItem label="商品参数">
+        <Table :columns="paramscolumns" :data="paramsArr" border></Table>
+        <Row style="margin-top:10px;">
+          <Col span="11">
+            <Input v-model="params.key" placeholder="参数名称"/>
+          </Col>
+          <Col span="11">
+            <Input v-model="params.value" placeholder="参数数值"/>
+          </Col>
+          <Col span="2" style="text-align:right;">
+            <Button type="primary" @click="pushParams">+</Button>
+          </Col>
+        </Row>
+      </FormItem>
+      <FormItem>
+        <Button type="primary" :loading="loading" html-type="submit">提交</Button>
+      </FormItem>
+    </Form>
+  </Card>
 </template>
 
 <script>
@@ -87,7 +110,7 @@ export default {
         value: 0,
         standard: "",
         model: "",
-        unit:""
+        unit: ""
       },
       rules: {
         name: [
@@ -210,6 +233,9 @@ export default {
           formData.type = this.form.type;
           formData.companyId = this.form.companyId;
           formData.unit = this.form.unit;
+          formData.gdzc = this.form.gdzc;
+          formData.gqsj = this.form.gqsj;
+          formData.scrq = this.form.scrq;
           addOrUpdateProduct(formData).then(
             res => {
               this.loading = false;
@@ -261,8 +287,11 @@ export default {
         wjId: [],
         wjIds: [],
         files: [],
-        companyId:"",
-        unit:""
+        companyId: "",
+        unit: "",
+        gdzc: "",
+        gqsj: "",
+        scrq: ""
       };
     }
   }
